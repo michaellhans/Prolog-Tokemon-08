@@ -5,6 +5,8 @@
 /* 13518092 / Izharulhaq */
 /* 13518128 / Lionnarta Savirandy */
 
+:- include('map.pl').
+
 /* Deklarasi Fakta */
 increaseDamage(fire,leaves).
 increaseDamage(earth,fire).
@@ -32,6 +34,7 @@ legendary(ligator).
 legendary(camellia).
 legendary(phoenix).
 
+:- dynamic(health/2).
 health(ligator,630).
 health(camellia,580).
 health(phoenix,500).
@@ -56,6 +59,7 @@ health(topan,120).
 health(sijagokuning,95).
 health(refflesia,115).
 
+:- dynamic(damage/2).
 damage(ligator,40).
 damage(camellia,57).
 damage(phoenix,70).
@@ -132,6 +136,9 @@ skill(leaves,absorb). % health +(200%)*damage
 skill(lightning,bolt). % damage = 90
 skill(fire,eruption). % damage = 110. syarat = abis pake skill ini, damage berkurang menjadi 60% nya
 
+:- dynamic(playerposition/2).
+playerposition(1,1).
+
 /* Deklarasi Rules */
 start :-
     write('Once upon a time, long long ago....'),nl,
@@ -165,12 +172,6 @@ help :-
     write('map. -- look at the map'),nl,
     write('heal -- cure Tokemon in inventory if you are in gym center'),nl, 
     write('status. -- show your status'),nl,
+    write('specialattack. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,
     write('load(Filename). -- load previously saved game'),nl.
-
-gym(X).
-inventoryPlayer(List).
-inventoryEnemy(List).
-health(Pokemon,HP).
-level(Pokemon,Level).
-damage(Pokemon,Attack).
