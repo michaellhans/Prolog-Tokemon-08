@@ -5,6 +5,8 @@
 /* 13518092 / Izharulhaq */
 /* 13518128 / Lionnarta Savirandy */
 
+:- include('map.pl').
+
 /* Deklarasi Fakta */
 increaseDamage(fire,leaves).
 increaseDamage(earth,fire).
@@ -170,5 +172,6 @@ help :-
     write('map. -- look at the map'),nl,
     write('heal -- cure Tokemon in inventory if you are in gym center'),nl, 
     write('status. -- show your status'),nl,
+    write('specialattack. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,
     write('load(Filename). -- load previously saved game'),nl.
