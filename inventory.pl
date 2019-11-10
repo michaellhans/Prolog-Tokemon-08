@@ -12,17 +12,29 @@ addtokemon(X,[H|T],[H|A]) :- addtokemon(X,T,A).
 
 /* dynamiclist */
 :- dynamic(inventory/6).
-inventory([(refflesia,115,20,leaves,woodhammer,8),(sijagokuning,95,25,fire,flamewheel,7)]).
+inventory(refflesia,115,20,leaves,woodhammer,8).
+inventory(sijagokuning,95,25,fire,flamewheel,7).
 
 /* printinventory */
-printinventory(inventory([(Name,Health,_,Type,_,_)])) :-
-        write('Name     : '),write(Name),nl,
-        write('Health   : '),write(Health),nl,
-        write('Type     : '),write(Type),nl.
-printinventory(inventory([(Name,Health,_,Type,_,_)|T])) :-
-        write('Name     : '),write(Name),nl,
-        write('Health   : '),write(Health),nl,
-        write('Type     : '),write(Type),nl,
-        printinventory(inventory(T)).
+status :-
+        findall(Name,inventory(Name,Health,_,Type,_,_),Result),
+        write(Result),nl,
+        findall(Health,inventory(Name,Health,_,Type,_,_),Result1),
+        write('Health   : '),write(Result1),nl,
+        findall(Type,inventory(Name,Health,_,Type,_,_),Result2),
+        write('Type     : '),write(Result2),nl.
 
-status :- 
+/* removefromlist digunakan untuk menghapus tokemon dari inventory */
+removefromlist(X) :- retract(inventory(OldList)), deltokemon(X,OldList,NewList), assertz(inventory(NewList)).
+/* addtolist digunakan untuk menambahkan tokemon ke inventory */
+addtolist(X) :- checklength(OldList,N),
+                N<6, 
+                retract(inventory(OldList)), 
+                addtokemon(X,OldList,NewList), 
+                assertz(inventory(NewList)),
+                write('Congratulations, you have captured '),
+                write(X),
+                write('!').
+addtolist(X) :- checklength(OldList,N),
+                N=6,
+                write('Your inventory is full!').
