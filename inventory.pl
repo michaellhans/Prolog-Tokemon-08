@@ -9,3 +9,7 @@ deltokemon(X,[A|T],[A|B]) :- deltokemon(X,T,B).
 /* addtokemon digunakan untuk menambahkan tokemon ke dalam list */
 addtokemon(X,[],[X]).
 addtokemon(X,[H|T],[H|A]) :- addtokemon(X,T,A).
+
+/* printlist digunakan untuk menampilkan isi list */
+printlist([]).
+printlist([X|List]) :- write(X),nl,printlist(List).
