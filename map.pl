@@ -1,3 +1,10 @@
+/* Kelompok 8 */
+/* Nama/NIM : */
+/* 13518020 / Florencia Wijaya */
+/* 13518056 / Michael Hans */
+/* 13518092 / Izharulhaq */
+/* 13518128 / Lionnarta Savirandy */
+
 /* Map */
 isAbove(X,Y) :-    
     Y =:= 0,!.
@@ -12,6 +19,8 @@ isRight(X,_) :-
     X =:= 16,!.
 
 area(X,Y) :-
+	\+playerposition(X,Y),
+	\+fence(X,Y),
     X =\= 0,
     X =\= 16,
     Y =\= 0,
@@ -20,32 +29,42 @@ area(X,Y) :-
 isMax(X,Y) :-
     X > 16,
     Y > 16,!.
-
+    
 printMap(X,Y):-
-    isAbove(X,Y),
+    isAbove(X,Y),!,
     write('X'),
     NewX is X,
-    ((NewX =:= 16 -> nl,printMap(0,Y+1));
+    ((NewX =:= 16 -> nl,printMap(0,Y+1),!);
     printMap(X+1,Y)).
 
 printMap(X,Y):-
-    isDown(X,Y),
+    isDown(X,Y),!,
     write('X'),
     ((X =:= 16 -> nl,!);
     printMap(X+1,Y)).
 
 printMap(X,Y):-
-    isRight(X,Y),
+    isRight(X,Y),!,
     write('X'),nl,
     printMap(0,Y+1).
 
 printMap(X,Y):-
-    isLeft(X,Y),
+    isLeft(X,Y),!,
     write('X'),
     printMap(X+1,Y).
 
 printMap(X,Y):-
-    area(X,Y),
+    playerposition(X,Y),!,
+    write('P'),
+    printMap(X+1,Y).
+    
+printMap(X,Y):-
+	fence(X,Y),!,
+	write('X'),
+	printMap(X+1,Y).
+	
+printMap(X,Y):-
+    area(X,Y),!,
     write('-'),
     printMap(X+1,Y).
 
