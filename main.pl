@@ -6,6 +6,7 @@
 /* 13518128 / Lionnarta Savirandy */
 
 :- include('map.pl').
+:- include('db.pl').
 
 /* Deklarasi Fakta */
 increaseDamage(fire,leaves).

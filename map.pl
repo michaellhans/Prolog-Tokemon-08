@@ -6,6 +6,9 @@
 /* 13518128 / Lionnarta Savirandy */
 
 /* Map */
+
+fence(2,2).
+
 isAbove(X,Y) :-    
     Y =:= 0,!.
     
@@ -52,7 +55,7 @@ printMap(X,Y):-
     isLeft(X,Y),!,
     write('X'),
     printMap(X+1,Y).
-
+    
 printMap(X,Y):-
     playerposition(X,Y),!,
     write('P'),
@@ -62,7 +65,7 @@ printMap(X,Y):-
 	fence(X,Y),!,
 	write('X'),
 	printMap(X+1,Y).
-	
+
 printMap(X,Y):-
     area(X,Y),!,
     write('-'),
@@ -79,10 +82,10 @@ isfence(X,Y) :-
         Y =:= 15
     ).
 
-n :- 
+w :- 
     retract(playerposition(X,Y)),
     NewX is X,
-    NewY is Y+1,
+    NewY is Y-1,
     ((\+isfence(NewX,NewY) -> write('You move to the north.'),
     assertz(playerposition(NewX,NewY)),!);
     write('Cannot move! You are near the fence.'), 
@@ -91,13 +94,13 @@ n :-
 s :-
     retract(playerposition(X,Y)),
     NewX is X,
-    NewY is Y-1,
+    NewY is Y+1,
     ((\+isfence(NewX,NewY) -> write('You move to the south.'),
     assertz(playerposition(NewX,NewY)),!);
     write('Cannot move! You are near the fence.'),
     assertz(playerposition(X,Y))).
 
-e :-
+d :-
     retract(playerposition(X,Y)),
     NewX is X+1,
     NewY is Y,
@@ -106,7 +109,7 @@ e :-
     write('Cannot move! You are near the fence.'),
     assertz(playerposition(X,Y))).
 
-w :-
+a :-
     retract(playerposition(X,Y)),
     NewX is X-1,
     NewY is Y,
