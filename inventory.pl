@@ -47,6 +47,23 @@ status :-
         write('Your Enemy:'),nl,
         printenemy(Result1).
 
+healinventory([H|T]) :-
+        write(H),nl,
+        inventory(H,Health,_,Type,_,_),
+        write('Health   : '),write(Health),nl,
+        write('Type     : '),write(Type),nl,nl,
+        retract(inventory(H,Health,Damage,Type,Skill,Id)),
+        tokemon(H,Hp1,Dmg1,Type1,Skill1,Id1),
+        NewHealth is Hp1+50,
+        asserta(inventory(H,NewHealth,Damage,Type,Skill,Id)),
+        healinventory(T).
+
+heal :-
+        findall(X,inventory(X,_,_,_,_,_),Result),
+        write('Your Tokemon:'),nl,
+        healinventory(Result),
+        findall(X,enemy(X,_,_,_,_,_),Result1).
+
 /* removefromlist digunakan untuk menghapus tokemon dari inventory */
 removefromlist(X) :- retract(inventory(OldList)), deltokemon(X,OldList,NewList), assertz(inventory(NewList)).
 /* addtolist digunakan untuk menambahkan tokemon ke inventory */
