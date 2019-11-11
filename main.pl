@@ -10,7 +10,7 @@
 :- include('attack.pl').
 
 :- dynamic(playerposition/2).
-playerposition(1,1).
+playerposition(2,1).
 
 /* Deklarasi Rules */
 start :-

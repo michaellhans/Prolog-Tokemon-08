@@ -8,8 +8,11 @@
 /* Map */
 
 fence(2,2).
+fence(5,8).
+fence(10,7).
+fence(1,1).
 
-isAbove(X,Y) :-    
+isAbove(_,Y) :-    
     Y =:= 0,!.
     
 isDown(_,Y) :-
@@ -36,50 +39,59 @@ isMax(X,Y) :-
 printMap(X,Y):-
     isAbove(X,Y),!,
     write('X'),
-    NewX is X,
-    ((NewX =:= 16 -> nl,printMap(0,Y+1),!);
-    printMap(X+1,Y)).
+    NewY is Y+1,
+    ((X =:= 16 -> nl,printMap(0,NewY),!);
+    NewX is X+1,
+    printMap(NewX,Y)).
 
 printMap(X,Y):-
     isDown(X,Y),!,
     write('X'),
     ((X =:= 16 -> nl,!);
-    printMap(X+1,Y)).
+    NewX is X+1,
+    printMap(NewX,Y)).
 
 printMap(X,Y):-
     isRight(X,Y),!,
     write('X'),nl,
-    printMap(0,Y+1).
+    NewY is Y+1,
+    Reset is X-X,
+    printMap(Reset,NewY).
 
 printMap(X,Y):-
     isLeft(X,Y),!,
     write('X'),
-    printMap(X+1,Y).
+    NewX is X+1,
+    printMap(NewX,Y).
     
 printMap(X,Y):-
     playerposition(X,Y),!,
     write('P'),
-    printMap(X+1,Y).
+    NewX is X+1,
+    printMap(NewX,Y).
     
 printMap(X,Y):-
 	fence(X,Y),!,
 	write('X'),
-	printMap(X+1,Y).
+    NewX is X+1,
+	printMap(NewX,Y).
 
 printMap(X,Y):-
     area(X,Y),!,
     write('-'),
-    printMap(X+1,Y).
+    NewX is X+1,
+    printMap(NewX,Y).
 
 showMap :- printMap(0,0).
+
 
 /* Movement */
 isfence(X,Y) :-
     (
         X =:= 0;
-        X =:= 15;
+        X =:= 16;
         Y =:= 0;
-        Y =:= 15
+        Y =:= 16
     ).
 
 w :- 
