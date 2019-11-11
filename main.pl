@@ -14,6 +14,7 @@ playerposition(1,1).
 
 /* Deklarasi Rules */
 start :-
+    art,
     write('Once upon a time, long long ago....'),nl,
     write('There lied a magnificent land behind the mountains, but hidden from the rest of the world.'),nl,
     write('In this place named Tokemon Land, there were many creatures called tokemons.'),nl,
@@ -41,10 +42,20 @@ help :-
     write('start. -- start the game!'),nl,
     write('help. -- show available commands'),nl,
     write('quit. -- quit the game'),nl,
-    write('n. s. e. w. -- move'),nl,
+    write('w. a. s. d. -- move'),nl,
     write('map. -- look at the map'),nl,
     write('heal -- cure Tokemon in inventory if you are in gym center'),nl, 
     write('status. -- show your status'),nl,
     write('specialattack. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,
     write('load(Filename). -- load previously saved game'),nl.
+
+art :-
+    write(' ______   _______    __  __    ______    ___  ___    _______    __  __'),nl,
+    write('(_    _) (   _   )  (  )/  )  (  ____)  (   \\/   )  (   _   )  (  \\(  )'),nl,
+    write('  )  (    ) ( ) (    )    (    ) __)     )      (    ) ( ) (    )    ('),nl,
+    write(' (____)  (_______)  (__)\\__)  (______)  (__/\\/\\__)  (_______)  (__)\\__)'),nl,nl,
+    write('  ______    ______    _______      __       ___      _______    _____'),nl,
+    write(' (   __ \\  (   __ \\  (   _   )    (  )     (   )    (   _   )  /  ___)'),nl,
+    write('  ) ____/   )     /   ) ( ) (     / _\\/     ) (__    ) ( ) (  (  (__-.'),nl,
+    write(' (___)     (__)\\__)  (_______)   (___/\\    (_____)  (_______)  \\_____/'),nl.
