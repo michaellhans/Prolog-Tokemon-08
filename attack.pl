@@ -140,82 +140,45 @@ specialSkill :-
         activateSkill(Skill1).
 
 activateSkill(NameSkill) :-
-    ((NameSkill == hydropump) -> write('You used hydropump skill'),nl,
-    retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-    NewHp2 is Hp2 - 50,
-    write('Enemy took heavy damage from your Tokemon!'),nl,
-    (NewHp2 =< 0 -> Dead is 0,
-    write('COngratulations, you have defeated your enemy!'),nl,
-    write('Musuh - '),write(Name2),nl,
-    write('Health : '),write(Dead),nl,
-    write('Type : '),write(Type2),nl,nl,
-    assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2));
-    write('Musuh - '),write(Name2),nl,
-    write('Health : '),write(NewHp2),nl,
-    write('Type : '),write(Type2),nl,nl,
-    assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)));
+        ((NameSkill==hydropump;
+        NameSkill==earthquake;
+        NameSkill==bolt;
+        NameSkill==eruption) -> activateSkillToEnemy(NameSkill);
+        (NameSkill==roost;
+        NameSkill==absorb) -> activateSkillToMe(NameSkill)).
 
-    (NameSkill == earthquake) -> write('You used earthquake skill'),nl,
-    retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-    NewHp2 is Hp2 - 75,
-    write('Enemy took heavy damage from your Tokemon!'),nl,
-    (NewHp2 =< 0 -> Dead is 0,
-    write('Congratulations, you have defeated your enemy!'),nl,
-    write('Musuh - '),write(Name2),nl,
-    write('Health : '),write(Dead),nl,
-    write('Type : '),write(Type2),nl,nl,
-    assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2));
-    write('Musuh - '),write(Name2),nl,
-    write('Health : '),write(NewHp2),nl,
-    write('Type : '),write(Type2),nl,nl,
-    assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)));
-    
-    (NameSkill == roost) -> write('You used roost skill'),nl,
-    retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-    NewHp1 is Hp1 + 20,
-    write('Skill Activated!'),nl,
-    write('My Tokemon - '), write(Name1),nl,
-    write('Health : '), write(NewHp1),nl,
-    write('Type : '),write(Type1),nl,nl,
-    assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1));
+activateSkillToEnemy(NameSkill) :-
+        write('You used '), 
+        write(NameSkill),
+        write(' skill. Show it what you got!'),nl,
+        retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
+        ((NameSkill==hydropump -> NewHp2 is Hp2-50);
+        (NameSkill==earthquake -> NewHp2 is Hp2-75);
+        (NameSkill==bolt -> NewHp2 is Hp2-90);
+        (NameSkill==eruption -> NewHp2 is Hp2-110)),
+        (NewHp2 =< 0 -> Dead is 0,
+        write('Enemy - '),write(Name2),nl,
+        write('Health : '),write(Dead),nl,
+        write('Type : '),write(Type2),nl,
+        write('Enemy took heavy damage from your Tokemon!'),nl,
+        write('Congratulations, you have defeated your enemy!'),nl,nl,
+        assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2));
+        write('Enemy took heavy damage from your Tokemon!'),nl,
+        write('Enemy - '),write(Name2),nl,
+        write('Health : '),write(NewHp2),nl,
+        write('Type : '),write(Type2),nl,nl,
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2))).
 
-    (NameSkill == absorb) -> write('You used absorb skill'),nl,
-    retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-    NewHp1 is Hp1 + 2*Dmg1,
-    write('Skill Activated!'),nl,
-    write('Tokemonku - '), write(Name1),nl,
-    write('Health : '), write(NewHp1),nl,
-    write('Type : '),write(Type1),nl,nl,
-    assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1));
+activateSkillToMe(NameSkill) :-
+        write('You chose to use '),
+        write(NameSkill),
+        write(' skill. Smart choice!'), nl,
+        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        ((NameSkill==roost -> NewHp1 is Hp1+20);
+        (NameSkill==absorb -> NewHp1 is Hp1+(2*Dmg1))),
+        write('My Tokemon - '), write(Name1), nl,
+        write('Health : '), write(NewHp1), nl,
+        write('Type : '), write(Type1), nl, nl,
+        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1));
 
-    (NameSkill == bolt) -> write('You use bolt skill'),nl,
-    retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-    NewHp2 is Hp2 - 90,
-    write('Enemy took heavy damage from your Tokemon!'),nl,
-    (NewHp2 =< 0 -> Dead is 0,
-    write('Congratulations, you have defeated your enemy!'),nl,
-    write('Enemy - '),write(Name2),nl,
-    write('Health : '),write(Dead),nl,
-    write('Type : '),write(Type2),nl,nl,
-    assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2));
-    write('Enemy - '),write(Name2),nl,
-    write('Health : '),write(NewHp2),nl,
-    write('Type : '),write(Type2),nl,nl,
-    assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)));
-
-    (NameSkill == eruption) -> write('You use eruption skill'),nl,
-    retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-    NewHp2 is Hp2 - 110,
-    write('Enemy took heavy damage from your Tokemon!'),nl,
-    (NewHp2 =< 0 -> Dead is 0,
-    write('Congratulations, you have defeated your enemy!'),nl,
-    write('Enemy - '),write(Name2),nl,
-    write('Health : '),write(Dead),nl,
-    write('Type : '),write(Type2),nl,nl,
-    assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2));
-    write('Enemy - '),write(Name2),nl,
-    write('Health : '),write(NewHp2),nl,
-    write('Type : '),write(Type2),nl,nl,
-    assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)));
-
-    write('You have no skill to use'),nl).
+    write('You have no skill to use.'),nl.
