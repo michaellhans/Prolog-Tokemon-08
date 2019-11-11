@@ -11,7 +11,6 @@
 :- dynamic(me/6).
 :- dynamic(enemy/6).
 :- dynamic(available/1).
-me(wush,110,15,wind,roost,21).
 enemy(sijagobiru,85,23,fire,overheat,5).
 available(hydropump). % damage = 50
 available(earthquake). % damage = 75
@@ -43,35 +42,12 @@ decreaseDamage(earth,wind).
 decreaseDamage(water,lightning).
 decreaseDamage(wind,lightning).
 
-/* Weakness attribute type */
-/* weakness(strong,weak) */
-weakness(fire,leaves).
-weakness(earth,fire).
-weakness(earth,lightning).
-weakness(leaves,water).
-weakness(water,fire).
-weakness(water,earth).
-weakness(wind,leaves).
-weakness(wind,earth).
-weakness(lightning,water).
-weakness(lightning,wind).
 
-/* Resistance attribute type */
-/* resistance(weak,strong) */
-resistance(leaves,fire).
-resistance(fire,earth).
-resistance(lightning,earth).
-resistance(water,leaves).
-resistance(fire,water).
-resistance(earth,water).
-resistance(leaves,wind).
-resistance(earth,wind).
-resistance(water,lightning).
-resistance(wind,lightning).
-
-pick(X) :- 
+pick(X) :-
+        retract(inventory(X,Health,Damage,Type,Skill,Id)),
+        assertz(me(X,Health,Damage,Type,Skill,Id)),
         write(X),
-        write(' I summon you!'),nl.
+        write(' I choose you!'),nl.
 
 fight :-
         write('Choose your Tokemon.'),nl.
