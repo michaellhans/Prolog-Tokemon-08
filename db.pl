@@ -1,5 +1,5 @@
 /* Database Tokemon */
-/* tokemon(name,health,damage,type,skill,id) */
+/*  */
 
 tokemon(ligator,630,40,water,hydropump,1).
 tokemon(camelia,580,57,leaves,leafstorm,2).
@@ -31,6 +31,12 @@ skill(wind,roost). % health +20
 skill(leaves,absorb). % health +(200%)*damage
 skill(lightning,bolt). % damage = 90
 skill(fire,eruption). % damage = 110. syarat = abis pake skill ini, damage berkurang menjadi 60% nya
+
+/* Legendary Tokemon */
+/* legendary(name) */
+legendary(ligator).
+legendary(camelia).
+legendary(phoenix).
 
 activateSkill(NameSkill) :-
     ((NameSkill == hydropump) -> write('You use hydropump skill'),nl,
@@ -112,9 +118,3 @@ activateSkill(NameSkill) :-
     assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)));
 
     write('You have no skill to use'),nl).
-
-/* Legendary Tokemon */
-/* legendary(name) */
-legendary(ligator).
-legendary(camelia).
-legendary(phoenix).

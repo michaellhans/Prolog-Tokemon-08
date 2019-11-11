@@ -7,33 +7,9 @@
 
 :- include('map.pl').
 :- include('db.pl').
+:- include('attack.pl').
 
 /* Deklarasi Fakta */
-increaseDamage(fire,leaves).
-increaseDamage(earth,fire).
-increaseDamage(earth,lightning).
-increaseDamage(leaves,water).
-increaseDamage(water,fire).
-increaseDamage(water,earth).
-increaseDamage(wind,leaves).
-increaseDamage(wind,earth).
-increaseDamage(lightning,water).
-increaseDamage(lightning,wind).
-
-decreaseDamage(leaves,fire).
-decreaseDamage(fire,earth).
-decreaseDamage(lightning,earth).
-decreaseDamage(water,leaves).
-decreaseDamage(fire,water).
-decreaseDamage(earth,water).
-decreaseDamage(leaves,wind).
-decreaseDamage(earth,wind).
-decreaseDamage(water,lightning).
-decreaseDamage(wind,lightning).
-
-legendary(ligator).
-legendary(camellia).
-legendary(phoenix).
 
 :- dynamic(health/2).
 health(ligator,630).
@@ -129,13 +105,6 @@ normal(smash).
 normal(topan).
 normal(sijagokuning).
 normal(refflesia).
-
-skill(water,hydropump). % damage = 50
-skill(earth,earthquake). % damage = 75
-skill(wind,roost). % health +20
-skill(leaves,absorb). % health +(200%)*damage
-skill(lightning,bolt). % damage = 90
-skill(fire,eruption). % damage = 110. syarat = abis pake skill ini, damage berkurang menjadi 60% nya
 
 :- dynamic(playerposition/2).
 playerposition(1,1).
