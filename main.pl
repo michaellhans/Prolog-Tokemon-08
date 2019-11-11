@@ -7,6 +7,7 @@
 
 :- include('map.pl').
 :- include('attack.pl').
+:- include('inventory.pl').
 
 :- dynamic(playerposition/2).
 playerposition(2,1).

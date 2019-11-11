@@ -42,7 +42,6 @@ decreaseDamage(earth,wind).
 decreaseDamage(water,lightning).
 decreaseDamage(wind,lightning).
 
-
 pick(X) :-
         retract(inventory(X,Health,Damage,Type,Skill,Id)),
         assertz(me(X,Health,Damage,Type,Skill,Id)),
@@ -65,11 +64,14 @@ attack :-
         (decreaseDamage(Type1,Type2) -> write('You attacked with half damage!'),nl,nl,NewHp2 is Hp2-Dmg1/2);
         (write('You attacked with normal damage!'),nl,nl,NewHp2 is Hp2-Dmg1)),
         assertz(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-        (((NewHp2 =< 0) -> Dead is 0, 
+        ((NewHp2 =< 0) -> Dead is 0, 
         write('Congratulations, you have defeated your enemy!'),nl,
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(Dead),nl,
         write('Type : '),write(Type2),nl,nl,
+        write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
+        read(Response),nl,
+        ((Response == yes; Response == y) -> addtolist(Name2);
         assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
         (write('Enemy - '),write(Name2),nl,
         write('Health : '),write(NewHp2),nl,
