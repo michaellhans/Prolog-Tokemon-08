@@ -138,7 +138,7 @@ skill(lightning,bolt). % damage = 90
 skill(fire,eruption). % damage = 110. syarat = abis pake skill ini, damage berkurang menjadi 60% nya
 
 :- dynamic(playerposition/2).
-playerposition(1,1).
+playerposition(2,1).
 
 /* Deklarasi Rules */
 start :-
