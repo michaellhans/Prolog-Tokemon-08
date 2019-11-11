@@ -107,10 +107,6 @@ printMap(X,Y):-
 
 map :- printMap(0,0).
 
-heal :-
-    retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-    NewHp1 is 
-
 /* Movement */
 isfence(X,Y) :-
     (
