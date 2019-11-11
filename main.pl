@@ -6,7 +6,6 @@
 /* 13518128 / Lionnarta Savirandy */
 
 :- include('map.pl').
-:- include('db.pl').
 :- include('attack.pl').
 
 /* Deklarasi Fakta */
