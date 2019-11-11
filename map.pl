@@ -8,9 +8,25 @@
 /* Map */
 
 fence(2,2).
+fence(8,2).
+fence(8,3).
+fence(8,4).
+fence(9,4).
+fence(10,4).
+fence(11,4).
+fence(3,10).
+fence(4,10).
+fence(5,10).
+fence(6,10).
+fence(7,10).
+fence(5,6).
+fence(5,7).
 fence(5,8).
 fence(10,7).
-fence(1,1).
+fence(10,8).
+fence(13,13).
+fence(13,14).
+gym(6,13).
 
 isAbove(_,Y) :-    
     Y =:= 0,!.
@@ -27,6 +43,7 @@ isRight(X,_) :-
 area(X,Y) :-
 	\+playerposition(X,Y),
 	\+fence(X,Y),
+    \+gym(X,Y),
     X =\= 0,
     X =\= 16,
     Y =\= 0,
@@ -77,17 +94,23 @@ printMap(X,Y):-
 	printMap(NewX,Y).
 
 printMap(X,Y):-
+	gym(X,Y),!,
+	write('G'),
+    NewX is X+1,
+	printMap(NewX,Y).
+
+printMap(X,Y):-
     area(X,Y),!,
     write('-'),
     NewX is X+1,
     printMap(NewX,Y).
 
-showMap :- printMap(0,0).
-
+map :- printMap(0,0).
 
 /* Movement */
 isfence(X,Y) :-
     (
+        fence(X,Y);
         X =:= 0;
         X =:= 16;
         Y =:= 0;
