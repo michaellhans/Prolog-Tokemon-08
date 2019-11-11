@@ -8,108 +8,12 @@
 :- include('map.pl').
 :- include('attack.pl').
 
-/* Deklarasi Fakta */
-
-:- dynamic(health/2).
-health(ligator,630).
-health(camellia,580).
-health(phoenix,500).
-health(sijagomerah,80).
-health(rose,100).
-health(aqua,130).
-health(thor,90).
-health(rocky,120).
-health(wush,110).
-health(sijagobiru,85).
-health(mawar,105).
-health(ades,135).
-health(charge,95).
-health(hulk,125).
-health(aang,115).
-health(sijagoungu,90).
-health(melati,110).
-health(pristine,140).
-health(thunder,100).
-health(smash,130).
-health(topan,120).
-health(sijagokuning,95).
-health(refflesia,115).
-
-:- dynamic(damage/2).
-damage(ligator,40).
-damage(camellia,57).
-damage(phoenix,70).
-damage(sijagomerah,22).
-damage(rose,17).
-damage(aqua,13).
-damage(thor,19).
-damage(rocky,14).
-damage(wush,15).
-damage(sijagobiru,23).
-damage(mawar,18).
-damage(ades,14).
-damage(charge,20).
-damage(hulk,15).
-damage(aang,16).
-damage(sijagoungu,24).
-damage(melati,19).
-damage(pristine,15).
-damage(thunder,21).
-damage(smash,16).
-damage(topan,17).
-damage(sijagokuning,25).
-damage(refflesia,20).
-
-type(ligator,water).
-type(camellia,leaves).
-type(phoenix,fire).
-type(sijagomerah,fire).
-type(rose,leaves).
-type(aqua,water).
-type(thor,lightning).
-type(rocky,earth).
-type(wush,wind).
-type(sijagobiru,fire).
-type(mawar,leaves).
-type(ades,water).
-type(charge,lightning).
-type(hulk,earth).
-type(aang,wind).
-type(sijagoungu,fire).
-type(melati,leaves).
-type(pristine,water).
-type(thunder,lightning).
-type(smash,earth).
-type(topan,wind).
-type(sijagokuning,fire).
-type(refflesia,leaves).
-
-normal(sijagomerah).
-normal(rose).
-normal(aqua).
-normal(thor).
-normal(rocky).
-normal(wush).
-normal(sijagobiru).
-normal(mawar).
-normal(ades).
-normal(charge).
-normal(hulk).
-normal(aang).
-normal(sijagoungu).
-normal(melati).
-normal(pristine).
-normal(thunder).
-normal(smash).
-normal(topan).
-normal(sijagokuning).
-normal(refflesia).
-
 :- dynamic(playerposition/2).
 playerposition(2,1).
 
 /* Deklarasi Rules */
 start :-
+    art,
     write('Once upon a time, long long ago....'),nl,
     write('There lied a magnificent land behind the mountains, but hidden from the rest of the world.'),nl,
     write('In this place named Tokemon Land, there were many creatures called tokemons.'),nl,
@@ -137,10 +41,20 @@ help :-
     write('start. -- start the game!'),nl,
     write('help. -- show available commands'),nl,
     write('quit. -- quit the game'),nl,
-    write('n. s. e. w. -- move'),nl,
+    write('w. a. s. d. -- move'),nl,
     write('map. -- look at the map'),nl,
     write('heal -- cure Tokemon in inventory if you are in gym center'),nl, 
     write('status. -- show your status'),nl,
     write('specialattack. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,
     write('load(Filename). -- load previously saved game'),nl.
+
+art :-
+    write('        ______   _______    __  __    ______    ___  ___    _______    __  __     '),nl,
+    write('       (_    _) (   _   )  (  )/  )  (  ____)  (   \\/   )  (   _   )  (  \\(  )  '),nl,
+    write('         )  (    ) ( ) (    )    (    ) __)     )      (    ) ( ) (    )    (     '),nl,
+    write('        (____)  (_______)  (__)\\__)  (______)  (__/\\/\\__)  (_______)  (__)\\__)'),nl,nl,
+    write('         ______    ______    _______      __       ___      _______    _____      '),nl,
+    write('        (   __ \\  (   __ \\  (   _   )    (  )     (   )    (   _   )  /  ___)   '),nl,
+    write('         ) ____/   )     /   ) ( ) (     / _\\/     ) (__    ) ( ) (  (  (__-.    '),nl,
+    write('        (___)     (__)\\__)  (_______)   (___/\\    (_____)  (_______)  \\_____/  '),nl,nl,nl,nl.
