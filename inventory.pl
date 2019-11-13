@@ -62,30 +62,3 @@ heal :-
         healinventory(Result);
         write('You do not have a ticket to the Gym!'))).
         
-
-/* checklength digunakan untuk mengecek banyaknya tokemon yang ada pada inventory */
-checklength([],0).
-checklength([_|T],N) :- checklength(T,N1), N is N1+1.
-
-/* deltokemon digunakan untuk menghapus tokemon dari list */
-deltokemon(X,[X|T],T).
-deltokemon(X,[A|T],[A|B]) :- deltokemon(X,T,B).
-
-/* addtokemon digunakan untuk menambahkan tokemon ke dalam list */
-addtokemon(X,[],[X]).
-addtokemon(X,[H|T],[H|A]) :- addtokemon(X,T,A).
-
-/* removefromlist digunakan untuk menghapus tokemon dari inventory */
-removefromlist(X) :- retract(inventory(OldList)), deltokemon(X,OldList,NewList), assertz(inventory(NewList)).
-/* addtolist digunakan untuk menambahkan tokemon ke inventory */
-addtolist(X) :- checklength(OldList,N),
-                N<6, 
-                retract(inventory(OldList)), 
-                addtokemon(X,OldList,NewList), 
-                assertz(inventory(NewList)),
-                write('Congratulations, you have captured '),
-                write(X),
-                write('!').
-addtolist(X) :- checklength(OldList,N),
-                N=6,
-                write('Your inventory is full!').
