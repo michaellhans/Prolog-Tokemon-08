@@ -1,5 +1,5 @@
 /* Kelompok 8 */
-/* Nama/NIM : */
+/* NIM/Nama : */
 /* 13518020 / Florencia Wijaya */
 /* 13518056 / Michael Hans */
 /* 13518092 / Izharulhaq */
@@ -45,7 +45,7 @@ help :-
     write('quit. -- quit the game'),nl,
     write('w. a. s. d. -- move'),nl,
     write('map. -- look at the map'),nl,
-    write('heal -- cure Tokemon in inventory if you are in gym center'),nl, 
+    write('heal -- cure Tokemon in inventory if you are in gym center'),nl,
     write('status. -- show your status'),nl,
     write('specialattack. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,

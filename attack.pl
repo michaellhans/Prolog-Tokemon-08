@@ -1,6 +1,6 @@
 /* IF2121 - Logika Komputasional */
 /* Kelompok 8 */
-/* Nama/NIM : */
+/* NIM/Nama : */
 /* 13518020 / Florencia Wijaya */
 /* 13518056 / Michael Hans */
 /* 13518092 / Izharulhaq */
@@ -64,7 +64,7 @@ attack :-
         (decreaseDamage(Type1,Type2) -> write('You attacked with half damage!'),nl,nl,NewHp2 is Hp2-Dmg1/2);
         (write('You attacked with normal damage!'),nl,nl,NewHp2 is Hp2-Dmg1)),
         assertz(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-        ((NewHp2 =< 0) -> Dead is 0, 
+        ((NewHp2 =< 0) -> Dead is 0,
         write('Congratulations, you have defeated your enemy!'),nl,
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(Dead),nl,
@@ -91,7 +91,7 @@ defend :-
         (decreaseDamage(Type2,Type1) -> write('Enemy attacked with half damage!'),nl,nl,NewHp1 is Hp1-Dmg2/2);
         (write('Enemy attacked with normal damage!'),nl,nl,NewHp1 is Hp1-Dmg2)),
         assertz(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-        (((NewHp1 =< 0) -> Dead is 0, 
+        (((NewHp1 =< 0) -> Dead is 0,
         write('You lost your Tokemon!'),nl,
         write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(Dead),nl,
@@ -126,7 +126,7 @@ activateSkill(NameSkill) :-
         NameSkill==absorb) -> activateSkillToMe(NameSkill)).
 
 activateSkillToEnemy(NameSkill) :-
-        write('You used '), 
+        write('You used '),
         write(NameSkill),
         write(' skill. Show it what you got!'),nl,
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
