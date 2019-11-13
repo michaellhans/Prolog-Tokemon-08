@@ -1,3 +1,5 @@
+:- include('main.pl').
+
 positionX(1).
 positionX(2).
 positionX(3).
@@ -30,31 +32,23 @@ positionY(13).
 positionY(14).
 positionY(15).
 
-randomX(LowerBound,UpperBound,R) :-
-    random(LowerBound,UpperBound,R),
-    positionX(R),
-    R >= LowerBound,
-    R =< UpperBound,!.
+run(1).
+run(2).
+run(3).
+run(4).
+run(5).
 
-randomY(LowerBound,UpperBound,R):-
+randomRun(LowerBound,UpperBound,R) :-
     random(LowerBound,UpperBound,R),
-    positionY(R),
+    run(R),
     R >= LowerBound,
-    R =< UpperBound,!.
+    R =< UpperBound, !.
 
 randomId(LowerBound,UpperBound,R):-
     random(LowerBound,UpperBound,R),
     tokemon(_,_,_,_,_,R),
     R >= LowerBound,
     R =< UpperBound,!.
-
-generateRandom:-
-    randomId(1,24,Id),
-    randomX(1,16,X),
-    randomY(1,16,Y),
-    write('ID Tokemon : '),write(Id),nl,
-    write('X Position : '),write(X),nl,
-    write('Y Position : '),write(Y),nl.
 
 checkPerimeter :-
     isLegendaryAppear;
@@ -84,11 +78,11 @@ isLegendaryAppear :-
     X =:= 5,
     randomId(1,4,Id),
     tokemon(Name,_,_,_,_,Id),nl,
-    write('Oh No! Legendary Tokemon Appears!'),nl,
-    write('He is an '), write(Name), nl,
+    write('Oh No! Legendary Tokemon Appeared!'),nl,
+    write('It is an '), write(Name), nl,
     write('Fight or Run?'),nl,
     read(Response),nl,
-    ((Response == run) -> write('You suck man!'),nl;
+    ((Response == run) -> isLegendaryRun,nl;
     (Response == fight) -> write('What a legend! Here you go'),nl;
     write('Please input the right response!')),nl,!.
 
@@ -98,10 +92,22 @@ isTokemonAppear :-
     X =< 7,
     randomId(4,24,Id),
     tokemon(Name,_,_,_,_,Id),nl,
-    write('A Wild Tokemon Appears!'),nl,
-    write('He is an '), write(Name), nl,
+    write('A Wild Tokemon Appeared!'),nl,
+    write('It is an '), write(Name), nl,
     write('Fight or Run?'),nl,
     read(Response),nl,
-    ((Response == run) -> write('You suck man!'),nl;
+    ((Response == run) -> isTokemonRun,nl;
     (Response == fight) -> write('What a legend! Here you go'),nl;
     write('Please input the right response!'),nl),!.
+
+isTokemonRun :-
+    randomRun(1,3,R),
+    ((R =:= 1 -> write('Lucky you, you successfully escaped the wild Tokemon!'),nl,
+    retract(fightOrNo(1)), assertz(fightOrNo(0)));
+    write('Poor you, you had to fight the wild Tokemon!'),nl),!.
+
+isLegendaryRun :-
+    randomRun(1,6,R),
+    ((R =:= 1 -> write('Lucky you, you successfully escaped the Legendary Tokemon!'),nl.
+    retract(fightOrNo(1)),assertz(fightOrNo(0)));
+    write('Poor you, you had to fight the Legendary Tokemon!'),nl),!.
