@@ -62,3 +62,19 @@ heal :-
         healinventory(Result);
         write('You do not have a ticket to the Gym!'))).
         
+/* Kondisi inventory */
+:- dynamic(isfull/1).
+isfull(1).
+capture :-
+        retract(isfull(Count)),
+        ((Count<6,
+        NewCount is Count+1,
+        asserta(isfull(NewCount)),
+        retract(enemy(Name,Health,Damage,Type,Skill,Id)),
+        assertz(inventory(Name,Health,Damage,Type,Skill,Id)),
+        write(Name), write(' is captured'),nl);
+        (Count=:=6,
+        NewCount is Count,
+        asserta(isfull(NewCount)),
+        write('You cannot capture another Tokemon! You have to drop one first'),nl)).
+
