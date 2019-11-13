@@ -1,0 +1,23 @@
+available(hydropump). % damage = 50
+available(leafstorm).
+available(blastburn).
+available(flamethower).
+available(overheat).
+available(sacredfire).
+available(eruption). % damage = 110. syarat = abis pake skill ini, damage berkurang menjadi 60% nya
+available(woodhammer).
+available(absorb). % health +(*damage
+available(leechseed).
+available(gigadrain).
+available(tidalwave).
+available(hurricane).
+available(absolutezero).
+available(thorhammer).
+available(discharge).
+available(bolt). % damage = 90
+available(fissure).
+available(earthquake). % damage = 75
+available(superpower).
+available(roost). % health +20
+available(skyattack).
+available(aerialace).

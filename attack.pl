@@ -12,12 +12,31 @@
 :- dynamic(enemy/6).
 :- dynamic(available/1).
 enemy(sijagobiru,85,23,fire,overheat,5).
+
+/* Available skill */
 available(hydropump). % damage = 50
-available(earthquake). % damage = 75
-available(roost). % health +20
-available(absorb). % health +(*damage
-available(bolt). % damage = 90
+available(leafstorm).
+available(blastburn).
+available(flamethower).
+available(overheat).
+available(sacredfire).
 available(eruption). % damage = 110. syarat = abis pake skill ini, damage berkurang menjadi 60% nya
+available(woodhammer).
+available(absorb). % health +(*damage
+available(leechseed).
+available(gigadrain).
+available(tidalwave).
+available(hurricane).
+available(absolutezero).
+available(thorhammer).
+available(discharge).
+available(bolt). % damage = 90
+available(fissure).
+available(earthquake). % damage = 75
+available(superpower).
+available(roost). % health +20
+available(skyattack).
+available(aerialace).
 
 /* Attack attribute */
 increaseDamage(fire,leaves).
@@ -118,10 +137,10 @@ specialSkill :-
         activateSkill(Skill1).
 
 activateSkill(NameSkill) :-
+        ((NameSkill==eruption) -> activateSkillToEnemy(NameSkill),activateSkillToMe(NameSkill));
         ((NameSkill==hydropump;
         NameSkill==earthquake;
-        NameSkill==bolt;
-        NameSkill==eruption) -> activateSkillToEnemy(NameSkill);
+        NameSkill==bolt) -> activateSkillToEnemy(NameSkill);
         (NameSkill==roost;
         NameSkill==absorb) -> activateSkillToMe(NameSkill)).
 

@@ -7,7 +7,7 @@ tokemon(phoenix,500,70,fire,blastburn,3).
 tokemon(sijagomerah,80,22,fire,flamethower,4).
 tokemon(sijagobiru,85,23,fire,overheat,5).
 tokemon(sijagoungu,90,24,fire,sacredfire,6).
-tokemon(sijagokuning,95,25,fire,flamewheel,7).
+tokemon(sijagokuning,95,25,fire,eruption,7).
 tokemon(refflesia,115,20,leaves,woodhammer,8).
 tokemon(rose,100,17,leaves,absorb,9).
 tokemon(mawar,105,23,leaves,leechseed,10).
