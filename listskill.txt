@@ -1,23 +1,26 @@
-available(hydropump). % damage = 50
-available(leafstorm).
-available(blastburn).
-available(flamethower).
-available(overheat).
-available(sacredfire).
+available(hydropump). % damage = 2*damage, next turn damage*0.6
+available(leafstorm). % damage = 2*damage, next turn damage*0.6
+available(blastburn). % damage = 2*damage, next turn damage*0.6
+available(overheat). % damage = 4*damage, next turn damage*0.5
 available(eruption). % damage = 110. syarat = abis pake skill ini, damage berkurang menjadi 60% nya
-available(woodhammer).
+available(absolutezero). % damage = 80, next turn damage*0.8
+available(discharge). % damage = 90, next turn damage*0.75
+available(superpower). % damage = 4*damage, next turn damage*0.6
+available(skyattack). % damage = 110, next turn damage*0.5
+available(aerialace). % damage = 50, next turn damage*1.2
+
+available(leechseed). % damage = 25, health+15
+available(gigadrain). % damage = 40, health+8
+available(sacredfire). % damage = 2.5*damage, health+5
+available(thorhammer). % damage = 110, health-30
 available(absorb). % health +(*damage
-available(leechseed).
-available(gigadrain).
-available(tidalwave).
-available(hurricane).
-available(absolutezero).
-available(thorhammer).
-available(discharge).
+
+
+available(flamethower). % damage = 70
+available(woodhammer). % damage = 65
+available(tidalwave). % damage = 60
+available(hurricane). % damage = 60
 available(bolt). % damage = 90
-available(fissure).
+available(fissure). % damage = 75
 available(earthquake). % damage = 75
-available(superpower).
 available(roost). % health +20
-available(skyattack).
-available(aerialace).
