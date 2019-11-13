@@ -65,14 +65,15 @@ heal :-
 /* Kondisi inventory */
 :- dynamic(isfull/1).
 isfull(1).
+
 capture :-
         retract(isfull(Count)),
         ((Count<6,
+        ((retract(enemy(Name,Health,Damage,Type,Skill,Id)),
+        assertz(inventory(Name,Health,Damage,Type,Skill,Id)),
         NewCount is Count+1,
         asserta(isfull(NewCount)),
-        retract(enemy(Name,Health,Damage,Type,Skill,Id)),
-        assertz(inventory(Name,Health,Damage,Type,Skill,Id)),
-        write(Name), write(' is captured'),nl);
+        write(Name), write(' is captured'),nl);(asserta(isfull(Count)))));
         (Count=:=6,
         NewCount is Count,
         asserta(isfull(NewCount)),
