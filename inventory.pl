@@ -79,3 +79,7 @@ capture :-
         asserta(isfull(NewCount)),
         write('You cannot capture another Tokemon! You have to drop one first'),nl)).
 
+/* Kondisi menang */
+:- dynamic(iswin/1).
+iswin(3).
+
