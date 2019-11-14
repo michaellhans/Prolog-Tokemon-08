@@ -33,7 +33,7 @@ checkCommand(cmd) :-
     (X=:=1, cmd==start -> write('You cannot use this command, since the game has started yet.'),nl);
     (X=:=1, Y=:=1, 
     (cmd==start, cmd==help, cmd==quit, cmd==w, cmd==a, cmd==s, cmd==d, 
-    cmd==save, cmd==load, cmd==map, cmd==heal, cmd==status) -> write('You cannot use this command, since you are in the middle of the fight!'),nl);
+    cmd==save, cmd==load, cmd==map, cmd==heal, cmd==status) -> write('You cannot use this command, since you are in the middle of the fight!'),nl)
     ).
 
 start :-

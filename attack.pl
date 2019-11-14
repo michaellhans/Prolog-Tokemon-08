@@ -213,11 +213,20 @@ activateSkillToMe(NameSkill) :-
         write(NameSkill),
         write(' skill. Smart choice!'), nl,
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-        ((NameSkill==roost -> NewHp1 is Hp1+20);
-        (NameSkill==absorb -> NewHp1 is Hp1+(2*Dmg1))),
+        retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
+        ((NameSkill==leechseed -> NewHp2 is Hp2-25, NewHp1 is Hp1+15);
+        (NameSkill==gigadrain -> NewHp2 is Hp2-40,NewHp1 is Hp1+8);
+        (NameSkill==sacredfire -> NewHp2 is Hp2-2.5*Dmg1,NewHp1 is Hp1+5);
+        (NameSkill==thorhammer -> NewHp2 is Hp2-110,NewHp1 is Hp1-30);
+        (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
+        (NameSkill==absorb -> NewHp2 is Hp2-Dmg1, NewHp1 is Hp1+Dmg1)),
+        write('You are healed and cause some damage to the enemy'),nl,
         write('My Tokemon - '), write(Name1), nl,
         write('Health : '), write(NewHp1), nl,
         write('Type : '), write(Type1), nl, nl,
-        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1));
-
-    write('You have no skill to use.'),nl.
+        write('Enemy - '), write(Name2), nl,
+        write('Health : '), write(NewHp2), nl,
+        write('Type : '), write(Type1), nl, nl,
+        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2));
+        write('You have no skill to use.'),nl.
