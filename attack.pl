@@ -149,10 +149,13 @@ activateSkillToEnemy(NameSkill) :-
         write(NameSkill),
         write(' skill. Show it what you got!'),nl,
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-        ((NameSkill==hydropump -> NewHp2 is Hp2-50);
-        (NameSkill==earthquake -> NewHp2 is Hp2-75);
+        ((NameSkill==flamethower -> NewHp2 is Hp2-70);
+        (NameSkill==woodhammer -> NewHp2 is Hp2-65);
+        (NameSkill==tidalwave -> NewHp2 is Hp2-60);
+        (NameSkill==hurricane -> NewHp2 is Hp2-60);
         (NameSkill==bolt -> NewHp2 is Hp2-90);
-        (NameSkill==eruption -> NewHp2 is Hp2-110)),
+        (NameSkill==fissure -> NewHp2 is Hp2-75);
+        (NameSkill==earthquake -> NewHp2 is Hp2-75)),
         (NewHp2 =< 0 -> Dead is 0,
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(Dead),nl,
@@ -164,6 +167,38 @@ activateSkillToEnemy(NameSkill) :-
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(NewHp2),nl,
         write('Type : '),write(Type2),nl,nl,
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2))).
+
+activateSkillToEnemy(NameSkill) :-
+        write('You used '),
+        write(NameSkill),
+        write(' skill. Show it what you got!'),nl,
+        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
+        ((NameSkill==hydropump -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+        (NameSkill==leafstorm -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+        (NameSkill==blastburn -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+        (NameSkill==overheat -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.5);
+        (NameSkill==eruption -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.6);
+        (NameSkill==absolutezero -> NewHp2 is Hp2-80, NewDmg1 is Dmg1*0.8);
+        (NameSkill==discharge -> NewHp2 is Hp2-90, NewDmg1 is Dmg1*0.75);
+        (NameSkill==superpower -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.6);
+        (NameSkill==skyattack -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.5);
+        (NameSkill==aerialace -> NewHp2 is Hp2-50, NewDmg1 is Dmg1*1.2)),
+        (NewHp2 =< 0 -> Dead is 0,
+        write('Enemy - '),write(Name2),nl,
+        write('Health : '),write(Dead),nl,
+        write('Type : '),write(Type2),nl,
+        write('Enemy took heavy damage from your Tokemon!'),nl,
+        write('Congratulations, you have defeated your enemy!'),nl,nl,
+        assertz(me(Name1,Hp1,NewDmg1,Type1,Skill1,Id1)),
+        assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2));
+        write('Enemy took heavy damage from your Tokemon!'),nl,
+        write('Enemy - '),write(Name2),nl,
+        write('Health : '),write(NewHp2),nl,
+        write('Type : '),write(Type2),nl,nl,
+        write('But, your tokemon damage is reduced!'),nl,
+        assertz(me(Name1,Hp1,NewDmg1,Type1,Skill1,Id1)),
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2))).
 
 activateSkillToMe(NameSkill) :-

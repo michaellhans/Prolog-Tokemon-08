@@ -2,7 +2,7 @@ available(hydropump). % damage = 2*damage, next turn damage*0.6
 available(leafstorm). % damage = 2*damage, next turn damage*0.6
 available(blastburn). % damage = 2*damage, next turn damage*0.6
 available(overheat). % damage = 4*damage, next turn damage*0.5
-available(eruption). % damage = 110. syarat = abis pake skill ini, damage berkurang menjadi 60% nya
+available(eruption). % damage = 110. next turn damage*0.6
 available(absolutezero). % damage = 80, next turn damage*0.8
 available(discharge). % damage = 90, next turn damage*0.75
 available(superpower). % damage = 4*damage, next turn damage*0.6
