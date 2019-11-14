@@ -61,6 +61,9 @@ decreaseDamage(earth,wind).
 decreaseDamage(water,lightning).
 decreaseDamage(wind,lightning).
 
+:- dynamic(fightOrNo/1).
+fightOrNo(0).
+
 pick(X) :-
         retract(inventory(X,Health,Damage,Type,Skill,Id)),
         assertz(me(X,Health,Damage,Type,Skill,Id)),
@@ -69,6 +72,8 @@ pick(X) :-
 
 fight :-
         write('Choose your Tokemon.'),nl.
+        retract(fightOrNo(0)),
+        assertz(fightOrNo(1)).
 
 attack :-
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
@@ -111,10 +116,12 @@ defend :-
         (write('Enemy attacked with normal damage!'),nl,nl,NewHp1 is Hp1-Dmg2)),
         assertz(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
         (((NewHp1 =< 0) -> Dead is 0,
-        write('You lost your Tokemon!'),nl,
+        write('Your Tokemon is dead!'),nl,
         write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(Dead),nl,
         write('Type : '),write(Type1),nl,nl,
+        retract(fightOrNo(1)),
+        assertz(fightOrNo(0)),
         assertz(me(Name1,Dead,Dmg1,Type1,Skill1,Id1)));
         (write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(NewHp1),nl,

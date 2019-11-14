@@ -13,8 +13,31 @@
 :- dynamic(playerposition/2).
 playerposition(2,1).
 
+:- dynamic(isstart/1).
+isstart(0).
+
 /* Deklarasi Rules */
+
+startOrNo :-
+    retract(isstart(X)),
+    ((X=:=0 -> write('You have not started the game yet. Please input the start command!'),nl);
+    write('The game starts from here.'),nl).
+
+checkCommand(cmd) :-
+    retract(isstart(X)),
+    retract(fightOrNo(Y)),
+    ((X=:=0,
+    (cmd==help; cmd==w; cmd==a; cmd==s; cmd==d; cmd==map; cmd==heal; cmd==status; 
+    cmd==specialattack; cmd=save; cmd==load; cmd=fight; cmd=run) -> 
+    write('You cannot use this command, since the game has not started yet!'),nl);
+    (X=:=1, cmd==start -> write('You cannot use this command, since the game has started yet.'),nl);
+    (X=:=1, Y=:=1, 
+    (cmd==start, cmd==help, cmd==quit, cmd==w, cmd==a, cmd==s, cmd==d, 
+    cmd==save, cmd==load, cmd==map, cmd==heal, cmd==status) -> write('You cannot use this command, since you are in the middle of the fight!'),nl);
+    ).
+
 start :-
+    startOrNo,
     art,
     write('Once upon a time, long long ago....'),nl,
     write('There lied a magnificent land behind the mountains, but hidden from the rest of the world.'),nl,
@@ -37,6 +60,8 @@ start :-
     write('Beware and we wish you the best of luck, Trainer!'),nl,
     nl,
     help.
+    retract(isstart(0)).
+    assertz(isstart(1)). 
 
 help :-
     write('Available commands: '),nl,
