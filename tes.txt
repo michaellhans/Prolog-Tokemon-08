@@ -1,0 +1,20 @@
+6 12.
+2.
+initmap 0.
+initheal 0.
+initsave 0.
+initload 0.
+initfight 0.
+initpick 0.
+inittokemonappear 0.
+initenemydead 0.
+initstart 0.
+initmap 0.
+initheal 0.
+initsave 0.
+initload 0.
+initfight 0.
+initpick 0.
+inittokemonappear 0.
+initenemydead 0.
+initstart 1.
