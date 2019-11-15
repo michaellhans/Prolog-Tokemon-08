@@ -1,3 +1,18 @@
+catatan :
+    ____________________________________________________________________________________
+   | Jadi kondisi menang itu udah ada parameter dynamic namanya iswin dengan nilai awal |
+   |tiga, kalau ketemu pokemon legendary, retract dia dari dynamic listenemy. kalau ber-|
+   |-hasil dikalahin atau dicapture legendary-nya ga usah diassert balik dan retract is-|
+   |-win kurang nilainya 1 dan assert balik, kalau parameter iswin jadi 0 maka menang   |
+   |lalu keluar program.                                                                |
+   | Kondisi lose itu kalau ketika defend dari serangan musuh dan health tokemon jadi 0 |
+   |cek isfull nya berapa, ketika catatan ini dibuat isfull tidak diretract ketika      |
+   |fight, maka kondisi lose itu ketika tokemon yang dipakai mati dan isfull nilainya 1 |
+   |lalu beri pesan kekalahan dan quit game.                                            |
+   |____________________________________________________________________________________|
+
+
+
 available(hydropump). % damage = 2*damage, next turn damage*0.6
 available(leafstorm). % damage = 2*damage, next turn damage*0.6
 available(blastburn). % damage = 2*damage, next turn damage*0.6

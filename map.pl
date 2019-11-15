@@ -1,5 +1,16 @@
-/* Map */
+/* IF2121 - Logika Komputasional                */
+/* Tugas Besar  : Tokemon Pro and Log           */
+/* Deskripsi    : Modul Map untuk Game Tokemon  */
+/* Kelompok 8 */
+/* NIM/Nama : */
+/* 13518020 / Florencia Wijaya */
+/* 13518056 / Michael Hans */
+/* 13518092 / Izharulhaq */
+/* 13518128 / Lionnarta Savirandy */
 
+/* MAP */
+
+/* Deklarasi Fakta-Fakta */
 fence(2,2).
 fence(8,2).
 fence(8,3).
@@ -21,18 +32,26 @@ fence(13,13).
 fence(13,14).
 gym(6,13).
 
+
+/* Rules-Rules */
+/* isAbove(_,Y) -> untuk mengecek apakah koordinat (X,Y) berada pada tepi atas map */
 isAbove(_,Y) :-    
     Y =:= 0,!.
-    
+
+/* isDown(_,Y) -> untuk mengecek apakah koordinat (X,Y) berada pada tepi bawah map */    
 isDown(_,Y) :-
     Y =:= 16,!.
 
+/* isLeft(X,_) -> untuk mengecek apakah koordinat (X,Y) berada pada tepi kiri map */
 isLeft(X,_) :-
     X =:= 0,!.
 
+/* isRight(X,) -> untuk mengecek apakah koordinat (X,Y) berada pada tepi kanan map */
 isRight(X,_) :-
     X =:= 16,!.
 
+/* area(X,Y) -> untuk mengecek apakah koordinat (X,Y) berada pada area map           */
+/* area map didefinisikan sebagai area kosong tanpa adanya player, fence, maupun gym */
 area(X,Y) :-
 	\+playerposition(X,Y),
 	\+fence(X,Y),
@@ -42,10 +61,30 @@ area(X,Y) :-
     Y =\= 0,
     Y =\= 16,!.
 
+/* isMax(X,Y) -> untuk mengecek apakah koordinat (X,Y) merupakan batas akhir dari map */
 isMax(X,Y) :-
     X > 16,
     Y > 16,!.
-    
+
+/* isGym(X,Y) -> untuk mengecek apakah terdapat Gym pada koordinat (X,Y) */
+isGym(X,Y) :-
+    (
+        gym(X,Y),
+        X =:= 6,
+        Y =:= 13
+    ).
+
+/* isFence(X,Y) -> untuk mengecek apakah terdapat fence pada koordinat (X,Y) */
+isfence(X,Y) :-
+    (
+        fence(X,Y);
+        X =:= 0;
+        X =:= 16;
+        Y =:= 0;
+        Y =:= 16
+    ).
+
+/* Rules untuk Print Map */
 printMap(X,Y):-
     isAbove(X,Y),!,
     write('X'),
@@ -98,6 +137,7 @@ printMap(X,Y):-
     NewX is X+1,
     printMap(NewX,Y).
 
+/* map -> untuk menampilkan peta pada GNU Prolog dengan proses rekursif */
 map :- 
     command(initstart,X),
     command(initfight,Y),
@@ -106,23 +146,7 @@ map :-
     (X=:=1, Y=:=0 -> printMap(0,0))).
 
 /* Movement */
-
-isGym(X,Y) :-
-    (
-        gym(X,Y),
-        X =:= 6,
-        Y =:= 13
-    ).
-
-isfence(X,Y) :-
-    (
-        fence(X,Y);
-        X =:= 0;
-        X =:= 16;
-        Y =:= 0;
-        Y =:= 16
-    ).
-
+/* w -> menggerakkan player ke arah sumbu Y+ atau utara sebesar 1 satuan */
 w :- 
     command(initstart,A),
     command(initfight,B),
@@ -138,6 +162,7 @@ w :-
     (write('Cannot move! You are near the fence.'), 
     assertz(playerposition(X,Y)))))).
 
+/* s -> menggerakkan player ke arah sumbu Y- atau selatan sebesar 1 satuan */
 s :-
     command(initstart,A),
     command(initfight,B),
@@ -153,6 +178,7 @@ s :-
     write('Cannot move! You are near the fence.'),
     assertz(playerposition(X,Y))))).
 
+/* d -> menggerakkan player ke arah sumbu X+ atau barat sebesar 1 satuan */
 d :-
     command(initstart,A),
     command(initfight,B),
@@ -168,18 +194,30 @@ d :-
     write('Cannot move! You are near the fence.'),
     assertz(playerposition(X,Y))))).
 
+/* a -> menggerakkan player ke arah sumbu X- atau timur sebesar 1 satuan */
 a :-
     command(initstart,A),
     command(initfight,B),
-    ((A=:=0 -> write('You even have not started the game yet.'),nl);
-    (A=:=1, B=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
-    (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
-    NewX is X-1,
-    NewY is Y,
-    ((isGym(NewX,NewY) -> write('You are inside the gym.'), assertz(playerposition(NewX,NewY)));
-    (\+isfence(NewX,NewY) -> write('You move to the west.'),
-    assertz(playerposition(NewX,NewY)),
-    checkPerimeter,!);
-    write('Cannot move! You are near the fence.'),
-    assertz(playerposition(X,Y))))).
+    (
+        (A=:=0 -> 
+            write('You even have not started the game yet.'),nl);
+        (A=:=1, B=:=1 -> 
+            write('You are in the middle of fighting. You cannot choose this option!'),nl);
+        (A=:=1, B=:=0 -> 
+            retract(playerposition(X,Y)),
+            NewX is X-1,
+            NewY is Y,
+            (
+                (isGym(NewX,NewY) -> 
+                    write('You are inside the gym.'), 
+                    assertz(playerposition(NewX,NewY)));
+                (\+isfence(NewX,NewY) -> 
+                    write('You move to the west.'),
+                    assertz(playerposition(NewX,NewY)),
+                    checkPerimeter,!);
 
+                write('Cannot move! You are near the fence.'),
+                assertz(playerposition(X,Y))
+            )
+        )
+    ).
