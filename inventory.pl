@@ -8,9 +8,6 @@ listenemy(ligator,630,40,water,hydropump,1).
 listenemy(camelia,580,57,leaves,leafstorm,2).
 listenemy(phoenix,500,70,fire,blastburn,3).
 
-:- dynamic(chanceHeal/1).
-chanceHeal(1).
-
 /* printinventory */
 printinventory([]).
 printinventory([H|T]) :-
@@ -52,15 +49,15 @@ healinventory([H|T]) :-
 heal :-
         playerposition(PosX,PosY),
         (\+gym(PosX,PosY) -> write('You cannot heal your tokemon outside Gym!'),nl;
-        chanceHeal(Num),
-        (Num =:= 1 -> retract(chanceHeal(Num)),
-        NewNum is 0, assertz(chanceHeal(NewNum)),
+        command(initheal,X),
+        ((X =:= 0 -> retract(command(initheal,0)),
+        assertz(command(initheal,1)),
         findall(X,inventory(X,_,_,_,_,_),Result),
         write('You use your only one gym ticket!'),nl,
         write('All of your tokemons have been recovered!'),nl,
         write('Your Tokemon:'),nl,
-        healinventory(Result);
-        write('You do not have a ticket to the Gym!'))).
+        healinventory(Result));
+        (X=:=1 -> write('You do not have a ticket to the Gym!'),nl))).
         
 /* Kondisi inventory */
 :- dynamic(isfull/1).

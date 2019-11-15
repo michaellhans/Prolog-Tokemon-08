@@ -60,22 +60,35 @@ decreaseDamage(earth,wind).
 decreaseDamage(water,lightning).
 decreaseDamage(wind,lightning).
 
-:- dynamic(fightOrNo/1).
-fightOrNo(0).
-
 pick(X) :-
+        command(initstart,A),
+        command(initfight,B),
+        command(initpick,C),
+        ((A=:=0 -> write('You even have not started the game yet.'),nl);
+        (A=:=1, B=:=1, C=:=1 -> write('You are in the middle of fighting. You cannot use this option!'),nl);
+        (A=:=1, B=:=1, C=:=0 ->
         retract(inventory(X,Health,Damage,Type,Skill,Id)),
         assertz(me(X,Health,Damage,Type,Skill,Id)),
         write(X),
-        write(' I choose you!'),nl.
+        write(' I choose you!'),nl),
+        retract(command(initpick,0)),assertz(command(initpick,1))).
 
 fight :-
-        write('Choose your Tokemon.'),nl.
-        retract(fightOrNo(0)),
-        assertz(fightOrNo(1)).
+        command(initstart,A),
+        command(inittokemonappear,B),
+        ((A=:=0 -> write('You even have not started the game yet.'),nl);
+        (A=:=1, B=:=0 -> write('You have not met any Tokemon!'));
+        (A=:=1, B=:=1 -> write('Choose your Tokemon.'),
+        retract(command(initfight,0)), assertz(command(initfight,1)))).
 
 attack :-
-        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        command(initstart,X),
+        command(initfight,Y),
+        command(initpick,Z),
+        ((X=:=0 -> write('You even have not started the game yet.'),nl);
+        (X=:=1, Y=:=1, Z=:=0 -> write('You must choose a Tokemon first!'),nl);
+        (X=:=1, Y=:=0 -> write('You are not fighting right now. You cannot use this option!'),nl);
+        (X=:=1, Y=:=1, Z=:=1 -> retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(Hp1),nl,
         write('Type : '),write(Type1),nl,nl,
@@ -102,7 +115,11 @@ attack :-
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)))),!.
 
 defend :-
-        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        command(initstart,X),
+        command(initfight,Y),
+        ((X=:=0 -> write('You even have not started the game yet.'),nl);
+        (X=:=1, Y=:=0 -> write('You are not fighting right now. You cannot use this option!'),nl);
+        (X=:=1, Y=:=1 -> retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(Hp1),nl,
         write('Type : '),write(Type1),nl,nl,
@@ -119,8 +136,8 @@ defend :-
         write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(Dead),nl,
         write('Type : '),write(Type1),nl,nl,
-        retract(fightOrNo(1)),
-        assertz(fightOrNo(0)),
+        retract(command(initfight,1)), assertz(command(initfight,0)),
+        retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
         assertz(me(Name1,Dead,Dmg1,Type1,Skill1,Id1)));
         (write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(NewHp1),nl,
@@ -128,7 +145,12 @@ defend :-
         assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)))),!.
 
 specialSkill :-
-        me(Name1,Hp1,_,Type1,Skill1,_),
+        command(initstart,X),
+        command(initfight,Y),
+        command(inittokemonappear,Z),
+        ((X=:=0 -> write('You even have not started the game yet.'),nl);
+        (X=:=1, Y=:=0, Z=:=0 -> write('You are not fighting right now. You cannot use this option!'),nl);
+        (X=:=1, Y=:=1, Z=:=1 -> me(Name1,Hp1,_,Type1,Skill1,_),
         write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(Hp1),nl,
         write('Type : '),write(Type1),nl,
@@ -139,7 +161,7 @@ specialSkill :-
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(Hp2),nl,
         write('Type : '),write(Type2),nl,nl,
-        activateSkill(Skill1).
+        activateSkill(Skill1))).
 
 activateSkill(NameSkill) :-
         ((NameSkill==eruption) -> activateSkillToEnemy(NameSkill),activateSkillToMe(NameSkill));
