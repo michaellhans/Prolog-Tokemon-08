@@ -38,15 +38,16 @@ status :-
         write('Your Enemy:'),nl,
         printenemy(Result1))).
 
+healinventory([]).
 healinventory([H|T]) :-
         write(H),nl,
         inventory(H,Health,_,Type,_,_),
         retract(inventory(H,Health,Damage,Type,Skill,Id)),
-        tokemon(H,Hp1,Dmg1,Type1,Skill1,Id1),
+        tokemon(H,Hp1,_,_,_,_),
         NewHealth is Hp1,
         write('Health   : '),write(NewHealth),nl,
         write('Type     : '),write(Type),nl,nl,
-        asserta(inventory(H,NewHealth,Damage,Type,Skill,Id)),
+        assertz(inventory(H,NewHealth,Damage,Type,Skill,Id)),
         healinventory(T).
 
 heal :-
@@ -58,7 +59,7 @@ heal :-
         command(initheal,X),
         ((X =:= 0 -> retract(command(initheal,0)),
         assertz(command(initheal,1)),
-        findall(X,inventory(X,_,_,_,_,_),Result),
+        findall(Y,inventory(Y,_,_,_,_,_),Result),
         write('You use your only one gym ticket!'),nl,
         write('All of your tokemons have been recovered!'),nl,
         write('Your Tokemon:'),nl,
