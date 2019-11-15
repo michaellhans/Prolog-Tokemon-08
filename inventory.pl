@@ -1,7 +1,7 @@
 /* dynamicinventory dan dynamicenemy */
 :- dynamic(inventory/6).
 inventory(refflesia,115,20,leaves,woodhammer,8).
-inventory(sijagokuning,95,25,fire,flamewheel,7).
+inventory(sijagokuning,95,25,fire,eruption,7).
 
 :- dynamic(listenemy/6).
 listenemy(ligator,630,40,water,hydropump,1).

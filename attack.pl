@@ -96,6 +96,11 @@ attack :-
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(Dead),nl,
         write('Type : '),write(Type2),nl,nl,
+        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        retract(initfight(1)), assertz(initfight(0)),
+        retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
+        resetSkill,
         write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
         read(Response),nl,
         ((Response == yes; Response == y) -> 
@@ -153,12 +158,13 @@ specialSkill :-
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(Hp2),nl,
         write('Type : '),write(Type2),nl,nl,
-        activateSkill(Skill1))),!.
+        available(Skill1),activateSkill(Skill1))),!.
         
 activateSkill(NameSkill) :-
         write('You used '),
         write(NameSkill),
         write(' skill. Show it what you got!'),nl,
+        retract(available(NameSkill)),
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
         ((NameSkill==flamethower -> NewHp2 is Hp2-70);
         (NameSkill==woodhammer -> NewHp2 is Hp2-65);
@@ -172,6 +178,11 @@ activateSkill(NameSkill) :-
         write('Health : '),write(Dead),nl,
         write('Type : '),write(Type2),nl,
         write('Enemy took heavy damage from your Tokemon!'),nl,
+        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        retract(initfight(1)), assertz(initfight(0)),
+        retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
+        resetSkill,
         write('Congratulations, you have defeated your enemy!'),nl,
         write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
         read(Response),nl,
@@ -188,6 +199,7 @@ activateSkill(NameSkill) :-
         write('You used '),
         write(NameSkill),
         write(' skill. Show it what you got!'),nl,
+        retract(available(NameSkill)),
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
         ((NameSkill==hydropump -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
@@ -205,6 +217,10 @@ activateSkill(NameSkill) :-
         write('Health : '),write(Dead),nl,
         write('Type : '),write(Type2),nl,
         write('Enemy took heavy damage from your Tokemon!'),nl,
+        retract(initfight(1)), assertz(initfight(0)),
+        assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
+        resetSkill,
         write('Congratulations, you have defeated your enemy!'),nl,
         write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
         read(Response),nl,
@@ -225,6 +241,7 @@ activateSkill(NameSkill) :-
         write(' skill. Smart choice!'), nl,
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
+        retract(available(NameSkill)),
         tokemon(_,HpDB,_,_,_,Id1),
         ((NameSkill==leechseed -> NewHp2 is Hp2-25, NewHp1 is Hp1+15);
         (NameSkill==gigadrain -> NewHp2 is Hp2-40,NewHp1 is Hp1+8);
@@ -239,6 +256,10 @@ activateSkill(NameSkill) :-
         write('Enemy - '), write(Name2), nl,
         write('Health : '), write(Dead), nl,
         write('Type : '), write(Type1), nl,
+        retract(initfight(1)), assertz(initfight(0)),
+        assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        resetSkill,
+        retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
         write('Congratulations, you have defeated your enemy!'),nl,
         write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
         read(Response),nl,
@@ -265,3 +286,29 @@ activateSkill(NameSkill) :-
         assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2));
         write('You have no skill to use.'),nl.
+
+resetSkill :-
+        retractall(available),
+        assertz(available(hydropump)).
+        assertz(available(leafstorm)).
+        assertz(available(blastburn)).
+        assertz(available(flamethower)).
+        assertz(available(overheat)).
+        assertz(available(sacredfire)).
+        assertz(available(eruption)).
+        assertz(available(woodhammer)).
+        assertz(available(absorb)).
+        assertz(available(leechseed)).
+        assertz(available(gigadrain)).
+        assertz(available(tidalwave)).
+        assertz(available(hurricane)).
+        assertz(available(absolutezero)).
+        assertz(available(thorhammer)).
+        assertz(available(discharge)).
+        assertz(available(bolt)).
+        assertz(available(fissure)).
+        assertz(available(earthquake)).
+        assertz(available(superpower)).
+        assertz(available(roost)).
+        assertz(available(skyattack)).
+        assertz(available(aerialace)).   
