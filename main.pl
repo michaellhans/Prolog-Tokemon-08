@@ -10,16 +10,14 @@
 :- include('inventory.pl').
 :- include('test.pl').
 :- include('init.pl').
-
-:- dynamic(playerposition/2).
-playerposition(6,12).
+:- include('loadsave.pl')
 
 /* Deklarasi Rules */
 
 start :-
     command(initstart,X),
     command(initfight,Y),
-    ((X =:= 0 -> 
+    ((X =:= 0 ->
     art,
     write('Once upon a time, long long ago....'),nl,
     write('There lied a magnificent land behind the mountains, but hidden from the rest of the world.'),nl,
@@ -51,7 +49,7 @@ help :-
     command(initfight,Y),
     ((X=:=0 -> write('You even have not started game yet.'),nl);
     (X=:=1, Y=:=1 -> write('You are in the middle of fighting. You cannot use this option!'),nl);
-    (X=:=1, Y=:=0 -> 
+    (X=:=1, Y=:=0 ->
     write('Available commands: '),nl,
     write('start. -- start the game!'),nl,
     write('help. -- show available commands'),nl,
@@ -74,7 +72,7 @@ art :-
     write('         ) ____/   )     /   ) ( ) (     / _\\/     ) (__    ) ( ) (  (  (__-.    '),nl,
     write('        (___)     (__)\\__)  (_______)   (___/\\    (_____)  (_______)  \\_____/  '),nl,nl,nl,nl.
 
-quit :- 
+quit :-
     command(initstart,X),
     command(initfight,Y),
     ((X=:=0 -> write('You have not even started the game yet.'),nl);

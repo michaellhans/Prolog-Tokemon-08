@@ -1,3 +1,6 @@
+:- dynamic(playerposition/2).
+playerposition(6,12).
+
 :- dynamic(command/2).
 command(initstart,0).
 command(initmap,0).
