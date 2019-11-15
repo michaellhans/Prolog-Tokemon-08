@@ -1,3 +1,6 @@
+:- dynamic(playerposition/2).
+playerposition(6,12).
+
 :- dynamic(command/2).
 command(initstart,0).
 command(initmap,0).
@@ -8,3 +11,5 @@ command(initfight,0).
 command(initpick,0).
 command(inittokemonappear,0).
 command(initenemydead,0).
+command(initlegendaryappear,0).
+command(initnormalappear,0).
