@@ -109,7 +109,8 @@ capture :-
                 (
                         (
                                 Count<6,
-                                retract(enemy(Name,Health,Damage,Type,Skill,Id)),
+                                retract(enemy(Name,_,_,_,_,_)),
+                                tokemon(Name,Health,Damage,Type,Skill,Id),
                                 assertz(inventory(Name,Health,Damage,Type,Skill,Id)),
                                 NewCount is Count+1,
                                 asserta(isfull(NewCount)),
