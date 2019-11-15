@@ -13,6 +13,8 @@
 :- dynamic(legendaryleft/1).
 legendaryleft(4).
 
+:- dynamic(activeId/1).
+
 positionX(1).
 positionX(2).
 positionX(3).
@@ -96,16 +98,17 @@ isLegendaryAppear :-
             randomId(1,4,Id),
             \+temp(Name,_,_,_,_,Id),
             tokemon(Name,_,_,_,_,Id),nl,
+            assertz(activeId(Id)),
             write('Oh No! Legendary Tokemon Appeared!'),nl,
             write('It is an '), write(Name), nl,
             retract(command(inittokemonappear,0)),assertz(command(inittokemonappear,1)),
             retract(command(initlegendaryappear,0)),assertz(command(initlegendaryappear,1)),
             write('Fight or Run?'),nl,
             read(Response),nl,
-            ((Response == run) -> run;
+            ((Response == run) -> run,retract(activeId(Id));
             (Response == fight) -> write('What a legend! Here you go'),nl,
             retract(command(initlegendaryappear,1)), assertz(command(initlegendaryappear,0)),
-            fightLegend(Id),fight;
+            fightLegend(Id),fight,retract(activeId(Id));
             write('Please input the right response!')),nl,!)
     ).
 
@@ -122,19 +125,21 @@ isTokemonAppear :-
     randomId(4,24,Id),
     \+temp(Name,_,_,_,_,Id),
     tokemon(Name,_,_,_,_,Id),nl,
+    assertz(activeId(Id)),
     write('A Wild Tokemon Appeared!'),nl,
     write('It is an '), write(Name), nl,
     retract(command(inittokemonappear,0)),assertz(command(inittokemonappear,1)),
     retract(command(initnormalappear,0)),assertz(command(initnormalappear,1)),
     write('Fight or Run?'),nl,
     read(Response),nl,
-    ((Response == run) -> run;
+    ((Response == run) -> run,retract(activeId(Id));
     (Response == fight) -> write('What a legend! Here you go'),nl,
     retract(command(initnormalappear,1)), assertz(command(initnormalappear,0)),
-    fightNormal(Id),fight;
+    fightNormal(Id),fight,retract(activeId(Id));
     write('Please input the right response!'),nl),!.
 
 run :-
+    activeId(Id),
     command(initstart,St),
     command(initfight,Fi),
     command(inittokemonappear,Toa),
