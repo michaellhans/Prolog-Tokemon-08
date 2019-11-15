@@ -106,6 +106,14 @@ map :-
     (X=:=1, Y=:=0 -> printMap(0,0))).
 
 /* Movement */
+
+isGym(X,Y) :-
+    (
+        gym(X,Y),
+        X =:= 6,
+        Y =:= 13
+    ).
+
 isfence(X,Y) :-
     (
         fence(X,Y);
@@ -123,7 +131,8 @@ w :-
     (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X,
     NewY is Y-1,
-    ((\+isfence(NewX,NewY) -> write('You move to the north.'),!,
+    ((isGym(NewX,NewY) -> write('You are inside the gym.'), assertz(playerposition(NewX,NewY)));
+    (\+isfence(NewX,NewY) -> write('You move to the north.'),!,
     assertz(playerposition(NewX,NewY)),
     checkPerimeter,!);
     (write('Cannot move! You are near the fence.'), 
@@ -137,7 +146,8 @@ s :-
     (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X,
     NewY is Y+1,
-    ((\+isfence(NewX,NewY) -> write('You move to the south.'),
+    ((isGym(NewX,NewY) -> write('You are inside the gym.'), assertz(playerposition(NewX,NewY)));
+    (\+isfence(NewX,NewY) -> write('You move to the south.'),
     assertz(playerposition(NewX,NewY)),
     checkPerimeter,!);
     write('Cannot move! You are near the fence.'),
@@ -151,7 +161,8 @@ d :-
     (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X+1,
     NewY is Y,
-    ((\+isfence(NewX,NewY) -> write('You move to the east.'),
+    ((isGym(NewX,NewY) -> write('You are inside the gym.'), assertz(playerposition(NewX,NewY)));
+    (\+isfence(NewX,NewY) -> write('You move to the east.'),
     assertz(playerposition(NewX,NewY)),
     checkPerimeter,!);
     write('Cannot move! You are near the fence.'),
@@ -165,7 +176,8 @@ a :-
     (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X-1,
     NewY is Y,
-    ((\+isfence(NewX,NewY) -> write('You move to the west.'),
+    ((isGym(NewX,NewY) -> write('You are inside the gym.'), assertz(playerposition(NewX,NewY)));
+    (\+isfence(NewX,NewY) -> write('You move to the west.'),
     assertz(playerposition(NewX,NewY)),
     checkPerimeter,!);
     write('Cannot move! You are near the fence.'),

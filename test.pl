@@ -50,7 +50,8 @@ randomId(LowerBound,UpperBound,R):-
 
 checkPerimeter :-
     isLegendaryAppear;
-    isTokemonAppear.
+    isTokemonAppear;
+    (\+isLegendaryAppear,\+isTokemonAppear).
 
 command_loop:-
         write('Welcome to Nani Search'), nl,
