@@ -383,7 +383,7 @@ enemyIsDown :-
 checkWinner :-
         iswin(X),
         X =:= 0,
-        winnerstate.
+        winstate.
 
 checkLoser :-
         isfull(X),
@@ -397,10 +397,17 @@ meIsDown :-
         /* Mengembalikan state ke state bukan fight, dan state tidak ada tokemon */
         retract(command(initpick,1)),
         assertz(command(initpick,0)),
+        retract(isfull(GG)),
+        GGNew is GG-1,
+        assertz(isfull(GGNew)),
 
         /* Keadaan ketika tokemon sudah mati */
-        write('Your Tokemon is dead!'),nl,
-        write('My Tokemon - '), write(Name1),nl,
-        write('Health : '), write(Dead),nl,
-        write('Type : '),write(Type1),nl,nl,
-        write('Pick your another tokemon!'),nl.
+        (       
+                checkLoser; 
+                (write('Your Tokemon is dead!'),nl,
+                write('My Tokemon - '), write(Name1),nl,
+                write('Health : '), write(Dead),nl,
+                write('Type : '),write(Type1),nl,nl,
+                write('Pick your another tokemon!'),nl)
+        ).
+        

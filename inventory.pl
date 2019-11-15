@@ -12,7 +12,7 @@ listenemy(phoenix,500,70,fire,blastburn,3).
 /* Kondisi inventory */
 /* isfull adalah dynamic predicate yang menampung jumlah elemen pada inventory player */
 :- dynamic(isfull/1).
-isfull(2).
+isfull(1).
 
 :- dynamic(temp/6).
 temp(refflesia,115,20,leaves,woodhammer,8).
