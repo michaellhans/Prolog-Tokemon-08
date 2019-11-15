@@ -60,6 +60,7 @@ decreaseDamage(earth,wind).
 decreaseDamage(water,lightning).
 decreaseDamage(wind,lightning).
 
+/* pick and drop */
 pick(X) :-
         command(initstart,A),
         command(initfight,B),
@@ -72,6 +73,8 @@ pick(X) :-
         write(X),
         write(' I choose you!'),nl),
         retract(command(initpick,0)),assertz(command(initpick,1))).
+
+
 
 fight :-
         command(initstart,A),
