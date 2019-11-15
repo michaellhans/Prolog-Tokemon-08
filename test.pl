@@ -1,3 +1,18 @@
+/* IF2121 - Logika Komputasional                */
+/* Tugas Besar  : Tokemon Pro and Log           */
+/* Deskripsi    : Modul Test untuk Game Tokemon  */
+/* Kelompok 8 */
+/* NIM/Nama : */
+/* 13518020 / Florencia Wijaya */
+/* 13518056 / Michael Hans */
+/* 13518092 / Izharulhaq */
+/* 13518128 / Lionnarta Savirandy */
+
+/* TEST */
+
+:- dynamic(legendaryleft/1).
+legendaryleft(4).
+
 positionX(1).
 positionX(2).
 positionX(3).
@@ -53,25 +68,6 @@ checkPerimeter :-
     isTokemonAppear;
     (\+isLegendaryAppear,\+isTokemonAppear).
 
-command_loop:-
-        write('Welcome to Nani Search'), nl,
-        repeat,
-        write('>nani> '),
-        read(X),
-        do(X), nl,
-        end_condition(X).
-        end_condition(end).
-
-end_condition(X) :- 
-        have(X),!,
-        write('Congratulations').
-
-do(X):- have(X),!.
-do(end).
-do(_):- write('Invalid Command').
-
-have(X):- X==nani,!.
-
 fightLegend(Id) :-
     tokemon(Name,Hp,Dmg,Type,Skill,Id),
     assertz(enemy(Name,Hp,Dmg,Type,Skill,Id)).
@@ -85,7 +81,8 @@ isLegendaryAppear :-
     \+gym(Xpos,Ypos),
     random(1,10,X),
     X =:= 5,
-    randomId(1,4,Id),
+    legendaryleft(Left),
+    randomId(1,Left,Id),
     tokemon(Name,_,_,_,_,Id),nl,
     write('Oh No! Legendary Tokemon Appeared!'),nl,
     write('It is an '), write(Name), nl,
