@@ -49,8 +49,8 @@ randomId(LowerBound,UpperBound,R):-
     R =< UpperBound,!.
 
 checkPerimeter :-
-    isLegendaryAppear;
-    isTokemonAppear;
+    (isLegendaryAppear);
+    (isTokemonAppear);
     (\+isLegendaryAppear,\+isTokemonAppear).
 
 command_loop:-
@@ -81,6 +81,8 @@ fightNormal(Id) :-
     assertz(enemy(Name,Hp,Dmg,Type,Skill,Id)).
 
 isLegendaryAppear :-
+    command(initfight,A),
+    ((A=:=0 -> 
     playerposition(Xpos,Ypos),
     \+gym(Xpos,Ypos),
     random(1,10,X),
@@ -94,7 +96,7 @@ isLegendaryAppear :-
     read(Response),nl,
     ((Response == run) -> isLegendaryRun(Id);
     (Response == fight) -> write('What a legend! Here you go'),nl,fightLegend(Id),fight;
-    write('Please input the right response!')),nl,!.
+    write('Please input the right response!')),nl,!)).
 
 isTokemonAppear :-
     \+isLegendaryAppear,

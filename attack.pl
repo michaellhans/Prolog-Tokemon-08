@@ -110,7 +110,7 @@ attack :-
         (write('Enemy - '),write(Name2),nl,
         write('Health : '),write(NewHp2),nl,
         write('Type : '),write(Type2),nl,nl,
-        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)))))).
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2))))),!).
 
 defend :-
         command(initstart,X),
@@ -140,7 +140,7 @@ defend :-
         (write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(NewHp1),nl,
         write('Type : '),write(Type1),nl,nl,
-        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)))))).
+        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1))))),!).
 
 specialSkill :-
         command(initstart,X),
