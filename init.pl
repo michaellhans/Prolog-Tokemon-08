@@ -7,3 +7,4 @@ command(initload,0).
 command(initfight,0).
 command(initpick,0).
 command(inittokemonappear,0).
+command(initenemydead,0).
