@@ -17,7 +17,7 @@ isfull(2).
 
 /* Kondisi menang */
 :- dynamic(iswin/1).
-iswin(3).
+iswin(0).
 
 
 /* Deklarasi Rules */

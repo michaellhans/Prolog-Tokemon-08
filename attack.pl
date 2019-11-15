@@ -10,6 +10,8 @@
 
 :- dynamic(me/6).
 :- dynamic(enemy/6).
+:- dynamic(legendCaptured/1).
+legendCaptured(0).
 
 /* Rules-Rules */
 /* fight -> digunakan untuk memulai pertarungan dengan tokemon enemy */
@@ -82,32 +84,46 @@ attack :-
 defend :-
         command(initstart,X),
         command(initfight,Y),
-        ((X=:=0 -> write('You even have not started the game yet.'),nl);
-        (X=:=1, Y=:=0 -> write('You are not fighting right now. You cannot use this option!'),nl);
-        (X=:=1, Y=:=1 -> retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-        write('My Tokemon - '), write(Name1),nl,
-        write('Health : '), write(Hp1),nl,
-        write('Type : '),write(Type1),nl,nl,
-        retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-        write('Musuh - '),write(Name2),nl,
-        write('Health : '),write(Hp2),nl,
-        write('Type : '),write(Type2),nl,nl,
-        ((increaseDamage(Type2,Type1) -> write('Enemy attacked with double damage!'),nl,nl,NewHp1 is Hp1-2*Dmg2);
-        (decreaseDamage(Type2,Type1) -> write('Enemy attacked with half damage!'),nl,nl,NewHp1 is Hp1-Dmg2/2);
-        (write('Enemy attacked with normal damage!'),nl,nl,NewHp1 is Hp1-Dmg2)),
-        assertz(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-        (((NewHp1 =< 0) -> Dead is 0,
-        write('Your Tokemon is dead!'),nl,
-        write('My Tokemon - '), write(Name1),nl,
-        write('Health : '), write(Dead),nl,
-        write('Type : '),write(Type1),nl,nl,
-        retract(command(initfight,1)), assertz(command(initfight,0)),
-        retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
-        assertz(me(Name1,Dead,Dmg1,Type1,Skill1,Id1)));
-        (write('My Tokemon - '), write(Name1),nl,
-        write('Health : '), write(NewHp1),nl,
-        write('Type : '),write(Type1),nl,nl,
-        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1))))),!).
+        (
+                (X=:=0 -> 
+                        write('You even have not started the game yet.'),nl);
+                (X=:=1, Y=:=0 -> 
+                        write('You are not fighting right now. You cannot use this option!'),nl);
+                (X=:=1, Y=:=1 -> 
+                        me(Name1,Hp1,Dmg1,Type1,Skill1,Id1),
+                        enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2),
+                        write('My Tokemon - '), write(Name1),nl,
+                        write('Health : '), write(Hp1),nl,
+                        write('Type : '),write(Type1),nl,nl,
+                        write('Musuh - '),write(Name2),nl,
+                        write('Health : '),write(Hp2),nl,
+                        write('Type : '),write(Type2),nl,nl,
+        (
+                (increaseDamage(Type2,Type1) -> 
+                        write('Enemy attacked with double damage!'),nl,nl,
+                        NewHp1 is Hp1-2*Dmg2);
+
+                (decreaseDamage(Type2,Type1) -> 
+                        write('Enemy attacked with half damage!'),nl,nl,
+                        NewHp1 is Hp1-Dmg2/2);
+
+                /* Tidak keduanya, berarti kedua type hanya berefek normal */
+                        (write('Enemy attacked with normal damage!'),nl,nl,
+                        NewHp1 is Hp1-Dmg2)
+        ),
+                (
+                        ((NewHp1 =< 0) -> 
+                                meIsDown;
+
+                        /* NewHp1 > 0 */
+                                (retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+                                write('My Tokemon - '), write(Name1),nl,
+                                write('Health : '), write(NewHp1),nl,
+                                write('Type : '),write(Type1),nl,nl,
+                                assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)))
+                        )
+                )
+        )),!.
 
 specialSkill :-
         command(initstart,X),
@@ -191,7 +207,7 @@ activateSkill(NameSkill) :-
                 NewHp2 =< 0 -> 
                         enemyIsDown;
                 
-                /* NewHp2 > 0 */
+                % NewHp2 > 0
                         write('Enemy took heavy damage from your Tokemon!'),nl,
                         write('Enemy - '),write(Name2),nl,
                         write('Health : '),write(NewHp2),nl,
@@ -323,6 +339,13 @@ enemyIsDown :-
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2),
+        (       
+                (Id2 =:= 1; Id2 =:= 2; Id2 =:= 3) ->
+                        retract(legendCaptured(Num)),
+                        NumNew is Num+1,
+                        assertz(legendCaptured(NumNew));!
+        ),
+        write('aaaa'),
 
         /* Mengembalikan state ke state bukan fight, dan state tidak ada tokemon */
         retract(command(initfight,1)), 
@@ -349,4 +372,35 @@ enemyIsDown :-
                 write('Health : '),write(Dead),nl,
                 write('Type : '),write(Type2),nl,nl),
                 retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2))
-        ).
+        ),
+        (       
+                (Id2 =:= 1; Id2 =:= 2; Id2 =:= 3) ->
+                        retract(tokemon(_,_,_,_,_,Id2));!
+        ),
+        write('aaaa'),
+        checkWinner.
+
+checkWinner :-
+        iswin(X),
+        X =:= 0,
+        winnerstate.
+
+checkLoser :-
+        isfull(X),
+        X =:= 0,
+        losestate.
+
+meIsDown :-
+        Dead is 0,
+        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+
+        /* Mengembalikan state ke state bukan fight, dan state tidak ada tokemon */
+        retract(command(initpick,1)),
+        assertz(command(initpick,0)),
+
+        /* Keadaan ketika tokemon sudah mati */
+        write('Your Tokemon is dead!'),nl,
+        write('My Tokemon - '), write(Name1),nl,
+        write('Health : '), write(Dead),nl,
+        write('Type : '),write(Type1),nl,nl,
+        write('Pick your another tokemon!'),nl.

@@ -1,4 +1,6 @@
 /* Database Tokemon */
+:- dynamic(tokemon/6).
+
 tokemon(ligator,630,40,water,hydropump,1).
 tokemon(camelia,580,57,leaves,leafstorm,2).
 tokemon(phoenix,500,70,fire,blastburn,3).
