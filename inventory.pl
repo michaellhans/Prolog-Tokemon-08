@@ -2,7 +2,6 @@
 /* inventory adalah dynamic predicate yang menampung seluruh tokemon yang dimiliki player */
 :- dynamic(inventory/6).
 inventory(refflesia,115,20,leaves,woodhammer,8).
-inventory(sijagokuning,95,25,fire,eruption,7).
 
 /* listenemy adalah dynamic predicate yang menampung seluruh Legendary Tokemon */
 :- dynamic(listenemy/6).
@@ -15,12 +14,23 @@ listenemy(phoenix,500,70,fire,blastburn,3).
 :- dynamic(isfull/1).
 isfull(2).
 
+:- dynamic(temp/6).
+temp(refflesia,115,20,leaves,woodhammer,8).
+
 /* Kondisi menang */
 :- dynamic(iswin/1).
 iswin(3).
 
-
 /* Deklarasi Rules */
+
+addToTemp(Id) :-
+        tokemon(Name,Health,Dmg,Type,Skill,Id),
+        assertz(temp(Name,Health,Dmg,Type,Skill,Id)).
+
+removeFromTemp(Id) :-
+        tokemon(Name,Health,Dmg,Type,Skill,Id),
+        retract(temp(Name,Health,Dmg,Type,Skill,Id)).
+
 /* printinventory digunakan untuk menampilkan listing tokemon yang dimiliki */
 printinventory([]).
 printinventory([H|T]) :-
@@ -64,7 +74,7 @@ healinventory([H|T]) :-
         write(H),nl,
         inventory(H,Health,_,Type,_,_),
         retract(inventory(H,Health,Damage,Type,Skill,Id)),
-        tokemon(H,Hp1,_,_,_,_),
+        temp(H,Hp1,_,_,_,_),
         NewHealth is Hp1,
         write('Health   : '),write(NewHealth),nl,
         write('Type     : '),write(Type),nl,nl,
@@ -127,7 +137,8 @@ capture :-
                                 NewCount is Count+1,
                                 asserta(isfull(NewCount)),
                                 write(Name), write(' is captured'),nl,
-                                retract(command(initenemydead,B)),assertz(command(initenemydead,0))
+                                retract(command(initenemydead,1)),assertz(command(initenemydead,0)),
+                                addToTemp(Id)
                         );
                         (
                                 Count=:=6,
@@ -178,7 +189,7 @@ drop(X) :-
                 retract(inventory(X,_,_,_,_,_)),
                 write('Good bye '), write(X),
                 retract(isfull(C)), NewC is C-1,
-                assertz(isfull(NewC)));
+                assertz(isfull(NewC)),removeFromTemp(Id));
                 (Response==no,!));
                 (write('You dont have '),write(X),nl)))
         ).

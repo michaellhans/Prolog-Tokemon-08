@@ -10,7 +10,7 @@
 :- include('inventory.pl').
 :- include('test.pl').
 :- include('init.pl').
-:- include('loadsave.pl')
+:- include('loadsave.pl').
 
 /* Deklarasi Rules */
 

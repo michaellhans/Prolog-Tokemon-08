@@ -1,6 +1,4 @@
 /* Database Tokemon */
-/*  */
-
 tokemon(ligator,630,40,water,hydropump,1).
 tokemon(camelia,580,57,leaves,leafstorm,2).
 tokemon(phoenix,500,70,fire,blastburn,3).
@@ -25,12 +23,59 @@ tokemon(wush,110,15,wind,roost,21).
 tokemon(aang,115,16,wind,skyattack,22).
 tokemon(topan,120,17,wind,aerialace,23).
 
-skill(water,hydropump). % damage = 50
-skill(earth,earthquake). % damage = 75
-skill(wind,roost). % health +20
-skill(leaves,absorb). % health +(200%)*damage
-skill(lightning,bolt). % damage = 90
-skill(fire,eruption). % damage = 110. syarat = abis pake skill ini, damage berkurang menjadi 60% nya
+:- dynamic(available/1).
+
+/* Available skill */
+available(hydropump).
+available(leafstorm).
+available(blastburn).
+available(flamethower).
+available(overheat).
+available(sacredfire).
+available(eruption).
+available(woodhammer).
+available(absorb).
+available(leechseed).
+available(gigadrain).
+available(tidalwave).
+available(hurricane).
+available(absolutezero).
+available(thorhammer).
+available(discharge).
+available(bolt).
+available(fissure).
+available(earthquake).
+available(superpower).
+available(roost).
+available(skyattack).
+available(aerialace).
+
+/* Attack attribute */
+/* increaseDamage(Type1, Type2) -> attack yang diberikan oleh tokemon dengan type1 akan memberikan damage sebesar 150% */
+/* kepada tokemon dengan type2 */
+increaseDamage(fire,leaves).
+increaseDamage(earth,fire).
+increaseDamage(earth,lightning).
+increaseDamage(leaves,water).
+increaseDamage(water,fire).
+increaseDamage(water,earth).
+increaseDamage(wind,leaves).
+increaseDamage(wind,earth).
+increaseDamage(lightning,water).
+increaseDamage(lightning,wind).
+
+/* decreaseDamage(Type1, Type2) -> attack yang diberikan oleh tokemon dengan type1 akan memberikan damage yang berkurang sebesar 50% */
+/* kepada tokemon dengan type2 */
+decreaseDamage(leaves,fire).
+decreaseDamage(fire,earth).
+decreaseDamage(lightning,earth).
+decreaseDamage(water,leaves).
+decreaseDamage(fire,water).
+decreaseDamage(earth,water).
+decreaseDamage(leaves,wind).
+decreaseDamage(earth,wind).
+decreaseDamage(water,lightning).
+decreaseDamage(wind,lightning).
 
 /* Legendary Tokemon */
 /* legendary(name) */

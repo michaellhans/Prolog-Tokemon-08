@@ -1,6 +1,3 @@
-:- include('inventory.pl').
-:- include('init.pl').
-
 /* Deklarasi Fakta */
 
 /* Deklarasi Rule */

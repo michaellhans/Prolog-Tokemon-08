@@ -1,4 +1,18 @@
-/* Deklarasi Fakta */
+/* IF2121 - Logika Komputasional                */
+/* Tugas Besar  : Tokemon Pro and Log           */
+/* Deskripsi    : Modul Test untuk Game Tokemon  */
+/* Kelompok 8 */
+/* NIM/Nama : */
+/* 13518020 / Florencia Wijaya */
+/* 13518056 / Michael Hans */
+/* 13518092 / Izharulhaq */
+/* 13518128 / Lionnarta Savirandy */
+
+/* TEST */
+
+:- dynamic(legendaryleft/1).
+legendaryleft(4).
+
 positionX(1).
 positionX(2).
 positionX(3).
@@ -58,26 +72,6 @@ checkPerimeter :-
     (isTokemonAppear);
     (\+isLegendaryAppear,\+isTokemonAppear).
 
-command_loop:-
-        write('Welcome to Nani Search'), nl,
-        repeat,
-        write('>nani> '),
-        read(X),
-        do(X), nl,
-        end_condition(X).
-        end_condition(end).
-
-end_condition(X) :- 
-        have(X),!,
-        write('Congratulations').
-
-do(X):- have(X),!.
-do(end).
-do(_):- write('Invalid Command').
-
-have(X):- X==nani,!.
-
-/* fightLegend untuk assert Legendary ke dynamic predicate enemy */
 fightLegend(Id) :-
     tokemon(Name,Hp,Dmg,Type,Skill,Id),
     assertz(enemy(Name,Hp,Dmg,Type,Skill,Id)).
@@ -100,6 +94,7 @@ isLegendaryAppear :-
             random(1,101,X),
             X > 90,
             randomId(1,4,Id),
+            \+temp(Name,_,_,_,_,Id),
             tokemon(Name,_,_,_,_,Id),nl,
             write('Oh No! Legendary Tokemon Appeared!'),nl,
             write('It is an '), write(Name), nl,
@@ -108,7 +103,9 @@ isLegendaryAppear :-
             write('Fight or Run?'),nl,
             read(Response),nl,
             ((Response == run) -> run;
-            (Response == fight) -> write('What a legend! Here you go'),nl,fightLegend(Id),fight;
+            (Response == fight) -> write('What a legend! Here you go'),nl,
+            retract(command(initlegendaryappear,1)), assertz(command(initlegendaryappear,0)),
+            fightLegend(Id),fight;
             write('Please input the right response!')),nl,!)
     ).
 
@@ -119,10 +116,11 @@ isTokemonAppear :-
     playerposition(Xpos,Ypos),
     /* Tidak berada di dalam gym */
     \+gym(Xpos,Ypos),
-    random(1,21,X),
-    X >= 1,
-    X =< 7,
+    random(1,101,X),
+    X >= 50,
+    X =< 90,
     randomId(4,24,Id),
+    \+temp(Name,_,_,_,_,Id),
     tokemon(Name,_,_,_,_,Id),nl,
     write('A Wild Tokemon Appeared!'),nl,
     write('It is an '), write(Name), nl,
@@ -131,7 +129,9 @@ isTokemonAppear :-
     write('Fight or Run?'),nl,
     read(Response),nl,
     ((Response == run) -> run;
-    (Response == fight) -> write('What a legend! Here you go'),nl,fightNormal(Id),fight;
+    (Response == fight) -> write('What a legend! Here you go'),nl,
+    retract(command(initnormalappear,1)), assertz(command(initnormalappear,0)),
+    fightNormal(Id),fight;
     write('Please input the right response!'),nl),!.
 
 run :-
@@ -147,14 +147,14 @@ run :-
 
 /* isTokemonRun adalah mekanisme jika memilih run dari Normal Tokemon */
 isTokemonRun(Id) :-
+    retract(command(initnormalappear,1)), assertz(command(initnormalappear,0)),
     randomRun(1,3,R),
     /* Peluangnya 1:2 */
     (
         /* Mekanisme jika berhasil run */
         (R =:= 1 -> 
             write('Lucky you, you successfully escaped the wild Tokemon!'),
-            retract(command(inittokemonappear,1)),
-            assertz(command(inittokemonappear,0))
+            retract(command(inittokemonappear,1)), assertz(command(inittokemonappear,0))
         );
         /* Mekanisme jika gagal run */
             write('Poor you, you had to fight the wild Tokemon!'),nl,
@@ -164,14 +164,14 @@ isTokemonRun(Id) :-
 
 /* isLegendaryRun adalah mekanisme jika memilih run dari Legendary Tokemon */
 isLegendaryRun(Id) :-
+    retract(command(initlegendaryappear,1)), assertz(command(initlegendaryappear,0)),
     randomRun(1,6,R),
     /* Peluangnya 1:5 */
     (
         /* Mekanisme jika berhasil run */
         (R =:= 1 -> 
             write('Lucky you, you successfully escaped the Legendary Tokemon!'),
-            retract(command(inittokemonappear,1)),
-            assertz(command(inittokemonappear,0))
+            retract(command(inittokemonappear,1)), assertz(command(inittokemonappear,0))
         );
         /* Mekanisme jika gagal run */
             write('Poor you, you had to fight the Legendary Tokemon!'),nl,
