@@ -3,6 +3,10 @@
 /* Deklarasi Rule */
 
 load(Filename) :-
+    command(initstart,X),
+    command(initsave,Y),
+    ((X=:=0 -> write('You even have not started the game yet.'),nl);
+    (X=:=1, Y=:=1 -> 
     open(Filename, read, File),
     clear,
     updtKoor(File),
@@ -14,9 +18,12 @@ load(Filename) :-
     close(FileInvt),
     open('listenemy.txt', read, FileEnmy),
     updtEnmy(FileEnmy),
-    close(FileEnmy).
+    close(FileEnmy),
+    retract(command(initload,0)),assertz(command(initload,1)))).
 
 save(Filename) :-
+    command(initstart,X),
+    (X=:=1 -> 
     open(Filename, write, FileGnr),
     (
         playerposition(OldX, OldY),
@@ -27,7 +34,8 @@ save(Filename) :-
             write(FileGnr, WasFull), write(FileGnr,'.'), nl(FileGnr)
     ),
     forall(command(Cmmd, V), writeCmmd(FileGnr, Cmmd, V)),
-    close(FileGnr).
+    close(FileGnr),
+    retract(command(initsave,0)),assertz(command(initsave,1))).
 
 saveInvt :-
     open('inventory.txt', write, FileInv),
