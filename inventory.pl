@@ -73,20 +73,28 @@ isfull(2).
 capture :-
         command(initstart,A),
         command(initenemydead,B),
-        ((A=:=0 -> write('You even have not started the game yet.'),nl);
-        (B=:=0 -> write('There is no Tokemon to capture'),nl);
-        (A=:=1, B=:=1 -> 
-        retract(isfull(Count)),
-        ((Count<6,
-        ((retract(enemy(Name,Health,Damage,Type,Skill,Id)),
-        assertz(inventory(Name,Health,Damage,Type,Skill,Id)),
-        NewCount is Count+1,
-        asserta(isfull(NewCount)),
-        write(Name), write(' is captured'),nl);(asserta(isfull(Count)))));
-        (Count=:=6,
-        NewCount is Count,
-        asserta(isfull(NewCount)),
-        write('You cannot capture another Tokemon! You have to drop one first'),nl)))).
+        (
+                (A=:=0 -> write('You even have not started the game yet.'),nl);
+                (B=:=0 -> write('There is no Tokemon to capture'),nl);
+                (A=:=1, B=:=1 -> retract(isfull(Count))),
+                (
+                        (
+                                Count<6,
+                                retract(enemy(Name,Health,Damage,Type,Skill,Id)),
+                                assertz(inventory(Name,Health,Damage,Type,Skill,Id)),
+                                NewCount is Count+1,
+                                asserta(isfull(NewCount)),
+                                write(Name), write(' is captured'),nl,
+                                retract(command(initenemydead,B)),assertz(command(initenemydead,0))
+                        );
+                        (
+                                Count=:=6,
+                                NewCount is Count,
+                                asserta(isfull(NewCount)),
+                                write('You cannot capture another Tokemon! You have to drop one first'),nl
+                        )
+                )
+        ).
 
 /* pick and drop */
 pick(X) :-
