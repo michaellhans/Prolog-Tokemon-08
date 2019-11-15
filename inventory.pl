@@ -74,6 +74,7 @@ capture :-
         command(initstart,A),
         command(initenemydead,B),
         ((A=:=0 -> write('You even have not started the game yet.'),nl);
+        (B=:=0 -> write('There is no Tokemon to capture'),nl);
         (A=:=1, B=:=1 -> 
         retract(isfull(Count)),
         ((Count<6,
