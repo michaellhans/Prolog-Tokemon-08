@@ -43,9 +43,11 @@ printenemy([H|T]) :-
 status :-
         command(initstart,A),
         (
+                /* Game belum dimulai */
                 (A=:=0 -> 
                         write('You even have not started the game yet.'),nl
                 );
+                /* Game telah dimulai, baru bisa print status */
                 (A=:=1 ->
                         findall(X,inventory(X,_,_,_,_,_),Result),
                         write('Your Tokemon:'),nl,
@@ -73,8 +75,10 @@ healinventory([H|T]) :-
 heal :-
         command(initstart,A),
         (
+                /* Game belum dimulai */
                 (A=:=0 -> 
                         write('You even have not started the game yet.'),nl);
+                /* Game telah dimulai, heal di dalam gym */
                 (A=:=1 -> 
                         playerposition(PosX,PosY),
                         (\+gym(PosX,PosY) -> 
@@ -103,9 +107,17 @@ capture :-
         command(initstart,A),
         command(initenemydead,B),
         (
-                (A=:=0 -> write('You even have not started the game yet.'),nl);
-                (B=:=0 -> write('There is no Tokemon to capture'),nl);
-                (A=:=1, B=:=1 -> retract(isfull(Count))),
+                /* Game belum dimulai */
+                (A=:=0 -> 
+                        write('You even have not started the game yet.'),nl
+                );
+                /* Tidak ada Tokemon yang bisa ditangkap */
+                (B=:=0 -> 
+                        write('There is no Tokemon to capture'),nl
+                );
+                /* Game dimulai, ada tokemon yang bisa ditangkap */
+                (A=:=1, B=:=1 -> 
+                        retract(isfull(Count))),
                 (
                         (
                                 Count<6,
@@ -131,28 +143,42 @@ pick(X) :-
         command(initstart,A),
         command(initfight,B),
         command(initpick,C),
-        ((A=:=0 -> write('You even have not started the game yet.'),nl);
-        (A=:=1, B=:=1, C=:=1 -> write('You are in the middle of fighting. You cannot use this option!'),nl);
-        (A=:=1, B=:=1, C=:=0 ->
-        retract(inventory(X,Health,Damage,Type,Skill,Id)),
-        assertz(me(X,Health,Damage,Type,Skill,Id)),
-        write(X),
-        write(' I choose you!'),nl),
-        retract(command(initpick,0)),assertz(command(initpick,1))).
+        (
+                /* Game belum dimulai */
+                (A=:=0 -> 
+                        write('You even have not started the game yet.'),nl
+                );
+                /* Mekanisme jika sedang bertarung, tetapi memilih opsi ini */
+                (A=:=1, B=:=1, C=:=1 -> 
+                        write('You are in the middle of fighting. You cannot use this option!'),nl
+                );
+                /* Mekanisme jika game telah dimulai, memasuki kondisi bertarung, dan belum memilih Tokemon */
+                (A=:=1, B=:=1, C=:=0 ->
+                        retract(inventory(X,Health,Damage,Type,Skill,Id)),
+                        assertz(me(X,Health,Damage,Type,Skill,Id)),
+                        write(X),
+                        write(' I choose you!'),nl,
+                        retract(command(initpick,0)),assertz(command(initpick,1))
+                )
+        ).
 
 /* drop digunakan untuk melepaskan Tokemon yang ada di inventory jika inventory sudah penuh */
 drop(X) :-
         command(initstart,A),
-        ((A=:=0 -> write('You even have not started the game yet.'),nl);
-        (isfull(1),write('You only have one tokemon!'),nl,!);
-        ((inventory(X,_,_,_,_,_),
-        write('Are you sure to drop '), write(X), write('?'),nl,
-        write('yes or no'),nl,
-        read(Response),
-        ((Response==yes,
-        retract(inventory(X,_,_,_,_,_)),
-        write('Good bye '), write(X),
-        retract(isfull(C)), NewC is C-1,
-        assertz(isfull(NewC)));
-        (Response==no,!));
-        (write('You dont have '),write(X),nl)))).
+        (
+                (A=:=0 -> 
+                        write('You even have not started the game yet.'),nl
+                );
+                (isfull(1),write('You only have one tokemon!'),nl,!);
+                ((inventory(X,_,_,_,_,_),
+                write('Are you sure to drop '), write(X), write('?'),nl,
+                write('yes or no'),nl,
+                read(Response),
+                ((Response==yes,
+                retract(inventory(X,_,_,_,_,_)),
+                write('Good bye '), write(X),
+                retract(isfull(C)), NewC is C-1,
+                assertz(isfull(NewC)));
+                (Response==no,!));
+                (write('You dont have '),write(X),nl)))
+        ).
