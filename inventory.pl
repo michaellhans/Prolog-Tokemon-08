@@ -67,7 +67,7 @@ heal :-
         
 /* Kondisi inventory */
 :- dynamic(isfull/1).
-isfull(1).
+isfull(2).
 
 capture :-
         command(initstart,A),
