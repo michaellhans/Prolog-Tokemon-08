@@ -92,7 +92,7 @@ isLegendaryAppear :-
     retract(command(inittokemonappear,0)),assertz(command(inittokemonappear,1)),
     write('Fight or Run?'),nl,
     read(Response),nl,
-    ((Response == run) -> isLegendaryRun;
+    ((Response == run) -> isLegendaryRun(Id);
     (Response == fight) -> write('What a legend! Here you go'),nl,fightLegend(Id),fight;
     write('Please input the right response!')),nl,!.
 
