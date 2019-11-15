@@ -181,12 +181,12 @@ drop(X) :-
                         write('You even have not started the game yet.'),nl
                 );
                 (isfull(1),write('You only have one tokemon!'),nl,!);
-                ((inventory(X,_,_,_,_,_),
+                ((inventory(X,_,_,_,_,Id),
                 write('Are you sure to drop '), write(X), write('?'),nl,
                 write('yes or no'),nl,
                 read(Response),
                 ((Response==yes,
-                retract(inventory(X,_,_,_,_,_)),
+                retract(inventory(X,_,_,_,_,Id)),
                 write('Good bye '), write(X),
                 retract(isfull(C)), NewC is C-1,
                 assertz(isfull(NewC)),removeFromTemp(Id));

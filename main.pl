@@ -11,14 +11,15 @@
 :- include('test.pl').
 :- include('init.pl').
 :- include('loadsave.pl').
+:- include('ascart.pl').
 
 /* Deklarasi Rules */
 
 start :-
     command(initstart,X),
     command(initfight,Y),
+    art,startstate,
     ((X =:= 0 ->
-    art,
     write('Once upon a time, long long ago....'),nl,
     write('There lied a magnificent land behind the mountains, but hidden from the rest of the world.'),nl,
     write('In this place named Tokemon Land, there were many creatures called tokemons.'),nl,
@@ -61,16 +62,6 @@ help :-
     write('specialSkill. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,
     write('load(Filename). -- load previously saved game'),nl)).
-
-art :-
-    write('        ______   _______    __  __    ______    ___  ___    _______    __  __     '),nl,
-    write('       (_    _) (   _   )  (  )/  )  (  ____)  (   \\/   )  (   _   )  (  \\(  )  '),nl,
-    write('         )  (    ) ( ) (    )    (    ) __)     )      (    ) ( ) (    )    (     '),nl,
-    write('        (____)  (_______)  (__)\\__)  (______)  (__/\\/\\__)  (_______)  (__)\\__)'),nl,nl,
-    write('         ______    ______    _______      __       ___      _______    _____      '),nl,
-    write('        (   __ \\  (   __ \\  (   _   )    (  )     (   )    (   _   )  /  ___)   '),nl,
-    write('         ) ____/   )     /   ) ( ) (     / _\\/     ) (__    ) ( ) (  (  (__-.    '),nl,
-    write('        (___)     (__)\\__)  (_______)   (___/\\    (_____)  (_______)  \\_____/  '),nl,nl,nl,nl.
 
 quit :-
     command(initstart,X),
