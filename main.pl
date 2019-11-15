@@ -9,35 +9,17 @@
 :- include('attack.pl').
 :- include('inventory.pl').
 :- include('test.pl').
+:- include('init.pl').
 
 :- dynamic(playerposition/2).
-playerposition(2,1).
-
-:- dynamic(isstart/1).
-isstart(0).
+playerposition(1,1).
 
 /* Deklarasi Rules */
 
-startOrNo :-
-    retract(isstart(X)),
-    ((X=:=0 -> write('You have not started the game yet. Please input the start command!'),nl);
-    write('The game starts from here.'),nl).
-
-checkCommand(cmd) :-
-    retract(isstart(X)),
-    retract(fightOrNo(Y)),
-    ((X=:=0,
-    (cmd==help; cmd==w; cmd==a; cmd==s; cmd==d; cmd==map; cmd==heal; cmd==status; 
-    cmd==specialattack; cmd=save; cmd==load; cmd=fight; cmd=run) -> 
-    write('You cannot use this command, since the game has not started yet!'),nl);
-    (X=:=1, cmd==start -> write('You cannot use this command, since the game has started yet.'),nl);
-    (X=:=1, Y=:=1, 
-    (cmd==start, cmd==help, cmd==quit, cmd==w, cmd==a, cmd==s, cmd==d, 
-    cmd==save, cmd==load, cmd==map, cmd==heal, cmd==status) -> write('You cannot use this command, since you are in the middle of the fight!'),nl);
-    ).
-
 start :-
-    startOrNo,
+    command(initstart,X),
+    command(initfight,Y),
+    ((X =:= 0 -> 
     art,
     write('Once upon a time, long long ago....'),nl,
     write('There lied a magnificent land behind the mountains, but hidden from the rest of the world.'),nl,
@@ -59,11 +41,17 @@ start :-
     write('And you can only do that with the help of Normal Tokemons who roamed in your country.'),nl,
     write('Beware and we wish you the best of luck, Trainer!'),nl,
     nl,
-    help.
-    retract(isstart(0)).
-    assertz(isstart(1)). 
+    retract(command(initstart,0)), assertz(command(initstart,1)),
+    help);
+    (X=:=1 -> write('You cannot use this command again since the game has started.'),nl);
+    (X=:=1, Y=:=1 -> write('You are in the middle of fighting. You cannot use this command.'))).
 
 help :-
+    command(initstart,X),
+    command(initfight,Y),
+    ((X=:=0 -> write('You even have not started game yet.'),nl);
+    (X=:=1, Y=:=1 -> write('You are in the middle of fighting. You cannot use this option!'),nl);
+    (X=:=1, Y=:=0 -> 
     write('Available commands: '),nl,
     write('start. -- start the game!'),nl,
     write('help. -- show available commands'),nl,
@@ -74,7 +62,7 @@ help :-
     write('status. -- show your status'),nl,
     write('specialattack. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,
-    write('load(Filename). -- load previously saved game'),nl.
+    write('load(Filename). -- load previously saved game'),nl)).
 
 art :-
     write('        ______   _______    __  __    ______    ___  ___    _______    __  __     '),nl,
@@ -86,4 +74,9 @@ art :-
     write('         ) ____/   )     /   ) ( ) (     / _\\/     ) (__    ) ( ) (  (  (__-.    '),nl,
     write('        (___)     (__)\\__)  (_______)   (___/\\    (_____)  (_______)  \\_____/  '),nl,nl,nl,nl.
 
-quit :- halt.
+quit :- 
+    command(initstart,X),
+    command(initfight,Y),
+    ((X=:=0 -> write('You have not even started the game yet.'),nl);
+    (X=:=1, Y=:=1 -> write('You are in the middle of fighting a Tokemon. You cannot choose this option!'),nl);
+    (X=:=1, Y=:=0 -> halt)).

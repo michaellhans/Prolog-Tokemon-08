@@ -1,10 +1,3 @@
-/* Kelompok 8 */
-/* Nama/NIM : */
-/* 13518020 / Florencia Wijaya */
-/* 13518056 / Michael Hans */
-/* 13518092 / Izharulhaq */
-/* 13518128 / Lionnarta Savirandy */
-
 /* Map */
 
 fence(2,2).
@@ -105,7 +98,12 @@ printMap(X,Y):-
     NewX is X+1,
     printMap(NewX,Y).
 
-map :- printMap(0,0).
+map :- 
+    command(initstart,X),
+    command(initfight,Y),
+    ((X=:=0 -> write('You even have not started the gamet yet.'),nl);
+    (X=:=1, Y=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
+    (X=:=1, Y=:=0 -> printMap(0,0))).
 
 /* Movement */
 isfence(X,Y) :-
@@ -118,42 +116,58 @@ isfence(X,Y) :-
     ).
 
 w :- 
-    retract(playerposition(X,Y)),
+    command(initstart,A),
+    command(initfight,B),
+    ((A=:=0 -> write('You even have not started the game yet.'),nl);
+    (A=:=1, B=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
+    (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X,
     NewY is Y-1,
-    ((\+isfence(NewX,NewY) -> write('You move to the north.'),
+    ((\+isfence(NewX,NewY) -> write('You move to the north.'),!,
     assertz(playerposition(NewX,NewY)),
     checkPerimeter,!);
-    write('Cannot move! You are near the fence.'), 
-    assertz(playerposition(X,Y))).
+    (write('Cannot move! You are near the fence.'), 
+    assertz(playerposition(X,Y)))))).
 
 s :-
-    retract(playerposition(X,Y)),
+    command(initstart,A),
+    command(initfight,B),
+    ((A=:=0 -> write('You even have not started the game yet.'),nl);
+    (A=:=1, B=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
+    (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X,
     NewY is Y+1,
     ((\+isfence(NewX,NewY) -> write('You move to the south.'),
     assertz(playerposition(NewX,NewY)),
     checkPerimeter,!);
     write('Cannot move! You are near the fence.'),
-    assertz(playerposition(X,Y))).
+    assertz(playerposition(X,Y))))).
 
 d :-
-    retract(playerposition(X,Y)),
+    command(initstart,A),
+    command(initfight,B),
+    ((A=:=0 -> write('You even have not started the gamet yet.'),nl);
+    (A=:=1, B=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
+    (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X+1,
     NewY is Y,
     ((\+isfence(NewX,NewY) -> write('You move to the east.'),
     assertz(playerposition(NewX,NewY)),
     checkPerimeter,!);
     write('Cannot move! You are near the fence.'),
-    assertz(playerposition(X,Y))).
+    assertz(playerposition(X,Y))))).
 
 a :-
-    retract(playerposition(X,Y)),
+    command(initstart,A),
+    command(initfight,B),
+    ((A=:=0 -> write('You even have not started the game yet.'),nl);
+    (A=:=1, B=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
+    (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X-1,
     NewY is Y,
     ((\+isfence(NewX,NewY) -> write('You move to the west.'),
     assertz(playerposition(NewX,NewY)),
     checkPerimeter,!);
     write('Cannot move! You are near the fence.'),
-    assertz(playerposition(X,Y))).
+    assertz(playerposition(X,Y))))).
 
