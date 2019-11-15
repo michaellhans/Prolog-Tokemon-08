@@ -1,15 +1,15 @@
-:- include('inventory.pl').
-:- include('init.pl').
-
 /* Deklarasi Fakta */
 
 /* Deklarasi Rule */
 
 load(Filename) :-
+    command(initstart,X),
+    command(initsave,Y),
+    ((X=:=0 -> write('You even have not started the game yet.'),nl);
+    (X=:=1, Y=:=1 -> 
     open(Filename, read, File),
     clear,
     updtKoor(File),
-    updtHeal(File),
     updtFull(File),
     updtCmmd(File),
     close(File),
@@ -18,17 +18,16 @@ load(Filename) :-
     close(FileInvt),
     open('listenemy.txt', read, FileEnmy),
     updtEnmy(FileEnmy),
-    close(FileEnmy).
+    close(FileEnmy),
+    retract(command(initload,0)),assertz(command(initload,1)))).
 
 save(Filename) :-
+    command(initstart,X),
+    (X=:=1 -> 
     open(Filename, write, FileGnr),
     (
         playerposition(OldX, OldY),
             writeKoor(FileGnr, OldX, OldY)
-    ),
-    (
-        chanceHeal(Lastchance),
-            write(FileGnr, Lastchance), write(FileGnr,'.'), nl(FileGnr)
     ),
     (
         isfull(WasFull),
@@ -36,11 +35,18 @@ save(Filename) :-
     ),
     forall(command(Cmmd, V), writeCmmd(FileGnr, Cmmd, V)),
     close(FileGnr),
+    retract(command(initsave,0)),assertz(command(initsave,1))).
+
+saveInvt :-
     open('inventory.txt', write, FileInv),
-    forall(inventory(Nama, Hp, Atk, Type, SpSkill, X), writeTkmn(FileInv, Nama, Hp, Atk, Type, SpSkill, X)),
-    close(FileInv),
+    forall(inventory(NamaI, HpI, AtkI, TypeI, SpSkillI, XI),
+        writeTkmn(FileInv, NamaI, HpI, AtkI, TypeI, SpSkillI, XI)),
+    close(FileInv).
+
+saveEnmy :-
     open('listenemy.txt', write, FileEnmy),
-    forall(listenemy(Nama, Hp, Atk, Type, SpSkill, X), writeTkmn(FileEnmy, Nama, Hp, Atk, Type, SpSkill, X)),
+    forall(listenemy(Nama, Hp, Atk, Type, SpSkill, X),
+        writeTkmn(FileEnmy, Nama, Hp, Atk, Type, SpSkill, X)),
     close(FileEnmy).
 
 clear:-
@@ -65,11 +71,6 @@ writeKoor(File, X, Y) :-
 updtKoor(File) :-
     readKoor(File, KoorX, KoorY),
     assert(playerposition(KoorX, KoorY)).
-
-/* Update chance heal */
-updtHeal(File) :-
-    read(File, Heal),
-    assert(chanceHeal(Heal)).
 
 /* Update isfull */
 updtFull(File) :-
