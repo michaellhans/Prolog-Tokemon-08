@@ -74,30 +74,7 @@ attack :-
                                 write('Type : '),write(Type2),nl,nl,!
                         );
                 /* Health = 0 */
-                        (
-                        (NewHp2=<0) -> Dead is 0,
-                        write('Congratulations, you have defeated your enemy!'),nl,
-                        write('Enemy - '),write(Name2),nl,
-                        write('Health : '),write(Dead),nl,
-                        write('Type : '),write(Type2),nl,nl,
-                        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-                        assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-                        retract(command(initfight,1)), assertz(command(initfight,0)),
-                        retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
-                        resetSkill,
-                        retract(command(initenemydead,D)),assertz(command(initenemydead,1)),
-                        write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
-                        read(Response),nl,
-                        /* capture */
-                        (
-                                (Response == yes; Response == y) -> capture
-                        );
-                        /* not capture */
-                        (
-                                write('Enemy - '),write(Name2),nl,
-                                write('Health : '),write(Dead),nl,
-                                write('Type : '),write(Type2),nl,nl
-                        ))
+                        enemyIsDown
                 )
                 )
         ).
@@ -177,20 +154,15 @@ activateSkill(NameSkill) :-
                 (NameSkill==fissure -> NewHp2 is Hp2-75);
                 (NameSkill==earthquake -> NewHp2 is Hp2-75)
         ),
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)),
         (
                 NewHp2 =< 0 -> 
-                        Dead is 0,
-                        write('Enemy - '),write(Name2),nl,
-                        write('Health : '),write(Dead),nl,
-                        write('Type : '),write(Type2),nl,
-                        write('Enemy took heavy damage from your Tokemon!'),nl,
                         enemyIsDown;
                 /* NewHp2 > 0 */
                         write('Enemy took heavy damage from your Tokemon!'),nl,
                         write('Enemy - '),write(Name2),nl,
                         write('Health : '),write(NewHp2),nl,
-                        write('Type : '),write(Type2),nl,nl,
-                        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2))
+                        write('Type : '),write(Type2),nl,nl
         ).
 
 activateSkill(NameSkill) :-
@@ -201,38 +173,31 @@ activateSkill(NameSkill) :-
         retract(available(NameSkill)),
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-        ((NameSkill==hydropump -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
-        (NameSkill==leafstorm -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
-        (NameSkill==blastburn -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
-        (NameSkill==overheat -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.5);
-        (NameSkill==eruption -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.6);
-        (NameSkill==absolutezero -> NewHp2 is Hp2-80, NewDmg1 is Dmg1*0.8);
-        (NameSkill==discharge -> NewHp2 is Hp2-90, NewDmg1 is Dmg1*0.75);
-        (NameSkill==superpower -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.6);
-        (NameSkill==skyattack -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.5);
-        (NameSkill==aerialace -> NewHp2 is Hp2-50, NewDmg1 is Dmg1*1.2)),
-        (NewHp2 =< 0 -> Dead is 0,
-        write('Enemy - '),write(Name2),nl,
-        write('Health : '),write(Dead),nl,
-        write('Type : '),write(Type2),nl,
-        write('Enemy took heavy damage from your Tokemon!'),nl,
-        retract(initfight(1)), assertz(initfight(0)),
-        assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-        retract(command(initfight,1)), assertz(command(initfight,0)),
-        retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
-        resetSkill,
-        write('Congratulations, you have defeated your enemy!'),nl,
-        write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
-        read(Response),nl,
-        ((Response == yes; Response == y) -> capture;
-        retract(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
-        write('Enemy took heavy damage from your Tokemon!'),nl,
-        write('Enemy - '),write(Name2),nl,
-        write('Health : '),write(NewHp2),nl,
-        write('Type : '),write(Type2),nl,nl,
-        write('But, your tokemon damage is reduced!'),nl,
+        (
+                (NameSkill==hydropump -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+                (NameSkill==leafstorm -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+                (NameSkill==blastburn -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+                (NameSkill==overheat -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.5);
+                (NameSkill==eruption -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.6);
+                (NameSkill==absolutezero -> NewHp2 is Hp2-80, NewDmg1 is Dmg1*0.8);
+                (NameSkill==discharge -> NewHp2 is Hp2-90, NewDmg1 is Dmg1*0.75);
+                (NameSkill==superpower -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.6);
+                (NameSkill==skyattack -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.5);
+                (NameSkill==aerialace -> NewHp2 is Hp2-50, NewDmg1 is Dmg1*1.2)
+        ),
         assertz(me(Name1,Hp1,NewDmg1,Type1,Skill1,Id1)),
-        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2))).
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)),
+        (
+                NewHp2 =< 0 -> 
+                        enemyIsDown;
+                
+                /* NewHp2 > 0 */
+                        write('Enemy took heavy damage from your Tokemon!'),nl,
+                        write('Enemy - '),write(Name2),nl,
+                        write('Health : '),write(NewHp2),nl,
+                        write('Type : '),write(Type2),nl,nl,
+                        write('But, your tokemon damage is reduced!'),nl
+        ).
 
 activateSkill(NameSkill) :-
         checkValidity3(NameSkill),
@@ -243,49 +208,53 @@ activateSkill(NameSkill) :-
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
         retract(available(NameSkill)),
         tokemon(_,HpDB,_,_,_,Id1),
-        ((NameSkill==leechseed -> NewHp2 is Hp2-25, NewHp1 is Hp1+15);
-        (NameSkill==gigadrain -> NewHp2 is Hp2-40,NewHp1 is Hp1+8);
-        (NameSkill==sacredfire -> NewHp2 is Hp2-2.5*Dmg1,NewHp1 is Hp1+5);
-        (NameSkill==thorhammer -> NewHp2 is Hp2-110,NewHp1 is Hp1-30);
-        (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
-        (NameSkill==absorb -> NewHp2 is Hp2-Dmg1, NewHp1 is Hp1+Dmg1)),
-        (NewHp1 > HpDB, NewHp2 =< 0 -> Dead is 0, write('Your health is full'),nl,write('And your enemy is dead'),nl,
-        write('My Tokemon - '), write(Name1), nl,
-        write('Health : '), write(HpDB), nl,
-        write('Type : '), write(Type1), nl, nl,
-        write('Enemy - '), write(Name2), nl,
-        write('Health : '), write(Dead), nl,
-        write('Type : '), write(Type1), nl,
-        retract(initfight(1)), assertz(initfight(0)),
-        assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-        resetSkill,
-        retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
-        write('Congratulations, you have defeated your enemy!'),nl,
-        write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
-        read(Response),nl,
-        ((Response == yes; Response == y) -> 
-        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
-        retract(command(initenemydead,0)),assertz(command(initenemydead,1)),capture;
-        retract(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
-        NewHp1 > HpDB -> write('Your health is full'),nl,
-        write('My Tokemon - '), write(Name1), nl,
-        write('Health : '), write(HpDB), nl,
-        write('Type : '), write(Type1), nl, nl,
-        write('Enemy - '), write(Name2), nl,
-        write('Health : '), write(NewHp2), nl,
-        write('Type : '), write(Type1), nl,nl,
-        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
-        assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
-        write('You are healed and cause some damage to the enemy'),nl,
-        write('My Tokemon - '), write(Name1), nl,
-        write('Health : '), write(NewHp1), nl,
-        write('Type : '), write(Type1), nl, nl,
-        write('Enemy - '), write(Name2), nl,
-        write('Health : '), write(NewHp2), nl,
-        write('Type : '), write(Type1), nl, nl,
+        (
+                (NameSkill==leechseed -> NewHp2 is Hp2-25, NewHp1 is Hp1+15);
+                (NameSkill==gigadrain -> NewHp2 is Hp2-40,NewHp1 is Hp1+8);
+                (NameSkill==sacredfire -> NewHp2 is Hp2-2.5*Dmg1,NewHp1 is Hp1+5);
+                (NameSkill==thorhammer -> NewHp2 is Hp2-110,NewHp1 is Hp1-30);
+                (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
+                (NameSkill==absorb -> NewHp2 is Hp2-Dmg1, NewHp1 is Hp1+Dmg1)
+        ),
         assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2));
-        write('You have no skill to use.'),nl.
+        (
+                (NewHp1 > HpDB, NewHp2 =< 0) -> 
+                        write('Your health is full'),nl,
+                        write('And your enemy is dead'),nl,
+                        write('My Tokemon - '), write(Name1), nl,
+                        write('Health : '), write(HpDB), nl,
+                        write('Type : '), write(Type1), nl, nl,
+                        enemyIsDown;
+                
+                (NewHp1 > HpDB) -> 
+                        write('Your health is full'),nl,
+                        write('The enemy got a hit'),nl,
+                        write('My Tokemon - '), write(Name1), nl,
+                        write('Health : '), write(HpDB), nl,
+                        write('Type : '), write(Type1), nl, nl,
+                        write('Enemy - '), write(Name2), nl,
+                        write('Health : '), write(NewHp2), nl,
+                        write('Type : '), write(Type1), nl,nl;
+                
+                (NewHp2 =< 0) ->
+                        write('Your health is recovered'),nl,
+                        write('And your enemy is dead'),nl,
+                        write('My Tokemon - '), write(Name1), nl,
+                        write('Health : '), write(HpDB), nl,
+                        write('Type : '), write(Type1), nl, nl, 
+                        enemyIsDown;
+
+                /* NewHp1 <= HpDB and NewHp2 > Dead */
+                        write('You are healed and cause some damage to the enemy'),nl,
+                        write('My Tokemon - '), write(Name1), nl,
+                        write('Health : '), write(NewHp1), nl,
+                        write('Type : '), write(Type1), nl, nl,
+                        write('Enemy - '), write(Name2), nl,
+                        write('Health : '), write(NewHp2), nl,
+                        write('Type : '), write(Type1), nl, nl
+        ).
+                
 
 resetSkill :-
         retract(command(initpick,1)),assertz(command(initpick,0)),
@@ -353,6 +322,7 @@ enemyIsDown :-
         /* Memasukkan Tokemon dari list me kembali ke inventory */
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2),
 
         /* Mengembalikan state ke state bukan fight, dan state tidak ada tokemon */
         retract(command(initfight,1)), 
@@ -361,12 +331,22 @@ enemyIsDown :-
         assertz(command(inittokemonappear,0)),
 
         /* Reset semua available skill yang sudah diretract sebelumnya */
-        resetSkill,
+        resetSkill, Dead is 0,
         write('Congratulations, you have defeated your enemy!'),nl,
+        write('Enemy - '),write(Name2),nl,
+        write('Health : '),write(Dead),nl,
+        write('Type : '),write(Type2),nl,nl,
+        retract(command(initenemydead,D)),assertz(command(initenemydead,1)),
         write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
-        
-        /* Membaca response berupa input dari pengguna untuk menentukan pilihan capture tokemon */
+
+        /* Menerima input dari pengguna berupa yes or no */
         read(Response),nl,
-        ((Response == yes; Response == y) -> 
-        retract(command(initenemydead,0)),assertz(command(initenemydead,1)),capture;
-        retract(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)))
+        (
+                /* capture */
+                ((Response == yes; Response == y) -> capture);
+                /* not capture */
+                (write('Enemy - '),write(Name2),nl,
+                write('Health : '),write(Dead),nl,
+                write('Type : '),write(Type2),nl,nl),
+                retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2))
+        ).
