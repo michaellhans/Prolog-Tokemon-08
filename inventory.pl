@@ -74,7 +74,7 @@ healinventory([H|T]) :-
         write(H),nl,
         inventory(H,Health,_,Type,_,_),
         retract(inventory(H,Health,Damage,Type,Skill,Id)),
-        tokemon(H,Hp1,_,_,_,_),
+        temp(H,Hp1,_,_,_,_),
         NewHealth is Hp1,
         write('Health   : '),write(NewHealth),nl,
         write('Type     : '),write(Type),nl,nl,
@@ -137,7 +137,7 @@ capture :-
                                 NewCount is Count+1,
                                 asserta(isfull(NewCount)),
                                 write(Name), write(' is captured'),nl,
-                                retract(command(initenemydead,B)),assertz(command(initenemydead,0)),
+                                retract(command(initenemydead,1)),assertz(command(initenemydead,0)),
                                 addToTemp(Id)
                         );
                         (
