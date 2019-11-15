@@ -112,7 +112,7 @@ attack :-
         (write('Enemy - '),write(Name2),nl,
         write('Health : '),write(NewHp2),nl,
         write('Type : '),write(Type2),nl,nl,
-        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)))),!.
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)))))).
 
 defend :-
         command(initstart,X),
@@ -142,7 +142,7 @@ defend :-
         (write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(NewHp1),nl,
         write('Type : '),write(Type1),nl,nl,
-        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)))),!.
+        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)))))).
 
 specialSkill :-
         command(initstart,X),
@@ -161,16 +161,33 @@ specialSkill :-
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(Hp2),nl,
         write('Type : '),write(Type2),nl,nl,
-        activateSkill(Skill1))).
+        activateSkill(Skill1))),!.
 
 activateSkill(NameSkill) :-
-        ((NameSkill==eruption) -> activateSkillToEnemy(NameSkill),activateSkillToMe(NameSkill));
-        ((NameSkill==hydropump;
+        NameSkill==flamethower;
+        NameSkill==woodhammer;
+        NameSkill==tidalwave;
+        NameSkill==hurricane;
+        NameSkill==bolt;
+        NameSkill==fissure;
         NameSkill==earthquake;
-        NameSkill==bolt) -> activateSkillToEnemy(NameSkill);
-        (NameSkill==roost;
-        NameSkill==absorb) -> activateSkillToMe(NameSkill)).
-
+        NameSkill==hydropump;
+        NameSkill==leafstorm;
+        NameSkill==blastburn;
+        NameSkill==overheat;
+        NameSkill==eruption;         
+        NameSkill==absolutez;
+        NameSkill==discharge;
+        NameSkill==superpower;
+        NameSkill==skyattack;
+        NameSkill==aerialace;
+        NameSkill==leechseed;
+        NameSkill==gigadrain;
+        NameSkill==sacredfire;
+        NameSkill==thorhammer;
+        NameSkill==roost;
+        NameSkill==absorb -> activateSkillToEnemy(NameSkill).
+        
 activateSkillToEnemy(NameSkill) :-
         write('You used '),
         write(NameSkill),
@@ -228,18 +245,28 @@ activateSkillToEnemy(NameSkill) :-
         assertz(me(Name1,Hp1,NewDmg1,Type1,Skill1,Id1)),
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2))).
 
-activateSkillToMe(NameSkill) :-
+activateSkillToEnemy(NameSkill) :-
         write('You chose to use '),
         write(NameSkill),
         write(' skill. Smart choice!'), nl,
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
+        tokemon(_,HpDB,_,_,_,Id1),
         ((NameSkill==leechseed -> NewHp2 is Hp2-25, NewHp1 is Hp1+15);
         (NameSkill==gigadrain -> NewHp2 is Hp2-40,NewHp1 is Hp1+8);
         (NameSkill==sacredfire -> NewHp2 is Hp2-2.5*Dmg1,NewHp1 is Hp1+5);
         (NameSkill==thorhammer -> NewHp2 is Hp2-110,NewHp1 is Hp1-30);
         (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
         (NameSkill==absorb -> NewHp2 is Hp2-Dmg1, NewHp1 is Hp1+Dmg1)),
+        (NewHp1 > HpDB -> write('Your health is full'),nl,
+        write('My Tokemon - '), write(Name1), nl,
+        write('Health : '), write(HpDB), nl,
+        write('Type : '), write(Type1), nl, nl,
+        write('Enemy - '), write(Name2), nl,
+        write('Health : '), write(NewHp2), nl,
+        write('Type : '), write(Type1), nl, nl,
+        assertz(me(Name1,HpDB,Dmg1,Type1,Skill1,Id1)),
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2));
         write('You are healed and cause some damage to the enemy'),nl,
         write('My Tokemon - '), write(Name1), nl,
         write('Health : '), write(NewHp1), nl,
@@ -249,4 +276,4 @@ activateSkillToMe(NameSkill) :-
         write('Type : '), write(Type1), nl, nl,
         assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2));
-        write('You have no skill to use.'),nl.
+        write('You have no skill to use.'),nl).

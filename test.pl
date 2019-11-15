@@ -96,6 +96,7 @@ isLegendaryAppear :-
     write('Please input the right response!')),nl,!.
 
 isTokemonAppear :-
+    \+isLegendaryAppear,
     playerposition(Xpos,Ypos),
     \+gym(Xpos,Ypos),
     random(1,21,X),
@@ -108,17 +109,17 @@ isTokemonAppear :-
     retract(command(inittokemonappear,0)),assertz(command(inittokemonappear,1)),
     write('Fight or Run?'),nl,
     read(Response),nl,
-    ((Response == run) -> isTokemonRun;
+    ((Response == run) -> isTokemonRun(Id);
     (Response == fight) -> write('What a legend! Here you go'),nl,fightNormal(Id),fight;
     write('Please input the right response!'),nl),!.
 
-isTokemonRun :-
+isTokemonRun(Id) :-
     randomRun(1,3,R),
     ((R =:= 1 -> write('Lucky you, you successfully escaped the wild Tokemon!'),
     retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)));
     write('Poor you, you had to fight the wild Tokemon!'),nl,fightNormal(Id),fight),!.
 
-isLegendaryRun :-
+isLegendaryRun(Id) :-
     randomRun(1,6,R),
     ((R =:= 1 -> write('Lucky you, you successfully escaped the Legendary Tokemon!'),
     retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)));
