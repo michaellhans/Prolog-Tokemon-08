@@ -79,7 +79,7 @@ fight :-
         command(inittokemonappear,B),
         ((A=:=0 -> write('You even have not started the game yet.'),nl);
         (A=:=1, B=:=0 -> write('You have not met any Tokemon!'));
-        (A=:=1, B=:=1 -> write('Choose your Tokemon.'),nl,
+        (A=:=1, B=:=1 -> write('Choose your Tokemon.'),
         retract(command(initfight,0)), assertz(command(initfight,1)))).
 
 attack :-
@@ -178,10 +178,13 @@ activateSkillToEnemy(NameSkill) :-
         write(NameSkill),
         write(' skill. Show it what you got!'),nl,
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
-        ((NameSkill==hydropump -> NewHp2 is Hp2-50);
-        (NameSkill==earthquake -> NewHp2 is Hp2-75);
+        ((NameSkill==flamethower -> NewHp2 is Hp2-70);
+        (NameSkill==woodhammer -> NewHp2 is Hp2-65);
+        (NameSkill==tidalwave -> NewHp2 is Hp2-60);
+        (NameSkill==hurricane -> NewHp2 is Hp2-60);
         (NameSkill==bolt -> NewHp2 is Hp2-90);
-        (NameSkill==eruption -> NewHp2 is Hp2-110)),
+        (NameSkill==fissure -> NewHp2 is Hp2-75);
+        (NameSkill==earthquake -> NewHp2 is Hp2-75)),
         (NewHp2 =< 0 -> Dead is 0,
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(Dead),nl,
@@ -195,16 +198,57 @@ activateSkillToEnemy(NameSkill) :-
         write('Type : '),write(Type2),nl,nl,
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2))).
 
+activateSkillToEnemy(NameSkill) :-
+        write('You used '),
+        write(NameSkill),
+        write(' skill. Show it what you got!'),nl,
+        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
+        ((NameSkill==hydropump -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+        (NameSkill==leafstorm -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+        (NameSkill==blastburn -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+        (NameSkill==overheat -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.5);
+        (NameSkill==eruption -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.6);
+        (NameSkill==absolutezero -> NewHp2 is Hp2-80, NewDmg1 is Dmg1*0.8);
+        (NameSkill==discharge -> NewHp2 is Hp2-90, NewDmg1 is Dmg1*0.75);
+        (NameSkill==superpower -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.6);
+        (NameSkill==skyattack -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.5);
+        (NameSkill==aerialace -> NewHp2 is Hp2-50, NewDmg1 is Dmg1*1.2)),
+        (NewHp2 =< 0 -> Dead is 0,
+        write('Enemy - '),write(Name2),nl,
+        write('Health : '),write(Dead),nl,
+        write('Type : '),write(Type2),nl,
+        write('Enemy took heavy damage from your Tokemon!'),nl,
+        write('Congratulations, you have defeated your enemy!'),nl,nl,
+        assertz(me(Name1,Hp1,NewDmg1,Type1,Skill1,Id1)),
+        assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2));
+        write('Enemy took heavy damage from your Tokemon!'),nl,
+        write('Enemy - '),write(Name2),nl,
+        write('Health : '),write(NewHp2),nl,
+        write('Type : '),write(Type2),nl,nl,
+        write('But, your tokemon damage is reduced!'),nl,
+        assertz(me(Name1,Hp1,NewDmg1,Type1,Skill1,Id1)),
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2))).
+
 activateSkillToMe(NameSkill) :-
         write('You chose to use '),
         write(NameSkill),
         write(' skill. Smart choice!'), nl,
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-        ((NameSkill==roost -> NewHp1 is Hp1+20);
-        (NameSkill==absorb -> NewHp1 is Hp1+(2*Dmg1))),
+        retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
+        ((NameSkill==leechseed -> NewHp2 is Hp2-25, NewHp1 is Hp1+15);
+        (NameSkill==gigadrain -> NewHp2 is Hp2-40,NewHp1 is Hp1+8);
+        (NameSkill==sacredfire -> NewHp2 is Hp2-2.5*Dmg1,NewHp1 is Hp1+5);
+        (NameSkill==thorhammer -> NewHp2 is Hp2-110,NewHp1 is Hp1-30);
+        (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
+        (NameSkill==absorb -> NewHp2 is Hp2-Dmg1, NewHp1 is Hp1+Dmg1)),
+        write('You are healed and cause some damage to the enemy'),nl,
         write('My Tokemon - '), write(Name1), nl,
         write('Health : '), write(NewHp1), nl,
         write('Type : '), write(Type1), nl, nl,
-        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1));
-
-    write('You have no skill to use.'),nl.
+        write('Enemy - '), write(Name2), nl,
+        write('Health : '), write(NewHp2), nl,
+        write('Type : '), write(Type1), nl, nl,
+        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2));
+        write('You have no skill to use.'),nl.

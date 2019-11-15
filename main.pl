@@ -12,7 +12,7 @@
 :- include('init.pl').
 
 :- dynamic(playerposition/2).
-playerposition(1,1).
+playerposition(6,12).
 
 /* Deklarasi Rules */
 

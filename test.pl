@@ -71,7 +71,17 @@ do(_):- write('Invalid Command').
 
 have(X):- X==nani,!.
 
+fightLegend(Id) :-
+    tokemon(Name,Hp,Dmg,Type,Skill,Id),
+    assertz(enemy(Name,Hp,Dmg,Type,Skill,Id)).
+
+fightNormal(Id) :-
+    tokemon(Name,Hp,Dmg,Type,Skill,Id),
+    assertz(enemy(Name,Hp,Dmg,Type,Skill,Id)).
+
 isLegendaryAppear :-
+    playerposition(Xpos,Ypos),
+    \+gym(Xpos,Ypos),
     random(1,10,X),
     X =:= 5,
     randomId(1,4,Id),
@@ -81,11 +91,13 @@ isLegendaryAppear :-
     retract(command(inittokemonappear,0)),assertz(command(inittokemonappear,1)),
     write('Fight or Run?'),nl,
     read(Response),nl,
-    ((Response == run -> isLegendaryRun);
-    (Response == fight -> write('What a legend! Here you go'),nl,fight);
-    write('Please input the right response!'),nl),!.
+    ((Response == run) -> isLegendaryRun;
+    (Response == fight) -> write('What a legend! Here you go'),nl,fightLegend(Id),fight;
+    write('Please input the right response!')),nl,!.
 
 isTokemonAppear :-
+    playerposition(Xpos,Ypos),
+    \+gym(Xpos,Ypos),
     random(1,21,X),
     X >= 1,
     X =< 7,
@@ -96,18 +108,18 @@ isTokemonAppear :-
     retract(command(inittokemonappear,0)),assertz(command(inittokemonappear,1)),
     write('Fight or Run?'),nl,
     read(Response),nl,
-    ((Response == run -> isTokemonRun);
-    (Response == fight -> write('What a legend! Here you go'),nl,fight);
+    ((Response == run) -> isTokemonRun;
+    (Response == fight) -> write('What a legend! Here you go'),nl,fightNormal(Id),fight;
     write('Please input the right response!'),nl),!.
 
 isTokemonRun :-
     randomRun(1,3,R),
-    ((R =:= 1 -> write('Lucky you, you successfully escaped the wild Tokemon!'),nl,
+    ((R =:= 1 -> write('Lucky you, you successfully escaped the wild Tokemon!'),
     retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)));
-    write('Poor you, you had to fight the wild Tokemon!')),!.
+    write('Poor you, you had to fight the wild Tokemon!'),nl,fightNormal(Id),fight),!.
 
 isLegendaryRun :-
     randomRun(1,6,R),
-    ((R =:= 1 -> write('Lucky you, you successfully escaped the Legendary Tokemon!'),nl,
+    ((R =:= 1 -> write('Lucky you, you successfully escaped the Legendary Tokemon!'),
     retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)));
-    write('Poor you, you had to fight the Legendary Tokemon!')),!.
+    write('Poor you, you had to fight the Legendary Tokemon!'),nl,fightLegend(Id),fight),!.
