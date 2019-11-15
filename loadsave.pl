@@ -9,7 +9,6 @@ load(Filename) :-
     open(Filename, read, File),
     clear,
     updtKoor(File),
-    updtHeal(File),
     updtFull(File),
     updtCmmd(File),
     close(File),
@@ -27,20 +26,22 @@ save(Filename) :-
             writeKoor(FileGnr, OldX, OldY)
     ),
     (
-        chanceHeal(Lastchance),
-            write(FileGnr, Lastchance), write(FileGnr,'.'), nl(FileGnr)
-    ),
-    (
         isfull(WasFull),
             write(FileGnr, WasFull), write(FileGnr,'.'), nl(FileGnr)
     ),
     forall(command(Cmmd, V), writeCmmd(FileGnr, Cmmd, V)),
-    close(FileGnr),
+    close(FileGnr).
+
+saveInvt :-
     open('inventory.txt', write, FileInv),
-    forall(inventory(Nama, Hp, Atk, Type, SpSkill, X), writeTkmn(FileInv, Nama, Hp, Atk, Type, SpSkill, X)),
-    close(FileInv),
+    forall(inventory(NamaI, HpI, AtkI, TypeI, SpSkillI, XI),
+        writeTkmn(FileInv, NamaI, HpI, AtkI, TypeI, SpSkillI, XI)),
+    close(FileInv).
+
+saveEnmy :-
     open('listenemy.txt', write, FileEnmy),
-    forall(listenemy(Nama, Hp, Atk, Type, SpSkill, X), writeTkmn(FileEnmy, Nama, Hp, Atk, Type, SpSkill, X)),
+    forall(listenemy(Nama, Hp, Atk, Type, SpSkill, X),
+        writeTkmn(FileEnmy, Nama, Hp, Atk, Type, SpSkill, X)),
     close(FileEnmy).
 
 clear:-
@@ -65,11 +66,6 @@ writeKoor(File, X, Y) :-
 updtKoor(File) :-
     readKoor(File, KoorX, KoorY),
     assert(playerposition(KoorX, KoorY)).
-
-/* Update chance heal */
-updtHeal(File) :-
-    read(File, Heal),
-    assert(chanceHeal(Heal)).
 
 /* Update isfull */
 updtFull(File) :-

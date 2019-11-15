@@ -1,0 +1,6 @@
+ligator 630 40 water hydropump 1.
+camelia 580 57 leaves leafstorm 2.
+phoenix 500 70 fire blastburn 3.
+ligator 630 40 water hydropump 1.
+camelia 580 57 leaves leafstorm 2.
+phoenix 500 70 fire blastburn 3.
