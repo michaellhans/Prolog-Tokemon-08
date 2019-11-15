@@ -71,6 +71,7 @@ fight :-
         findall(X,inventory(X,_,_,_,_,_),Result),
         printinventory(Result))).
 
+
 attack :-
         command(initstart,X),
         command(initfight,Y),
@@ -104,7 +105,7 @@ attack :-
         write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
         read(Response),nl,
         ((Response == yes; Response == y) -> 
-        retract(command(initenemydead,0)),assertz(command(initenemydead,1)),capture;
+        retract(command(initenemydead,A)),assertz(command(initenemydead,1)),capture;
         assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
         (write('Enemy - '),write(Name2),nl,
         write('Health : '),write(NewHp2),nl,
@@ -289,26 +290,26 @@ activateSkill(NameSkill) :-
 
 resetSkill :-
         retractall(available),
-        assertz(available(hydropump)).
-        assertz(available(leafstorm)).
-        assertz(available(blastburn)).
-        assertz(available(flamethower)).
-        assertz(available(overheat)).
-        assertz(available(sacredfire)).
-        assertz(available(eruption)).
-        assertz(available(woodhammer)).
-        assertz(available(absorb)).
-        assertz(available(leechseed)).
-        assertz(available(gigadrain)).
-        assertz(available(tidalwave)).
-        assertz(available(hurricane)).
-        assertz(available(absolutezero)).
-        assertz(available(thorhammer)).
-        assertz(available(discharge)).
-        assertz(available(bolt)).
-        assertz(available(fissure)).
-        assertz(available(earthquake)).
-        assertz(available(superpower)).
-        assertz(available(roost)).
-        assertz(available(skyattack)).
-        assertz(available(aerialace)).   
+        assertz(available(hydropump)),
+        assertz(available(leafstorm)),
+        assertz(available(blastburn)),
+        assertz(available(flamethower)),
+        assertz(available(overheat)),
+        assertz(available(sacredfire)),
+        assertz(available(eruption)),
+        assertz(available(woodhammer)),
+        assertz(available(absorb)),
+        assertz(available(leechseed)),
+        assertz(available(gigadrain)),
+        assertz(available(tidalwave)),
+        assertz(available(hurricane)),
+        assertz(available(absolutezero)),
+        assertz(available(thorhammer)),
+        assertz(available(discharge)),
+        assertz(available(bolt)),
+        assertz(available(fissure)),
+        assertz(available(earthquake)),
+        assertz(available(superpower)),
+        assertz(available(roost)),
+        assertz(available(skyattack)),
+        assertz(available(aerialace)).
