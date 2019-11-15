@@ -100,6 +100,7 @@ isLegendaryAppear :-
             random(1,101,X),
             X > 90,
             randomId(1,4,Id),
+            \+temp(Name,_,_,_,_,Id),
             tokemon(Name,_,_,_,_,Id),nl,
             write('Oh No! Legendary Tokemon Appeared!'),nl,
             write('It is an '), write(Name), nl,
@@ -119,10 +120,11 @@ isTokemonAppear :-
     playerposition(Xpos,Ypos),
     /* Tidak berada di dalam gym */
     \+gym(Xpos,Ypos),
-    random(1,21,X),
-    X >= 1,
-    X =< 7,
+    random(1,101,X),
+    X >= 50,
+    X =< 90,
     randomId(4,24,Id),
+    \+temp(Name,_,_,_,_,Id),
     tokemon(Name,_,_,_,_,Id),nl,
     write('A Wild Tokemon Appeared!'),nl,
     write('It is an '), write(Name), nl,
@@ -153,8 +155,8 @@ isTokemonRun(Id) :-
         /* Mekanisme jika berhasil run */
         (R =:= 1 -> 
             write('Lucky you, you successfully escaped the wild Tokemon!'),
-            retract(command(inittokemonappear,1)),
-            assertz(command(inittokemonappear,0))
+            retract(command(inittokemonappear,1)), assertz(command(inittokemonappear,0)),
+            retract(command(initnormalappear,1)), assertz(command(initnormalappear,0))
         );
         /* Mekanisme jika gagal run */
             write('Poor you, you had to fight the wild Tokemon!'),nl,
@@ -170,8 +172,8 @@ isLegendaryRun(Id) :-
         /* Mekanisme jika berhasil run */
         (R =:= 1 -> 
             write('Lucky you, you successfully escaped the Legendary Tokemon!'),
-            retract(command(inittokemonappear,1)),
-            assertz(command(inittokemonappear,0))
+            retract(command(inittokemonappear,1)), assertz(command(inittokemonappear,0)),
+            retract(command(initlegendaryappear,1)), assertz(command(initlegendaryappear,1))
         );
         /* Mekanisme jika gagal run */
             write('Poor you, you had to fight the Legendary Tokemon!'),nl,
