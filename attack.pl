@@ -41,7 +41,6 @@ attack :-
         command(initstart,A),
         command(initfight,B),
         command(initpick,C),
-        command(initenemydead,D),
         (
         /* Game belum dimulai */
                 (A=:=0 -> write('You even have not started the game yet.'),nl);
@@ -319,6 +318,7 @@ checkValidity3(NameSkill) :-
         ).
 
 enemyIsDown :-
+        command(initenemydead,D),
         /* Memasukkan Tokemon dari list me kembali ke inventory */
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
