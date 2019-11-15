@@ -80,13 +80,17 @@ fight :-
         command(inittokemonappear,B),
         ((A=:=0 -> write('You even have not started the game yet.'),nl);
         (A=:=1, B=:=0 -> write('You have not met any Tokemon!'));
-        (A=:=1, B=:=1 -> write('Choose your Tokemon.'),
-        retract(command(initfight,0)), assertz(command(initfight,1)))).
+        (A=:=1, B=:=1 -> write('Choose your Tokemon!'),nl,
+        retract(command(initfight,0)), assertz(command(initfight,1)),
+        nl,write('Available Tokemons: '),nl,
+        findall(X,inventory(X,_,_,_,_,_),Result),
+        printinventory(Result))).
 
 attack :-
         command(initstart,X),
         command(initfight,Y),
         command(initpick,Z),
+        command(initenemydead,A),
         ((X=:=0 -> write('You even have not started the game yet.'),nl);
         (X=:=1, Y=:=1, Z=:=0 -> write('You must choose a Tokemon first!'),nl);
         (X=:=1, Y=:=0 -> write('You are not fighting right now. You cannot use this option!'),nl);
@@ -109,7 +113,8 @@ attack :-
         write('Type : '),write(Type2),nl,nl,
         write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
         read(Response),nl,
-        ((Response == yes; Response == y) -> addtolist(Name2);
+        ((Response == yes; Response == y) -> 
+        retract(command(initenemydead,0)),assertz(command(initenemydead,1)),capture;
         assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
         (write('Enemy - '),write(Name2),nl,
         write('Health : '),write(NewHp2),nl,

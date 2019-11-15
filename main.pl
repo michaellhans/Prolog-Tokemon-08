@@ -60,7 +60,7 @@ help :-
     write('map. -- look at the map'),nl,
     write('heal -- cure Tokemon in inventory if you are in gym center'),nl,
     write('status. -- show your status'),nl,
-    write('specialattack. -- summon skill'),nl,
+    write('specialSkill. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,
     write('load(Filename). -- load previously saved game'),nl)).
 

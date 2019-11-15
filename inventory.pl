@@ -28,12 +28,15 @@ printenemy([H|T]) :-
 
 /* status */
 status :-
+        command(initstart,A),
+        ((A=:=0 -> write('You even have not started the game yet.'),nl);
+        (A=:=1 ->
         findall(X,inventory(X,_,_,_,_,_),Result),
         write('Your Tokemon:'),nl,
         printinventory(Result),
         findall(X,listenemy(X,_,_,_,_,_),Result1),
         write('Your Enemy:'),nl,
-        printenemy(Result1).
+        printenemy(Result1))).
 
 healinventory([H|T]) :-
         write(H),nl,
@@ -47,6 +50,9 @@ healinventory([H|T]) :-
         healinventory(T).
 
 heal :-
+        command(initstart,A),
+        ((A=:=0 -> write('You even have not started the game yet.'),nl);
+        (A=:=1 -> 
         playerposition(PosX,PosY),
         (\+gym(PosX,PosY) -> write('You cannot heal your tokemon outside Gym!'),nl;
         command(initheal,X),
@@ -57,13 +63,17 @@ heal :-
         write('All of your tokemons have been recovered!'),nl,
         write('Your Tokemon:'),nl,
         healinventory(Result));
-        (X=:=1 -> write('You do not have a ticket to the Gym!'),nl))).
+        (X=:=1 -> write('You do not have a ticket to the Gym!'),nl))))).
         
 /* Kondisi inventory */
 :- dynamic(isfull/1).
 isfull(1).
 
 capture :-
+        command(initstart,A),
+        command(initenemydead,B),
+        ((A=:=0 -> write('You even have not started the game yet.'),nl);
+        (A=:=1, B=:=1 -> 
         retract(isfull(Count)),
         ((Count<6,
         ((retract(enemy(Name,Health,Damage,Type,Skill,Id)),
@@ -74,7 +84,7 @@ capture :-
         (Count=:=6,
         NewCount is Count,
         asserta(isfull(NewCount)),
-        write('You cannot capture another Tokemon! You have to drop one first'),nl)).
+        write('You cannot capture another Tokemon! You have to drop one first'),nl)))).
 
 /* Kondisi menang */
 :- dynamic(iswin/1).
