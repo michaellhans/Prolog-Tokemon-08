@@ -75,7 +75,6 @@ pick(X) :-
         retract(command(initpick,0)),assertz(command(initpick,1))).
 
 
-
 fight :-
         command(initstart,A),
         command(inittokemonappear,B),
