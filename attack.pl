@@ -60,36 +60,6 @@ decreaseDamage(earth,wind).
 decreaseDamage(water,lightning).
 decreaseDamage(wind,lightning).
 
-/* pick and drop */
-pick(X) :-
-        command(initstart,A),
-        command(initfight,B),
-        command(initpick,C),
-        ((A=:=0 -> write('You even have not started the game yet.'),nl);
-        (A=:=1, B=:=1, C=:=1 -> write('You are in the middle of fighting. You cannot use this option!'),nl);
-        (A=:=1, B=:=1, C=:=0 ->
-        retract(inventory(X,Health,Damage,Type,Skill,Id)),
-        assertz(me(X,Health,Damage,Type,Skill,Id)),
-        write(X),
-        write(' I choose you!'),nl),
-        retract(command(initpick,0)),assertz(command(initpick,1))).
-
-drop(X) :-
-        command(initstart,A),
-        ((A=:=0 -> write('You even have not started the game yet.'),nl);
-        (isfull(1),write('You only have one tokemon!'),nl,!);
-        ((inventory(X,_,_,_,_,_),
-        write('Are you sure to drop '), write(X), write('?'),nl,
-        write('yes or no'),nl,
-        read(Response),
-        ((Response==yes,
-        retract(inventory(X,_,_,_,_,_)),
-        write('Good bye '), write(X),
-        retract(isfull(C)), NewC is C-1,
-        assertz(isfull(NewC)));
-        (Response==no,!));
-        (write('You dont have '),write(X),nl)))).
-
 fight :-
         command(initstart,A),
         command(inittokemonappear,B),
