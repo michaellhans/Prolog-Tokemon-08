@@ -60,21 +60,6 @@ decreaseDamage(earth,wind).
 decreaseDamage(water,lightning).
 decreaseDamage(wind,lightning).
 
-/* pick and drop */
-pick(X) :-
-        command(initstart,A),
-        command(initfight,B),
-        command(initpick,C),
-        ((A=:=0 -> write('You even have not started the game yet.'),nl);
-        (A=:=1, B=:=1, C=:=1 -> write('You are in the middle of fighting. You cannot use this option!'),nl);
-        (A=:=1, B=:=1, C=:=0 ->
-        retract(inventory(X,Health,Damage,Type,Skill,Id)),
-        assertz(me(X,Health,Damage,Type,Skill,Id)),
-        write(X),
-        write(' I choose you!'),nl),
-        retract(command(initpick,0)),assertz(command(initpick,1))).
-
-
 fight :-
         command(initstart,A),
         command(inittokemonappear,B),
