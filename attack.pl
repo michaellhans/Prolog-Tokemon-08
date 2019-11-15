@@ -99,7 +99,7 @@ attack :-
         write('Type : '),write(Type2),nl,nl,
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-        retract(initfight(1)), assertz(initfight(0)),
+        retract(command(initfight,1)), assertz(command(initfight,0)),
         retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
         resetSkill,
         write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
@@ -181,7 +181,7 @@ activateSkill(NameSkill) :-
         write('Enemy took heavy damage from your Tokemon!'),nl,
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
-        retract(initfight(1)), assertz(initfight(0)),
+        retract(command(initfight,1)), assertz(command(initfight,0)),
         retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
         resetSkill,
         write('Congratulations, you have defeated your enemy!'),nl,
@@ -189,7 +189,7 @@ activateSkill(NameSkill) :-
         read(Response),nl,
         ((Response == yes; Response == y) -> 
         retract(command(initenemydead,0)),assertz(command(initenemydead,1)),capture;
-        assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
+        retract(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
         write('Enemy took heavy damage from your Tokemon!'),nl,
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(NewHp2),nl,
@@ -220,14 +220,14 @@ activateSkill(NameSkill) :-
         write('Enemy took heavy damage from your Tokemon!'),nl,
         retract(initfight(1)), assertz(initfight(0)),
         assertz(inventory(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        retract(command(initfight,1)), assertz(command(initfight,0)),
         retract(command(inittokemonappear,1)),assertz(command(inittokemonappear,0)),
         resetSkill,
         write('Congratulations, you have defeated your enemy!'),nl,
         write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
         read(Response),nl,
-        ((Response == yes; Response == y) -> 
-        retract(command(initenemydead,0)),assertz(command(initenemydead,1)),capture;
-        assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
+        ((Response == yes; Response == y) -> capture;
+        retract(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
         write('Enemy took heavy damage from your Tokemon!'),nl,
         write('Enemy - '),write(Name2),nl,
         write('Health : '),write(NewHp2),nl,
@@ -267,7 +267,7 @@ activateSkill(NameSkill) :-
         ((Response == yes; Response == y) -> 
         assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
         retract(command(initenemydead,0)),assertz(command(initenemydead,1)),capture;
-        assertz(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
+        retract(enemy(Name2,Dead,Dmg2,Type2,Skill2,Id2)));
         NewHp1 > HpDB -> write('Your health is full'),nl,
         write('My Tokemon - '), write(Name1), nl,
         write('Health : '), write(HpDB), nl,
@@ -289,6 +289,7 @@ activateSkill(NameSkill) :-
         write('You have no skill to use.'),nl.
 
 resetSkill :-
+        retract(command(initpick,1)),assertz(command(initpick,0)),
         retractall(available),
         assertz(available(hydropump)),
         assertz(available(leafstorm)),
