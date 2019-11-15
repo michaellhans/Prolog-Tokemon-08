@@ -11,7 +11,6 @@
 :- dynamic(me/6).
 :- dynamic(enemy/6).
 :- dynamic(available/1).
-enemy(sijagobiru,85,23,fire,overheat,5).
 
 /* Available skill */
 available(hydropump). % damage = 50
@@ -100,7 +99,7 @@ attack :-
         (write('Enemy - '),write(Name2),nl,
         write('Health : '),write(NewHp2),nl,
         write('Type : '),write(Type2),nl,nl,
-        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)))).
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)))),!.
 
 defend :-
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
@@ -126,15 +125,14 @@ defend :-
         (write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(NewHp1),nl,
         write('Type : '),write(Type1),nl,nl,
-        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)))).
+        assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)))),!.
 
 specialSkill :-
         me(Name1,Hp1,_,Type1,Skill1,_),
         write('My Tokemon - '), write(Name1),nl,
         write('Health : '), write(Hp1),nl,
         write('Type : '),write(Type1),nl,
-        (available(Skill1) -> available(Skill1),
-        write('Available skill : '),
+        (available(Skill1) -> write('Available skill : '),
         write(Skill1),nl,nl;
         write('Available skill : - '),nl,nl),
         enemy(Name2,Hp2,_,Type2,_,_),
