@@ -41,7 +41,7 @@ start :-
     write('Beware and we wish you the best of luck, Trainer!'),nl,
     nl,
     retract(command(initstart,0)), assertz(command(initstart,1)),
-    help);
+    help,legends);
     (X=:=1 -> write('You cannot use this command again since the game has started.'),nl);
     (X=:=1, Y=:=1 -> write('You are in the middle of fighting. You cannot use this command.'))).
 
@@ -61,7 +61,13 @@ help :-
     write('status. -- show your status'),nl,
     write('specialSkill. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,
-    write('load(Filename). -- load previously saved game'),nl)).
+    write('load(Filename). -- load previously saved game'),nl,nl)).
+
+legends :-
+    write('Legends :'),nl,
+    write('     - X = Fence'),nl,
+    write('     - P = Player'),nl,
+    write('     - G = Gym'),nl,nl.
 
 quit :-
     command(initstart,X),
