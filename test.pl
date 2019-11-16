@@ -86,11 +86,17 @@ fightNormal(Id) :-
     tokemon(Name,Hp,Dmg,Type,Skill,Id),
     assertz(enemy(Name,Hp,Dmg,Type,Skill,Id)).
 
+/* wronginput digunakan untuk mengecek apakah response yang dimasukkan benar */
 wronginput :-
     write('Fight or run?'),nl,
     read(Response),nl,
-    (((Response==fight; Response==run) -> retract(answer(nil)),assertz(answer(Response))); 
-    (write('Please input the right response!'),nl,wronginput)).
+    (
+        (
+            (Response==fight; Response==run) -> 
+                retract(answer(nil)),assertz(answer(Response))
+        ); 
+        (write('Please input the right response!'),nl,wronginput)
+    ).
 
 /* isLegendaryAppear adalah mekanisme jika bertemu dengan Legendary Tokemon */
 isLegendaryAppear :-
@@ -156,10 +162,12 @@ run :-
     command(inittokemonappear,Toa),
     command(initlegendaryappear,La),
     command(initnormalappear,Na),   
-    ((St=:=0 -> write('You even have not started the game yet.'),nl);
-    (St=:=1, Fi=:=1, Toa=:=1 -> write('You cannot run while you are fighting!'),nl);
-    (St=:=1, Fi=:=0, Toa=:=1 , La=:=1-> isLegendaryRun(Id));
-    (St=:=1, Fi=:=0, Toa=:=1, Na=:=1 -> isTokemonRun(Id))).
+    (
+        (St=:=0 -> write('You even have not started the game yet.'),nl);
+        (St=:=1, Fi=:=1, Toa=:=1 -> write('You cannot run while you are fighting!'),nl);
+        (St=:=1, Fi=:=0, Toa=:=1 , La=:=1 -> isLegendaryRun(Id));
+        (St=:=1, Fi=:=0, Toa=:=1, Na=:=1 -> isTokemonRun(Id))
+    ).
 
 /* isTokemonRun adalah mekanisme jika memilih run dari Normal Tokemon */
 isTokemonRun(Id) :-
