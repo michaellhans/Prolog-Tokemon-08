@@ -18,8 +18,8 @@
 start :-
     command(initstart,X),
     command(initfight,Y),
-    art,startstate,
     ((X =:= 0 ->
+    art,startstate,
     write('Once upon a time, long long ago....'),nl,
     write('There lied a magnificent land behind the mountains, but hidden from the rest of the world.'),nl,
     write('In this place named Tokemon Land, there were many creatures called tokemons.'),nl,

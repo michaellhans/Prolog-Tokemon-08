@@ -345,7 +345,6 @@ enemyIsDown :-
                         NumNew is Num+1,
                         assertz(legendCaptured(NumNew));!
         ),
-        write('aaaa'),
 
         /* Mengembalikan state ke state bukan fight, dan state tidak ada tokemon */
         retract(command(initfight,1)), 
@@ -377,7 +376,6 @@ enemyIsDown :-
                 (Id2 =:= 1; Id2 =:= 2; Id2 =:= 3) ->
                         retract(tokemon(_,_,_,_,_,Id2));!
         ),
-        write('aaaa'),
         checkWinner.
 
 checkWinner :-
