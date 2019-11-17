@@ -80,6 +80,9 @@ attack :-
                 )
         ).
 
+/* defend -> Menjalankan proses untuk counter-atack, yaitu tokemon enemy melakukan serangan */
+/* terhadap tokemon me sehingga Hp me berkurang sesuai dengan kondisi yang ada, */
+/* yaitu increaseDamage, decreaseDamage, atau normal. */
 defend :-
         command(initstart,X),
         command(initfight,Y),
@@ -124,6 +127,9 @@ defend :-
                 )
         )),!.
 
+/* specialSkill -> Menjalankan proses untuk serangan dengan specialSkill, */
+/* yaitu tokemon me mengeluarkan serangan khusus dengan efek yang lebih besar, */ 
+/* namun skill hanya bisa dipakai sekali dalam sekali battle per tokemon. */
 specialSkill :-
         command(initstart,X),
         command(initfight,Y),
@@ -152,7 +158,9 @@ specialSkill :-
                         available(Skill1),activateSkill(Skill1)
                 )
         ),!.
-        
+
+/* activateSkill -> Mengekesekusi proses serangan specialSkill sesuai dengan skill tokemon me, */
+/* activateSkill ini berjalan ketika skill belum dipakai sama sekali. */       
 activateSkill(NameSkill) :-
         checkValidity1(NameSkill),
         write('You used '),
@@ -270,7 +278,7 @@ activateSkill(NameSkill) :-
                         write('Type : '), write(Type1), nl, nl
         ).
                 
-
+/* resetSkill -> Reset semua available skill yang tersedia sesudah battle selesai, yaitu ketika tokemon enemy telah mati.  */
 resetSkill :-
         retract(command(initpick,1)),assertz(command(initpick,0)),
         retractall(available),
@@ -298,6 +306,8 @@ resetSkill :-
         assertz(available(skyattack)),
         assertz(available(aerialace)).
 
+/* checkValidity -> Melakukan pengecekan nama-nama Skill apakah tersedia di dalam list skill yang ada. */
+/* checkValidity ini dibagi menjadi 3 checkValidity yang dibagi berdasarkan efek-efeknya yang serupa.  */
 checkValidity1(NameSkill) :-
         (
                 NameSkill==flamethower;
@@ -333,6 +343,9 @@ checkValidity3(NameSkill) :-
                 NameSkill==absorb
         ).
 
+/* enemyIsDown -> Rules yang dipanggil ketika tokemon enemy sudah mati. */
+/* Rules ini akan menampilkan beberapa proses seperti tampilan selamat atas kemenangan dalam battle, */
+/* pilihan capture, dan pengecekkan kemenangan dengan melihat banyak legendary yang sudah dikalahkan. */
 enemyIsDown :-
         command(initenemydead,D),
         /* Memasukkan Tokemon dari list me kembali ke inventory */
@@ -380,16 +393,24 @@ enemyIsDown :-
         write('aaaa'),
         checkWinner.
 
+/* checkWinner -> Rules untuk pengecekan kemenangan, yakni mengecek jumlah legendary yang sudah dikalahkan. */
+/* Jika semua legendary sudah dikalahkan, maka permainan berakhir dengan kemenangan. */
 checkWinner :-
         iswin(X),
         X =:= 0,
         winstate.
 
+/* checkLoser -> Rules untuk pengecekan kekalahan, yakni mengecek jumlah inventory saat ini. */
+/* Jika tidak ada inventory tokemon tersisa, maka pengguna dinyatakan kalah. */
 checkLoser :-
         isfull(X),
         X =:= 0,
         losestate.
 
+/* meIsDown -> Rules yang dipanggil ketika tokemon me sudah mati. */
+/* Rules ini akan menampilkan beberapa proses seperti pengecekkan kekalahan, */
+/* tampilan kematian tokemon me sehingga pengguna harus pick tokemon lain dalam inventory. */
+/* Jika semua tokemon me sudah mati, maka permainan berakhir dengan kekalahan. */
 meIsDown :-
         Dead is 0,
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),

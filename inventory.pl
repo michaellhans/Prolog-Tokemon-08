@@ -22,11 +22,12 @@ temp(refflesia,115,20,leaves,woodhammer,8).
 iswin(0).
 
 /* Deklarasi Rules */
-
+/* addToTemp digunakan untuk menambahkan tokemon baru ke dalam Temp ketika tokemon enemy dicapture. */
 addToTemp(Id) :-
         tokemon(Name,Health,Dmg,Type,Skill,Id),
         assertz(temp(Name,Health,Dmg,Type,Skill,Id)).
 
+/* removeFromTemp digunakan untuk menghapus tokemon yang terdaftar dalam Temp ketika tokemon me sudah mati */
 removeFromTemp(Id) :-
         tokemon(Name,Health,Dmg,Type,Skill,Id),
         retract(temp(Name,Health,Dmg,Type,Skill,Id)).
