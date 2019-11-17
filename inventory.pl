@@ -14,11 +14,6 @@
 /* inventory adalah dynamic predicate yang menampung seluruh tokemon yang dimiliki player */
 :- dynamic(inventory/6).
 inventory(refflesia,115,20,leaves,woodhammer,8).
-inventory(rose,100,17,leaves,absorb,9).
-inventory(mawar,105,23,leaves,leechseed,10).
-inventory(melati,110,19,leaves,gigadrain,11).
-inventory(aqua,130,13,water,tidalwave,12).
-inventory(ades,135,14,water,hurricane,13).
 
 /* listenemy adalah dynamic predicate yang menampung seluruh Legendary Tokemon */
 :- dynamic(listenemy/6).
@@ -29,15 +24,10 @@ listenemy(phoenix,500,70,fire,blastburn,3).
 /* Kondisi inventory */
 /* isfull adalah dynamic predicate yang menampung jumlah elemen pada inventory player */
 :- dynamic(isfull/1).
-isfull(6).
+isfull(1).
 
 :- dynamic(temp/6).
 temp(refflesia,115,20,leaves,woodhammer,8).
-temp(rose,100,17,leaves,absorb,9).
-temp(mawar,105,23,leaves,leechseed,10).
-temp(melati,110,19,leaves,gigadrain,11).
-temp(aqua,130,13,water,tidalwave,12).
-temp(ades,135,14,water,hurricane,13).
 
 /* Kondisi menang */
 :- dynamic(iswin/1).
