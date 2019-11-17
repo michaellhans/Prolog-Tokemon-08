@@ -52,7 +52,7 @@ save(Filename) :-
             write(FileGnr, Won), write(FileGnr,'.'), nl(FileGnr)
     ),
     (
-        legendaryleft(Left),
+        iswin(Left),
             write(FileGnr, Left), write(FileGnr,'.'), nl(FileGnr)
     ),
     forall(command(Cmmd, V),

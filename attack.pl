@@ -163,9 +163,14 @@ specialSkill :-
                         write('Enemy - '),write(Name2),nl,
                         write('Health : '),write(Hp2),nl,
                         write('Type : '),write(Type2),nl,nl,
-                        available(Skill1),activateSkill(Skill1),
-                        write('================================================================'),
-                        nl,nl,defend
+                        (available(Skill1) -> 
+                                activateSkill(Skill1),
+                                write('================================================================'),
+                                nl,nl,defend;
+                        /* not(available(Skill1)) */         
+                                write('You have no skill to use!'),nl,nl,
+                                write('================================================================')
+                        )
                 )
         ),!.
 
@@ -368,6 +373,7 @@ enemyIsDown :-
         enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2),
         (       
                 (Id2 =:= 1; Id2 =:= 2; Id2 =:= 3) ->
+                        retract(listenemy(_,_,_,_,_,Id2)),
                         retract(iswin(Num)),
                         NumNew is Num-1,
                         assertz(iswin(NumNew));!
@@ -441,10 +447,9 @@ meIsDown :-
                 write('Health : '), write(Dead),nl,
                 write('Type : '),write(Type1),nl,nl,
                 write('Pick your another tokemon!'),nl,
-                write('Available Tokemons: '),nl,
+                nl,write('Available Tokemons: '),nl,
                 findall(X,inventory(X,_,_,_,_,_),Result),
-                printinventory(Result)
-                )
+                printinventory(Result))
         ).
-        
+
 /* ============================================================================================================ */

@@ -11,46 +11,10 @@
 /* 13518128 / Lionnarta Savirandy */
 
 /* PROBABILITY */
-
-:- dynamic(legendaryleft/1).
-legendaryleft(4).
-
 :- dynamic(activeId/1).
 
 :- dynamic(answer/1).
 answer(nil).
-
-positionX(1).
-positionX(2).
-positionX(3).
-positionX(4).
-positionX(5).
-positionX(6).
-positionX(7).
-positionX(8).
-positionX(9).
-positionX(10).
-positionX(11).
-positionX(12).
-positionX(13).
-positionX(14).
-positionX(15).
-
-positionY(1).
-positionY(2).
-positionY(3).
-positionY(4).
-positionY(5).
-positionY(6).
-positionY(7).
-positionY(8).
-positionY(9).
-positionY(10).
-positionY(11).
-positionY(12).
-positionY(13).
-positionY(14).
-positionY(15).
 
 run(1).
 run(2).
