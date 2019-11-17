@@ -230,15 +230,18 @@ drop(X) :-
                         write('You even have not started the game yet.'),nl
                 );
                 (isfull(1),write('You only have one tokemon!'),nl,!);
-                ((inventory(X,_,_,_,_,Id),
-                write('Are you sure to drop '), write(X), write('?'),nl,
-                write('Yes or no?'),nl,
-                read(Response),
-                ((Response==yes,
-                retract(inventory(X,_,_,_,_,Id)),
-                write('Good bye, '), write(X),write('!'),
-                retract(isfull(C)), NewC is C-1,
-                assertz(isfull(NewC)),removeFromTemp(Id));
-                (Response==no,!));
-                (write('You dont have '),write(X),write('!'),nl)))
+                (inventory(X,_,_,_,_,Id) ->
+                        write('Are you sure to drop '), write(X), write('?'),nl,
+                        write('Yes or no?'),nl,
+                        read(Response),
+                        ((Response==yes) ->
+                                retract(inventory(X,_,_,_,_,Id)),
+                                write('Good bye, '), write(X),write('!'),
+                                retract(isfull(C)), NewC is C-1,
+                                assertz(isfull(NewC)),
+                                removeFromTemp(Id));
+                        (Response==no,!) ->
+                                write('Okay, that is your choice!'),nl;
+                /* X tidak ada di inventory */
+                        write('You dont have '),write(X),write('!'),nl)
         ).
