@@ -1,6 +1,25 @@
-/* Database Tokemon */
-:- dynamic(tokemon/6).
+/* FILE : DB.PL */
 
+/* IF2121 - Logika Komputasional                */
+/* Tugas Besar  : Tokemon Pro and Log           */
+/* Deskripsi    : Modul Database untuk Game Tokemon  */
+/* Kelompok 8 */
+/* NIM/Nama : */
+/* 13518020 / Florencia Wijaya */
+/* 13518056 / Michael Hans */
+/* 13518092 / Izharulhaq */
+/* 13518128 / Lionnarta Savirandy */
+
+/* DEKLARASI DYNAMIC PREDICATE */
+
+:- dynamic(tokemon/6).
+:- dynamic(available/1).
+
+/* ============================================================================================================ */
+
+/* FAKTA-FAKTA */
+
+/* Database Tokemon */
 tokemon(ligator,630,40,water,hydropump,1).
 tokemon(camelia,580,57,leaves,leafstorm,2).
 tokemon(phoenix,500,70,fire,blastburn,3).
@@ -24,8 +43,6 @@ tokemon(smash,130,16,earth,superpower,20).
 tokemon(wush,110,15,wind,roost,21).
 tokemon(aang,115,16,wind,skyattack,22).
 tokemon(topan,120,17,wind,aerialace,23).
-
-:- dynamic(available/1).
 
 /* Available skill */
 available(hydropump).
@@ -84,3 +101,5 @@ decreaseDamage(wind,lightning).
 legendary(ligator).
 legendary(camelia).
 legendary(phoenix).
+
+/* ============================================================================================================ */

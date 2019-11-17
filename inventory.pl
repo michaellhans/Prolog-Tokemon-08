@@ -1,3 +1,15 @@
+/* FILE : INVENTORY.PL */
+
+/* IF2121 - Logika Komputasional                */
+/* Tugas Besar  : Tokemon Pro and Log           */
+/* Deskripsi    : Modul Inventory untuk Game Tokemon  */
+/* Kelompok 8 */
+/* NIM/Nama : */
+/* 13518020 / Florencia Wijaya */
+/* 13518056 / Michael Hans */
+/* 13518092 / Izharulhaq */
+/* 13518128 / Lionnarta Savirandy */
+
 /* Deklarasi Fakta */
 /* inventory adalah dynamic predicate yang menampung seluruh tokemon yang dimiliki player */
 :- dynamic(inventory/6).
@@ -19,7 +31,7 @@ temp(refflesia,115,20,leaves,woodhammer,8).
 
 /* Kondisi menang */
 :- dynamic(iswin/1).
-iswin(0).
+iswin(3).
 
 /* Deklarasi Rules */
 /* addToTemp digunakan untuk menambahkan tokemon baru ke dalam Temp ketika tokemon enemy dicapture. */
@@ -143,6 +155,7 @@ capture :-
                         );
                         (
                                 Count=:=6,
+                                retract(enemy(Name,_,_,_,_,_)),
                                 NewCount is Count,
                                 asserta(isfull(NewCount)),
                                 write('You cannot capture another Tokemon! You have to drop one first'),nl

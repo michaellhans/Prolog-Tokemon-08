@@ -1,3 +1,16 @@
+/* IF2121 - Logika Komputasional                */
+/* Tugas Besar  : Tokemon Pro and Log           */
+/* Deskripsi    : Modul ASCII Art untuk Game Tokemon  */
+/* Kelompok 8 */
+/* NIM/Nama : */
+/* 13518020 / Florencia Wijaya */
+/* 13518056 / Michael Hans */
+/* 13518092 / Izharulhaq */
+/* 13518128 / Lionnarta Savirandy */
+
+/* RULES-RULES */
+
+/* winstate digunakan untuk menampilkan ASCII Art ketika game berhasil dimenangkan */
 winstate :-
     write('                                    /@&@#                            '),nl,
     write('                            *,,,*,,,,,,,,,,.                         '),nl,
@@ -50,6 +63,7 @@ winstate :-
     write('       \\/               \\/                  \\/              \\/   '),nl,
     halt.
 
+/* losestate digunakan untuk menampilkan ASCII Art ketika game menyatakan kalah */
 losestate :-
     write('((((///(((////(((((((((/*,***/(((##((((((((//*,.........,,.....*,**,,,......../%%%%%%%%%#(((((((((('),nl,
     write('/((((((((((/////(###(((///*,,,*/((((((/////..................................#%%%%%%(*/((((((/((((('),nl,
@@ -86,6 +100,7 @@ losestate :-
     write('           \\/               \\/                   \\/       \\/        \\/         \\/        '),nl,
     halt.
 
+/* art digunakan untuk menampilkan ASCII Art tulisan 'Tokemon Pro & Log' */
 art :-
     write('             ______   _______    __  __    ______    ___  ___    _______    __  __     '),nl,
     write('            (_    _) (   _   )  (  )/  )  (  ____)  (   \\/   )  (   _   )  (  \\(  )  '),nl,
@@ -96,6 +111,7 @@ art :-
     write('              ) ____/   )     /   ) ( ) (     / _\\/     ) (__    ) ( ) (  (  (__-.    '),nl,
     write('             (___)     (__)\\__)  (_______)   (___/\\    (_____)  (_______)  \\_____/  '),nl,nl,nl,nl.
 
+/* startstate digunakan untuk menampilkan ASCII Art saat kondisi start saja, yaitu ketika command start dipanggil */
 startstate :-                                                                                                   
     write('                                          /,,,,/                                                 '),nl,     
     write('                                        , .,,,,,,/                              *,,,../          '),nl,  
@@ -116,3 +132,5 @@ startstate :-
     write('                                       #/////#,   *%//////*(                                     '),nl,  
     write('                                     /, ///#/        /////&                                      '),nl,  
     write('                                                       # ,(                                      '),nl.
+
+/* ============================================================================================================ */

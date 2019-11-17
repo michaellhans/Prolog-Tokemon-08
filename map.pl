@@ -1,3 +1,5 @@
+/* FILE : MAP.PL */
+
 /* IF2121 - Logika Komputasional                */
 /* Tugas Besar  : Tokemon Pro and Log           */
 /* Deskripsi    : Modul Map untuk Game Tokemon  */
@@ -10,7 +12,10 @@
 
 /* MAP */
 
-/* Deklarasi Fakta-Fakta */
+/* ============================================================================================================ */
+/* DEKLARASI FAKTA-FAKTA */
+/* fence -> fakta tentang keberadaan fence-fence dalam map */
+/* fence merupakan suatu titik yang tidak bisa dimasuki oleh player */
 fence(2,2).
 fence(8,2).
 fence(8,3).
@@ -30,10 +35,14 @@ fence(10,7).
 fence(10,8).
 fence(13,13).
 fence(13,14).
+
+/* gym -> fakta tentang keberadaan gym dalam map */
+/* gym merupakan suatu titik yang bisa dimasuki oleh player dan bisa digunakan untuk heal seluruh inventory */
 gym(6,13).
 
+/* ============================================================================================================ */
 
-/* Rules-Rules */
+/* RULES-RULES */
 /* isAbove(_,Y) -> untuk mengecek apakah koordinat (X,Y) berada pada tepi atas map */
 isAbove(_,Y) :-    
     Y =:= 0,!.
@@ -221,3 +230,5 @@ a :-
             )
         )
     ).
+
+/* ============================================================================================================ */

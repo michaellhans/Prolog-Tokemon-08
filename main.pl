@@ -1,3 +1,8 @@
+/* FILE : MAIN.PL */
+
+/* IF2121 - Logika Komputasional                */
+/* Tugas Besar  : Tokemon Pro and Log           */
+/* Deskripsi    : Main Program untuk Game Tokemon  */
 /* Kelompok 8 */
 /* NIM/Nama : */
 /* 13518020 / Florencia Wijaya */
@@ -5,15 +10,22 @@
 /* 13518092 / Izharulhaq */
 /* 13518128 / Lionnarta Savirandy */
 
+
+/* DAFTAR MODUL */
+
 :- include('map.pl').
 :- include('attack.pl').
 :- include('inventory.pl').
-:- include('test.pl').
+:- include('probability.pl').
 :- include('init.pl').
 :- include('loadsave.pl').
 :- include('ascart.pl').
 
-/* Deklarasi Rules */
+/* ============================================================================================================ */
+/* RULES-RULES */
+
+/* start -> command untuk memulai permainan Tokemon Pro & Log */
+/* user harus menginput command ini dalam GNU Prolog untuk memulai permainan */
 
 start :-
     command(initstart,X),
@@ -45,6 +57,8 @@ start :-
     (X=:=1 -> write('You cannot use this command again since the game has started.'),nl);
     (X=:=1, Y=:=1 -> write('You are in the middle of fighting. You cannot use this command.'))).
 
+/* help -> command untuk menampilkan info bantuan seputar permainan Tokemon Pro & Log */
+/* help hanya dapat digunakan ketika dalam mode free roam (bukan dalam mode battle)   */
 help :-
     command(initstart,X),
     command(initfight,Y),
@@ -63,15 +77,19 @@ help :-
     write('save(Filename). -- save your game'),nl,
     write('load(Filename). -- load previously saved game'),nl,nl)).
 
+/* legends -> untuk menampilkan legenda dari map */
 legends :-
     write('Legends :'),nl,
     write('     - X = Fence'),nl,
     write('     - P = Player'),nl,
     write('     - G = Gym'),nl,nl.
 
+/* quit -> command untuk keluar dari permainan Tokemon Pro & Log */
 quit :-
     command(initstart,X),
     command(initfight,Y),
     ((X=:=0 -> write('You have not even started the game yet.'),nl);
     (X=:=1, Y=:=1 -> write('You are in the middle of fighting a Tokemon. You cannot choose this option!'),nl);
     (X=:=1, Y=:=0 -> halt)).
+
+/* ============================================================================================================ */

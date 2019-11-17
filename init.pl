@@ -1,3 +1,17 @@
+/* FILE : INIT.PL */
+
+/* IF2121 - Logika Komputasional                */
+/* Tugas Besar  : Tokemon Pro and Log           */
+/* Deskripsi    : Modul INIT untuk Game Tokemon  */
+/* Kelompok 8 */
+/* NIM/Nama : */
+/* 13518020 / Florencia Wijaya */
+/* 13518056 / Michael Hans */
+/* 13518092 / Izharulhaq */
+/* 13518128 / Lionnarta Savirandy */
+
+/* FAKTA-FAKTA */
+
 :- dynamic(playerposition/2).
 playerposition(6,12).
 

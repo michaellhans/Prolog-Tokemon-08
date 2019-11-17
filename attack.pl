@@ -1,4 +1,8 @@
-/* IF2121 - Logika Komputasional */
+/* FILE : ATTACK.PL */
+
+/* IF2121 - Logika Komputasional                */
+/* Tugas Besar  : Tokemon Pro and Log           */
+/* Deskripsi    : Modul Attack untuk Game Tokemon  */
 /* Kelompok 8 */
 /* NIM/Nama : */
 /* 13518020 / Florencia Wijaya */
@@ -6,14 +10,17 @@
 /* 13518092 / Izharulhaq */
 /* 13518128 / Lionnarta Savirandy */
 
+/* DAFTAR MODUL  */
 :- include('db.pl').
 
+/* DEKLARASI DYNAMIC PREDICATE */
 :- dynamic(me/6).
 :- dynamic(enemy/6).
-:- dynamic(legendCaptured/1).
-legendCaptured(0).
 
-/* Rules-Rules */
+/* ============================================================================================================ */
+
+/* RULES-RULES */
+
 /* fight -> digunakan untuk memulai pertarungan dengan tokemon enemy */
 fight :-
         command(initstart,A),
@@ -60,7 +67,7 @@ attack :-
                 write('Health : '),write(Hp2),nl,
                 write('Type : '),write(Type2),nl,nl,
                 /* Type effect */
-                ((increaseDamage(Type1,Type2) -> write('You attacked with double damage!'),nl,nl,NewHp2 is Hp2-2*Dmg1+Dmg1/2);
+                ((increaseDamage(Type1,Type2) -> write('You attacked with 150% damage!'),nl,nl,NewHp2 is Hp2-2*Dmg1+Dmg1/2);
                 (decreaseDamage(Type1,Type2) -> write('You attacked with half damage!'),nl,nl,NewHp2 is Hp2-Dmg1/2);
                 (write('You attacked with normal damage!'),nl,nl,NewHp2 is Hp2-Dmg1)),
                 assertz(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
@@ -76,7 +83,7 @@ attack :-
                         );
                 /* Health = 0 */
                         enemyIsDown
-                )
+                ),write('================================================================'),nl,nl,defend
                 )
         ).
 
@@ -92,8 +99,8 @@ defend :-
                 (X=:=1, Y=:=0 -> 
                         write('You are not fighting right now. You cannot use this option!'),nl);
                 (X=:=1, Y=:=1 -> 
-                        me(Name1,Hp1,Dmg1,Type1,Skill1,Id1),
-                        enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2),
+                        me(Name1,Hp1,_,Type1,_,_),
+                        enemy(Name2,Hp2,Dmg2,Type2,_,_),
                         write('My Tokemon - '), write(Name1),nl,
                         write('Health : '), write(Hp1),nl,
                         write('Type : '),write(Type1),nl,nl,
@@ -103,7 +110,7 @@ defend :-
         (
                 (increaseDamage(Type2,Type1) -> 
                         write('Enemy attacked with double damage!'),nl,nl,
-                        NewHp1 is Hp1-2*Dmg2);
+                        NewHp1 is Hp1-2*Dmg2+Dmg2/2);
 
                 (decreaseDamage(Type2,Type1) -> 
                         write('Enemy attacked with half damage!'),nl,nl,
@@ -124,7 +131,7 @@ defend :-
                                 write('Type : '),write(Type1),nl,nl,
                                 assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)))
                         )
-                )
+                ),write('================================================================'),nl,nl
         )),!.
 
 /* specialSkill -> Menjalankan proses untuk serangan dengan specialSkill, */
@@ -155,7 +162,9 @@ specialSkill :-
                         write('Enemy - '),write(Name2),nl,
                         write('Health : '),write(Hp2),nl,
                         write('Type : '),write(Type2),nl,nl,
-                        available(Skill1),activateSkill(Skill1)
+                        available(Skill1),activateSkill(Skill1),
+                        write('================================================================'),
+                        nl,nl,defend
                 )
         ),!.
 
@@ -188,6 +197,8 @@ activateSkill(NameSkill) :-
                         write('Type : '),write(Type2),nl,nl
         ).
 
+/* activateSkill -> Mengekesekusi proses serangan specialSkill sesuai dengan skill tokemon me, */
+/* activateSkill ini berjalan ketika skill belum dipakai sama sekali. */
 activateSkill(NameSkill) :-
         checkValidity2(NameSkill),
         write('You used '),
@@ -222,6 +233,8 @@ activateSkill(NameSkill) :-
                         write('But, your tokemon damage is reduced!'),nl
         ).
 
+/* activateSkill -> Mengekesekusi proses serangan specialSkill sesuai dengan skill tokemon me, */
+/* activateSkill ini berjalan ketika skill belum dipakai sama sekali. */
 activateSkill(NameSkill) :-
         checkValidity3(NameSkill),
         write('You chose to use '),
@@ -281,7 +294,7 @@ activateSkill(NameSkill) :-
 /* resetSkill -> Reset semua available skill yang tersedia sesudah battle selesai, yaitu ketika tokemon enemy telah mati.  */
 resetSkill :-
         retract(command(initpick,1)),assertz(command(initpick,0)),
-        retractall(available),
+        retractall(available(X)),
         assertz(available(hydropump)),
         assertz(available(leafstorm)),
         assertz(available(blastburn)),
@@ -354,9 +367,9 @@ enemyIsDown :-
         enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2),
         (       
                 (Id2 =:= 1; Id2 =:= 2; Id2 =:= 3) ->
-                        retract(legendCaptured(Num)),
-                        NumNew is Num+1,
-                        assertz(legendCaptured(NumNew));!
+                        retract(iswin(Num)),
+                        NumNew is Num-1,
+                        assertz(iswin(NumNew));!
         ),
 
         /* Mengembalikan state ke state bukan fight, dan state tidak ada tokemon */
@@ -380,9 +393,7 @@ enemyIsDown :-
                 /* capture */
                 ((Response == yes; Response == y) -> capture);
                 /* not capture */
-                (write('Enemy - '),write(Name2),nl,
-                write('Health : '),write(Dead),nl,
-                write('Type : '),write(Type2),nl,nl),
+                write('You are not capture the tokemon!'),nl,nl,
                 retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2))
         ),
         (       
@@ -411,7 +422,8 @@ checkLoser :-
 /* Jika semua tokemon me sudah mati, maka permainan berakhir dengan kekalahan. */
 meIsDown :-
         Dead is 0,
-        retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
+        retract(me(Name1,_,_,Type1,_,_)),
+        retract(temp(Name1,_,_,_,_,_)),
 
         /* Mengembalikan state ke state bukan fight, dan state tidak ada tokemon */
         retract(command(initpick,1)),
@@ -430,3 +442,4 @@ meIsDown :-
                 write('Pick your another tokemon!'),nl)
         ).
         
+/* ============================================================================================================ */
