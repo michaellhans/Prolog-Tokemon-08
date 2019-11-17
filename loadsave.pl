@@ -17,9 +17,9 @@
 load(Filename) :-
     command(initstart,X),
     command(initsave,Y),
-    (X=:=1, Y=:=1 ->
     ((X=:=0 -> write('You even have not started the game yet.'),nl);
     (X=:=1, Y=:=0 -> write('You do not have any saved files!'),nl);
+    (X=:=1, Y=:=1 ->
     clear,
     open(Filename, read, File),
     repeat,
