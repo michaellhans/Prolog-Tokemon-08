@@ -162,9 +162,14 @@ specialSkill :-
                         write('Enemy - '),write(Name2),nl,
                         write('Health : '),write(Hp2),nl,
                         write('Type : '),write(Type2),nl,nl,
-                        available(Skill1),activateSkill(Skill1),
-                        write('================================================================'),
-                        nl,nl,defend
+                        (available(Skill1) -> 
+                                activateSkill(Skill1),
+                                write('================================================================'),
+                                nl,nl,defend;
+                        /* not(available(Skill1)) */         
+                                write('You have no skill to use!'),nl,nl,
+                                write('================================================================')
+                        )
                 )
         ),!.
 
@@ -294,7 +299,7 @@ activateSkill(NameSkill) :-
 /* resetSkill -> Reset semua available skill yang tersedia sesudah battle selesai, yaitu ketika tokemon enemy telah mati.  */
 resetSkill :-
         retract(command(initpick,1)),assertz(command(initpick,0)),
-        retractall(available(X)),
+        retractall(available(_)),
         assertz(available(hydropump)),
         assertz(available(leafstorm)),
         assertz(available(blastburn)),
@@ -367,6 +372,7 @@ enemyIsDown :-
         enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2),
         (       
                 (Id2 =:= 1; Id2 =:= 2; Id2 =:= 3) ->
+                        retract(listenemy(_,_,_,_,_,Id2)),
                         retract(iswin(Num)),
                         NumNew is Num-1,
                         assertz(iswin(NumNew));!
@@ -439,7 +445,35 @@ meIsDown :-
                 write('My Tokemon - '), write(Name1),nl,
                 write('Health : '), write(Dead),nl,
                 write('Type : '),write(Type1),nl,nl,
-                write('Pick your another tokemon!'),nl)
+                write('Pick your another tokemon!'),nl,
+                nl,write('Available Tokemons: '),nl,
+                findall(X,inventory(X,_,_,_,_,_),Result),
+                printinventory(Result))
         ).
-        
+
+/* change -> mengganti tokemon ketika berada dalam tengah permainan. */
+/* change ini hanya bisa dipakai dalam kondisi fight */
+change :-
+        command(initstart,A),
+        command(initfight,B),
+        (
+                /* Game belum dimulai */
+                (A=:=0 -> 
+                        write('You even have not started the game yet.'),nl
+                );
+                /* Mekanisme jika sedang bertarung, tetapi memilih opsi ini */
+                (A=:=1, B=:=0 -> 
+                        write('You are not fighting right now!'),nl
+                );
+                /* Mekanisme jika game telah dimulai, memasuki kondisi bertarung, dan belum memilih Tokemon */
+                (A=:=1, B=:=1 ->
+                        retract(me(Name,Hp,Dmg,Type,Skill,Id)),
+                        assertz(inventory(Name,Hp,Dmg,Type,Skill,Id)),
+                        retract(command(initpick,1)),
+                        assertz(command(initpick,0)),
+                        write('Pick your another tokemon!'),nl,
+                        nl,write('Available Tokemons: '),nl,
+                        findall(X,inventory(X,_,_,_,_,_),Result),
+                        printinventory(Result))
+        ).
 /* ============================================================================================================ */
