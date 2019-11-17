@@ -116,7 +116,7 @@ tokepedia(Name) :-
         write('Type       : '), write(Type),nl,
         write('Health     : '), write(Health),nl,
         write('Damage     : '), write(Damage),nl,
-        write('Skill      : '), write(Skill),nl.
-    )
+        write('Skill      : '), write(Skill),nl
+    ).
 
 /* ============================================================================================================ */
