@@ -156,8 +156,8 @@ specialSkill :-
                                         write('Available skill : '),
                                         write(Skill1),nl,nl;
                                 /* not(available(Skill1)) */      
-                                        write('Available skill : - '),nl,
-                                        write('You have no skill to use.'),nl,nl
+                                        write('Available skill : - '),
+                                        nl,nl
                         ),
                         enemy(Name2,Hp2,_,Type2,_,_),
                         write('Enemy - '),write(Name2),nl,

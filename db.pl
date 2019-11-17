@@ -100,10 +100,4 @@ decreaseDamage(earth,wind).
 decreaseDamage(water,lightning).
 decreaseDamage(wind,lightning).
 
-/* Legendary Tokemon */
-/* legendary(name) */
-legendary(ligator).
-legendary(camelia).
-legendary(phoenix).
-
 /* ============================================================================================================ */
