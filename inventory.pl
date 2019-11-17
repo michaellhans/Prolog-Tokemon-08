@@ -158,7 +158,7 @@ capture :-
                                 retract(enemy(Name,_,_,_,_,_)),
                                 NewCount is Count,
                                 asserta(isfull(NewCount)),
-                                write('You cannot capture another Tokemon! You have to drop one first'),nl
+                                write('You cannot capture another Tokemon! You have to drop one first.'),nl
                         )
                 )
         ).
@@ -182,7 +182,7 @@ pick(X) :-
                         retract(inventory(X,Health,Damage,Type,Skill,Id)),
                         assertz(me(X,Health,Damage,Type,Skill,Id)),
                         write(X),
-                        write(' I choose you!'),nl,
+                        write(', I choose you!'),nl,
                         retract(command(initpick,0)),assertz(command(initpick,1))
                 )
         ).
@@ -197,13 +197,13 @@ drop(X) :-
                 (isfull(1),write('You only have one tokemon!'),nl,!);
                 ((inventory(X,_,_,_,_,Id),
                 write('Are you sure to drop '), write(X), write('?'),nl,
-                write('yes or no'),nl,
+                write('Yes or no?'),nl,
                 read(Response),
                 ((Response==yes,
                 retract(inventory(X,_,_,_,_,Id)),
-                write('Good bye '), write(X),
+                write('Good bye, '), write(X),write('!'),
                 retract(isfull(C)), NewC is C-1,
                 assertz(isfull(NewC)),removeFromTemp(Id));
                 (Response==no,!));
-                (write('You dont have '),write(X),nl)))
+                (write('You dont have '),write(X),write('!'),nl)))
         ).

@@ -393,7 +393,7 @@ enemyIsDown :-
                 /* capture */
                 ((Response == yes; Response == y) -> capture);
                 /* not capture */
-                write('You are not capture the tokemon!'),nl,nl,
+                write('You chose not to capture the tokemon!'),nl,nl,
                 retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2))
         ),
         (       
