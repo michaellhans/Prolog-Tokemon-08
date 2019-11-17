@@ -452,29 +452,4 @@ meIsDown :-
                 printinventory(Result))
         ).
 
-/* change -> mengganti tokemon ketika berada dalam tengah permainan. */
-/* change ini hanya bisa dipakai dalam kondisi fight */
-change :-
-        command(initstart,A),
-        command(initfight,B),
-        (
-                /* Game belum dimulai */
-                (A=:=0 -> 
-                        write('You even have not started the game yet.'),nl
-                );
-                /* Mekanisme jika sedang bertarung, tetapi memilih opsi ini */
-                (A=:=1, B=:=0 -> 
-                        write('You are not fighting right now!'),nl
-                );
-                /* Mekanisme jika game telah dimulai, memasuki kondisi bertarung, dan belum memilih Tokemon */
-                (A=:=1, B=:=1 ->
-                        retract(me(Name,Hp,Dmg,Type,Skill,Id)),
-                        assertz(inventory(Name,Hp,Dmg,Type,Skill,Id)),
-                        retract(command(initpick,1)),
-                        assertz(command(initpick,0)),
-                        write('Pick your another tokemon!'),nl,
-                        nl,write('Available Tokemons: '),nl,
-                        findall(X,inventory(X,_,_,_,_,_),Result),
-                        printinventory(Result))
-        ).
 /* ============================================================================================================ */
