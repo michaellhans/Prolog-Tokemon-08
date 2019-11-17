@@ -294,7 +294,7 @@ activateSkill(NameSkill) :-
 /* resetSkill -> Reset semua available skill yang tersedia sesudah battle selesai, yaitu ketika tokemon enemy telah mati.  */
 resetSkill :-
         retract(command(initpick,1)),assertz(command(initpick,0)),
-        retractall(available(X)),
+        retractall(available(_)),
         assertz(available(hydropump)),
         assertz(available(leafstorm)),
         assertz(available(blastburn)),
