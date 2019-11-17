@@ -20,9 +20,9 @@
 /* FAKTA-FAKTA */
 
 /* Database Tokemon */
-tokemon(ligator,630,40,water,hydropump,1).
-tokemon(camelia,580,57,leaves,leafstorm,2).
-tokemon(phoenix,500,70,fire,blastburn,3).
+tokemon(ligator,430,40,water,hydropump,1).
+tokemon(camelia,380,57,leaves,leafstorm,2).
+tokemon(phoenix,320,70,fire,blastburn,3).
 tokemon(sijagomerah,80,22,fire,flamethower,4).
 tokemon(sijagobiru,85,23,fire,overheat,5).
 tokemon(sijagoungu,90,24,fire,sacredfire,6).
@@ -73,9 +73,11 @@ available(aerialace).
 /* increaseDamage(Type1, Type2) -> attack yang diberikan oleh tokemon dengan type1 akan memberikan damage sebesar 150% */
 /* kepada tokemon dengan type2 */
 increaseDamage(fire,leaves).
+increaseDamage(fire,wind).
 increaseDamage(earth,fire).
 increaseDamage(earth,lightning).
 increaseDamage(leaves,water).
+increaseDamage(leaves,earth).
 increaseDamage(water,fire).
 increaseDamage(water,earth).
 increaseDamage(wind,leaves).
@@ -86,7 +88,9 @@ increaseDamage(lightning,wind).
 /* decreaseDamage(Type1, Type2) -> attack yang diberikan oleh tokemon dengan type1 akan memberikan damage yang berkurang sebesar 50% */
 /* kepada tokemon dengan type2 */
 decreaseDamage(leaves,fire).
+decreaseDamage(earth,leaves).
 decreaseDamage(fire,earth).
+decreaseDamage(wind,fire).
 decreaseDamage(lightning,earth).
 decreaseDamage(water,leaves).
 decreaseDamage(fire,water).
