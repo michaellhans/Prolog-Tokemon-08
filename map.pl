@@ -182,7 +182,7 @@ s :-
 d :-
     command(initstart,A),
     command(initfight,B),
-    ((A=:=0 -> write('You even have not started the gamet yet.'),nl);
+    ((A=:=0 -> write('You even have not started the game yet.'),nl);
     (A=:=1, B=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
     (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X+1,

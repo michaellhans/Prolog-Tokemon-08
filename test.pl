@@ -15,6 +15,9 @@ legendaryleft(4).
 
 :- dynamic(activeId/1).
 
+:- dynamic(answer/1).
+answer(nil).
+
 positionX(1).
 positionX(2).
 positionX(3).
@@ -83,6 +86,18 @@ fightNormal(Id) :-
     tokemon(Name,Hp,Dmg,Type,Skill,Id),
     assertz(enemy(Name,Hp,Dmg,Type,Skill,Id)).
 
+/* wronginput digunakan untuk mengecek apakah response yang dimasukkan benar */
+wronginput :-
+    write('Fight or run?'),nl,
+    read(Response),nl,
+    (
+        (
+            (Response==fight; Response==run) -> 
+                retract(answer(nil)),assertz(answer(Response))
+        ); 
+        (write('Please input the right response!'),nl,wronginput)
+    ).
+
 /* isLegendaryAppear adalah mekanisme jika bertemu dengan Legendary Tokemon */
 isLegendaryAppear :-
     command(initfight,A),
@@ -103,13 +118,14 @@ isLegendaryAppear :-
             write('It is an '), write(Name), nl,
             retract(command(inittokemonappear,0)),assertz(command(inittokemonappear,1)),
             retract(command(initlegendaryappear,0)),assertz(command(initlegendaryappear,1)),
-            write('Fight or Run?'),nl,
-            read(Response),nl,
-            ((Response == run) -> run,retract(activeId(Id));
-            (Response == fight) -> write('What a legend! Here you go'),nl,
+            wronginput,
+            answer(Re),
+            ((Re == run) -> run,retract(activeId(Id)),retract(answer(Re)),assertz(answer(nil));
+            (Re == fight) -> write('What a legend! Here you go'),nl,
             retract(command(initlegendaryappear,1)), assertz(command(initlegendaryappear,0)),
-            fightLegend(Id),fight,retract(activeId(Id));
-            write('Please input the right response!')),nl,!)
+            retract(answer(Re)),assertz(answer(nil)),
+            fightLegend(Id),fight,retract(activeId(Id)),!)
+        )
     ).
 
 /* isTokemonAppear adalah mekanisme jika bertemu dengan Normal Tokemon */
@@ -130,11 +146,12 @@ isTokemonAppear :-
     write('It is an '), write(Name), nl,
     retract(command(inittokemonappear,0)),assertz(command(inittokemonappear,1)),
     retract(command(initnormalappear,0)),assertz(command(initnormalappear,1)),
-    write('Fight or Run?'),nl,
-    read(Response),nl,
-    ((Response == run) -> run,retract(activeId(Id));
-    (Response == fight) -> write('What a legend! Here you go'),nl,
+    wronginput,
+    answer(Re),
+    ((Re == run) -> run,retract(activeId(Id)),retract(answer(Re)),assertz(answer(nil));
+    (Re == fight) -> write('What a legend! Here you go'),nl,
     retract(command(initnormalappear,1)), assertz(command(initnormalappear,0)),
+    retract(answer(Re)),assertz(answer(nil)),
     fightNormal(Id),fight,retract(activeId(Id));
     write('Please input the right response!'),nl),!.
 
@@ -145,10 +162,12 @@ run :-
     command(inittokemonappear,Toa),
     command(initlegendaryappear,La),
     command(initnormalappear,Na),   
-    ((St=:=0 -> write('You even have not started the game yet.'),nl);
-    (St=:=1, Fi=:=1, Toa=:=1 -> write('You cannot run while you are fighting!'),nl);
-    (St=:=1, Fi=:=0, Toa=:=1 , La=:=1-> isLegendaryRun(Id));
-    (St=:=1, Fi=:=0, Toa=:=1, Na=:=1 -> isTokemonRun(Id))).
+    (
+        (St=:=0 -> write('You even have not started the game yet.'),nl);
+        (St=:=1, Fi=:=1, Toa=:=1 -> write('You cannot run while you are fighting!'),nl);
+        (St=:=1, Fi=:=0, Toa=:=1 , La=:=1 -> isLegendaryRun(Id));
+        (St=:=1, Fi=:=0, Toa=:=1, Na=:=1 -> isTokemonRun(Id))
+    ).
 
 /* isTokemonRun adalah mekanisme jika memilih run dari Normal Tokemon */
 isTokemonRun(Id) :-
