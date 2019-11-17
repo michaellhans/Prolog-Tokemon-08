@@ -100,4 +100,17 @@ decreaseDamage(earth,wind).
 decreaseDamage(water,lightning).
 decreaseDamage(wind,lightning).
 
+/* Tokepedia untuk melihat status tokemon */
+/* Tokepedia(name) */
+tokepedia(Name) :-
+    (
+        tokemon(Name,Health,Damage,Type,Skill,Id),
+        write('Id Tokemon : '), write(Id),nl,
+        write('Tokemon    : '), write(Name),nl,
+        write('Type       : '), write(Type),nl,
+        write('Health     : '), write(Health),nl,
+        write('Damage     : '), write(Damage),nl,
+        write('Skill      : '), write(Skill),nl.
+    )
+
 /* ============================================================================================================ */
