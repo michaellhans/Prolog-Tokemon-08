@@ -156,7 +156,8 @@ specialSkill :-
                                         write('Available skill : '),
                                         write(Skill1),nl,nl;
                                 /* not(available(Skill1)) */      
-                                        write('Available skill : - '),nl,nl
+                                        write('Available skill : - '),nl,
+                                        write('You have no skill to use.'),nl,nl
                         ),
                         enemy(Name2,Hp2,_,Type2,_,_),
                         write('Enemy - '),write(Name2),nl,
@@ -439,7 +440,11 @@ meIsDown :-
                 write('My Tokemon - '), write(Name1),nl,
                 write('Health : '), write(Dead),nl,
                 write('Type : '),write(Type1),nl,nl,
-                write('Pick your another tokemon!'),nl)
+                write('Pick your another tokemon!'),nl,
+                write('Available Tokemons: '),nl,
+                findall(X,inventory(X,_,_,_,_,_),Result),
+                printinventory(Result)
+                )
         ).
         
 /* ============================================================================================================ */

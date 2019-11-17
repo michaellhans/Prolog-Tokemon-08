@@ -13,7 +13,7 @@
 /* FAKTA-FAKTA */
 
 :- dynamic(playerposition/2).
-playerposition(6,12).
+playerposition(1,1).
 
 :- dynamic(command/2).
 command(initstart,0).
