@@ -1,0 +1,15 @@
+1 1.
+1.
+3.
+3.
+initmap 0.
+initheal 0.
+initsave 0.
+initload 0.
+initfight 0.
+initpick 0.
+inittokemonappear 0.
+initenemydead 0.
+initlegendaryappear 0.
+initnormalappear 0.
+initstart 1.
