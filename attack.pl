@@ -481,6 +481,7 @@ enemyIsDown :-
                 (Id2 =:= 1; Id2 =:= 2; Id2 =:= 3) ->
                         retract(tokemon(_,_,_,_,_,Id2));!
         ),
+        retract(activeId(Id2)),
         checkWinner.
 
 /* checkWinner -> Rules untuk pengecekan kemenangan, yakni mengecek jumlah legendary yang sudah dikalahkan. */

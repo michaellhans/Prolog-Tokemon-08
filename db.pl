@@ -147,6 +147,7 @@ tokepedia(Name) :-
         write(Name), write(' is not registered in tokepedia'),nl,!
     ).
 
+/* Informasi skill yang tersedia */
 skillpedia(Skill) :-
     (
         Skill==hydropump,
@@ -228,8 +229,8 @@ skillpedia(Skill) :-
     );
     (
         Skill==thorhammer,
-        write('    Power      : 110'),nl,
-        write('    Effect     : Your health is decreased 30'),nl,
+        write('    Power      : 40'),nl,
+        write('    Effect     : Heal your health by 8'),nl,
         write('         Summon a huge hammer and blast enemy with huge electric damage.'),nl,!
     );
     (
