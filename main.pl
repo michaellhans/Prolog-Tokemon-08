@@ -75,7 +75,7 @@ help :-
     write('status. -- show your status'),nl,
     write('specialSkill. -- summon skill'),nl,
     write('save(Filename). -- save your game'),nl,
-    write('load(Filename). -- load previously saved game'),nl,nl)).
+    write('loaddata(Filename). -- load previously saved game'),nl,nl)).
 
 /* legends -> untuk menampilkan legenda dari map */
 legends :-

@@ -17,7 +17,7 @@
 
 /* load digunakan untuk merubah semua predikat yang ada dengan
    predikat yang tersimpan dalam file */
-load(Filename) :-
+loaddata(Filename) :-
     command(initstart,X),
     command(initsave,Y),
     command(initfight,Z),
