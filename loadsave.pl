@@ -19,12 +19,10 @@
    predikat yang tersimpan dalam file */
 loaddata(Filename) :-
     command(initstart,X),
-    command(initsave,Y),
     command(initfight,Z),
     ((X=:=0 -> write('You even have not started the game yet.'),nl);
-    (X=:=1, Y=:=0 -> write('You do not have any saved files!'),nl);
-    (X=:=1, Y=:=1, Z=:=1 -> write('You are in the middle of fightning!'),nl);
-    (X=:=1, Y=:=1, Z=:=0 ->
+    (X=:=1, Z=:=1 -> write('You are in the middle of fightning!'),nl);
+    (X=:=1, Z=:=0 ->
     clear,
     open(Filename, read, File),
     repeat,
