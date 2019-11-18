@@ -147,6 +147,7 @@ tokepedia(Name) :-
         write(Name), write(' is not registered in tokepedia'),nl,!
     ).
 
+/* Informasi skill yang tersedia */
 skillpedia(Skill) :-
     (
         Skill==hydropump,
