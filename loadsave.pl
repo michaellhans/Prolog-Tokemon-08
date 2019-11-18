@@ -14,6 +14,9 @@
 
 /* Deklarasi Rule */
 /* *** MAIN RULES *** */
+
+/* load digunakan untuk merubah semua predikat yang ada dengan
+   predikat yang tersimpan dalam file */
 load(Filename) :-
     command(initstart,X),
     command(initsave,Y),
@@ -29,6 +32,8 @@ load(Filename) :-
     close(File),
     retract(command(initload,0)),assertz(command(initload,1)))).
 
+/* save digunakan untuk menyimpan seluruh predikat yang sedang ada
+   ke dalam file sesuai input dari user */
 save(Filename) :-
     command(initstart,X),
     (X=:=1 ->
@@ -50,59 +55,86 @@ save(Filename) :-
     retract(command(initsave,0)),assertz(command(initsave,1))).
 
 /* *** SUPPORTING RULES *** */
-/* Save semua predikat */
+
+/* save_playerposition digunakan untuk menyimpan seluruh predikat
+   playerposition ke dalam file */
 save_playerposition(Stream) :-
     forall(playerposition(X, Y),
         (write(Stream, playerposition(X, Y)), write(Stream, '.'), nl(Stream))).
 
+/* save_isfull digunakan untuk menyimpan seluruh predikat isfull
+   ke dalam file */
 save_isfull(Stream) :-
     forall(isfull(N),
         (write(Stream, isfull(N)), write(Stream, '.'), nl(Stream))).
 
+/* save_iswin digunakan untuk menyimpan seluruh predikat iswin
+   ke dalam file */
 save_iswin(Stream) :-
     forall(iswin(N),
         (write(Stream, iswin(N)), write(Stream, '.'), nl(Stream))).
 
+/* save_activeId digunakan untuk menyimpan seluruh predikat activeId
+   ke dalam file */
 save_activeId(Stream) :-
     forall(activeId(N),
         (write(Stream, activeId(N)), write(Stream, '.'), nl(Stream))).
 
+/* save_answer digunakan untuk menyimpan seluruh predikat answer
+   ke dalam file */
 save_answer(Stream) :-
     forall(answer(N),
         (write(Stream, answer(N)), write(Stream, '.'), nl(Stream))).
 
+/* save_command digunakan untuk menyimpan seluruh predikat command
+   ke dalam file */
 save_command(Stream) :-
         forall(command(Cmmd, Val),
             (write(Stream, command(Cmmd, Val)), write(Stream, '.'), nl(Stream))).
 
+/* save_inventory digunakan untuk menyimpan seluruh predikat inventory
+   ke dalam file */
 save_inventory(Stream) :-
     forall(inventory(Nama, Hp, Atk, Type, SpSkill, Id),
         (write(Stream, inventory(Nama, Hp, Atk, Type, SpSkill, Id)), write(Stream, '.'), nl(Stream))).
 
+/* save_tokemon digunakan untuk menyimpan seluruh predikat tokemon
+   ke dalam file */
 save_tokemon(Stream) :-
     forall(tokemon(Nama, Hp, Atk, Type, SpSkill, Id),
         (write(Stream, tokemon(Nama, Hp, Atk, Type, SpSkill, Id)), write(Stream, '.'), nl(Stream))).
 
+/* save_listenemy digunakan untuk menyimpan seluruh predikat listenemy
+   ke dalam file */
 save_listenemy(Stream) :-
     forall(listenemy(Nama, Hp, Atk, Type, SpSkill, Id),
         (write(Stream, listenemy(Nama, Hp, Atk, Type, SpSkill, Id)), write(Stream, '.'), nl(Stream))).
 
+/* save_temp digunakan untuk menyimpan seluruh predikat temp
+   ke dalam file */
 save_temp(Stream) :-
     forall(temp(Nama, Hp, Atk, Type, SpSkill, Id),
         (write(Stream, temp(Nama, Hp, Atk, Type, SpSkill, Id)), write(Stream, '.'), nl(Stream))).
 
+/* save_available digunakan untuk menyimpan seluruh predikat available
+   ke dalam file */
 save_available(Stream) :-
     forall(available(SpSkill),
         (write(Stream, available(SpSkill)), write(Stream, '.'), nl(Stream))).
 
+/* save_me digunakan untuk menyimpan seluruh predikat me
+   ke dalam file */
 save_me(Stream) :-
     forall(me(Nama, Hp, Atk, Type, SpSkill, Id),
         (write(Stream, me(Nama, Hp, Atk, Type, SpSkill, Id)), write(Stream, '.'), nl(Stream))).
 
+/* save_enemy digunakan untuk menyimpan seluruh predikat enemy
+   ke dalam file */
 save_enemy(Stream) :-
     forall(enemy(Nama, Hp, Atk, Type, SpSkill, Id),
         (write(Stream, enemy(Nama, Hp, Atk, Type, SpSkill, Id)), write(Stream, '.'), nl(Stream))).
-        
+
+/* clear digunakan untuk menghapus seluruh data semua predikat*/
 clear:-
     retractall(playerposition(_, _)),
     retractall(isfull(_)),
