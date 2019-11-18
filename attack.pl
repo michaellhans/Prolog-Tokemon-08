@@ -259,7 +259,7 @@ activateSkill(NameSkill) :-
                 (NameSkill==absorb -> NewHp2 is Hp2-Dmg1, NewHp1 is Hp1+Dmg1)
         ),
         assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
-        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2));
+        assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)),
         (
                 (NewHp1 > HpDB, NewHp2 =< 0) -> 
                         write('Your health is full'),nl,
