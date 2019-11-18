@@ -229,7 +229,7 @@ skillpedia(Skill) :-
     );
     (
         Skill==thorhammer,
-        write('    Power      : 40'),nl,
+        write('    Power      : 60'),nl,
         write('    Effect     : Heal your health by 8'),nl,
         write('         Summon a huge hammer and blast enemy with huge electric damage.'),nl,!
     );
