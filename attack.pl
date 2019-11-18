@@ -109,7 +109,7 @@ defend :-
                         write('Type : '),write(Type2),nl,nl,
         (
                 (increaseDamage(Type2,Type1) -> 
-                        write('Enemy attacks with double damage!'),nl,nl,
+                        write('Enemy attacked with 150% damage!'),nl,nl,
                         NewHp1 is Hp1-2*Dmg2+Dmg2/2);
 
                 (decreaseDamage(Type2,Type1) -> 
@@ -182,16 +182,40 @@ activateSkill(NameSkill) :-
         write(NameSkill),
         write(' skill. Show it what you got!'),nl,
         retract(available(NameSkill)),
+        me(_,_,_,Type1,_,_),
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
         (
-                (NameSkill==flamethower -> NewHp2 is Hp2-70);
-                (NameSkill==woodhammer -> NewHp2 is Hp2-65);
-                (NameSkill==tidalwave -> NewHp2 is Hp2-60);
-                (NameSkill==hurricane -> NewHp2 is Hp2-60);
-                (NameSkill==bolt -> NewHp2 is Hp2-90);
-                (NameSkill==fissure -> NewHp2 is Hp2-75);
-                (NameSkill==earthquake -> NewHp2 is Hp2-75)
+                (increaseDamage(Type1,Type2) ->
+                        (((NameSkill==flamethower -> NewHp2 is Hp2-1.5*70);
+                        (NameSkill==woodhammer -> NewHp2 is Hp2-1.5*65);
+                        (NameSkill==tidalwave -> NewHp2 is Hp2-1.5*60);
+                        (NameSkill==hurricane -> NewHp2 is Hp2-1.5*60);
+                        (NameSkill==bolt -> NewHp2 is Hp2-1.5*90);
+                        (NameSkill==fissure -> NewHp2 is Hp2-1.5*75);
+                        (NameSkill==earthquake -> NewHp2 is Hp2-1.5*75)),
+                        write('Your skill is super effective to the enemy'),nl,nl));
+                
+                (decreaseDamage(Type1,Type2) ->
+                        (((NameSkill==flamethower -> NewHp2 is Hp2-0.5*70);
+                        (NameSkill==woodhammer -> NewHp2 is Hp2-0.5*65);
+                        (NameSkill==tidalwave -> NewHp2 is Hp2-0.5*60);
+                        (NameSkill==hurricane -> NewHp2 is Hp2-0.5*60);
+                        (NameSkill==bolt -> NewHp2 is Hp2-0.5*90);
+                        (NameSkill==fissure -> NewHp2 is Hp2-0.5*75);
+                        (NameSkill==earthquake -> NewHp2 is Hp2-0.5*75)),
+                        write('Your skill is slightly useless to the enemy'),nl,nl));
+
+                /* Normal damage */
+                        (((NameSkill==flamethower -> NewHp2 is Hp2-70);
+                        (NameSkill==woodhammer -> NewHp2 is Hp2-65);
+                        (NameSkill==tidalwave -> NewHp2 is Hp2-60);
+                        (NameSkill==hurricane -> NewHp2 is Hp2-60);
+                        (NameSkill==bolt -> NewHp2 is Hp2-90);
+                        (NameSkill==fissure -> NewHp2 is Hp2-75);
+                        (NameSkill==earthquake -> NewHp2 is Hp2-75)),
+                        write('Nice try! Buddy!'),nl,nl)
         ),
+
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)),
         (
                 NewHp2 =< 0 -> 
@@ -214,17 +238,46 @@ activateSkill(NameSkill) :-
         retract(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
         retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2)),
         (
-                (NameSkill==hydropump -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
-                (NameSkill==leafstorm -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
-                (NameSkill==blastburn -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
-                (NameSkill==overheat -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.5);
-                (NameSkill==eruption -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.6);
-                (NameSkill==absolutezero -> NewHp2 is Hp2-80, NewDmg1 is Dmg1*0.8);
-                (NameSkill==discharge -> NewHp2 is Hp2-90, NewDmg1 is Dmg1*0.75);
-                (NameSkill==superpower -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.6);
-                (NameSkill==skyattack -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.5);
-                (NameSkill==aerialace -> NewHp2 is Hp2-50, NewDmg1 is Dmg1*1.2)
+                (increaseDamage(Type1,Type2) ->
+                        (((NameSkill==hydropump -> NewHp2 is Hp2-1.5*2*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==leafstorm -> NewHp2 is Hp2-1.5*2*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==blastburn -> NewHp2 is Hp2-1.5*2*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==overheat -> NewHp2 is Hp2-1.5*4*Dmg1, NewDmg1 is Dmg1*0.5);
+                        (NameSkill==eruption -> NewHp2 is Hp2-1.5*110, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==absolutezero -> NewHp2 is Hp2-1.5*80, NewDmg1 is Dmg1*0.8);
+                        (NameSkill==discharge -> NewHp2 is Hp2-1.5*90, NewDmg1 is Dmg1*0.75);
+                        (NameSkill==superpower -> NewHp2 is Hp2-1.5*4*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==skyattack -> NewHp2 is Hp2-1.5*110, NewDmg1 is Dmg1*0.5);
+                        (NameSkill==aerialace -> NewHp2 is Hp2-1.5*50, NewDmg1 is Dmg1*1.2)),
+                        write('Your skill is super effective to the enemy'),nl,nl));
+
+                (decreaseDamage(Type1,Type2) ->        
+                        (((NameSkill==hydropump -> NewHp2 is Hp2-0.5*2*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==leafstorm -> NewHp2 is Hp2-0.5*2*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==blastburn -> NewHp2 is Hp2-0.5*2*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==overheat -> NewHp2 is Hp2-0.5*4*Dmg1, NewDmg1 is Dmg1*0.5);
+                        (NameSkill==eruption -> NewHp2 is Hp2-0.5*110, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==absolutezero -> NewHp2 is Hp2-0.5*80, NewDmg1 is Dmg1*0.8);
+                        (NameSkill==discharge -> NewHp2 is Hp2-0.5*90, NewDmg1 is Dmg1*0.75);
+                        (NameSkill==superpower -> NewHp2 is Hp2-0.5*4*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==skyattack -> NewHp2 is Hp2-0.5*110, NewDmg1 is Dmg1*0.5);
+                        (NameSkill==aerialace -> NewHp2 is Hp2-0.5*50, NewDmg1 is Dmg1*1.2)),
+                        write('Your skill is slightly useless to the enemy'),nl,nl));
+
+                /* Normal Damage */
+                        (((NameSkill==hydropump -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==leafstorm -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==blastburn -> NewHp2 is Hp2-2*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==overheat -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.5);
+                        (NameSkill==eruption -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==absolutezero -> NewHp2 is Hp2-80, NewDmg1 is Dmg1*0.8);
+                        (NameSkill==discharge -> NewHp2 is Hp2-90, NewDmg1 is Dmg1*0.75);
+                        (NameSkill==superpower -> NewHp2 is Hp2-4*Dmg1, NewDmg1 is Dmg1*0.6);
+                        (NameSkill==skyattack -> NewHp2 is Hp2-110, NewDmg1 is Dmg1*0.5);
+                        (NameSkill==aerialace -> NewHp2 is Hp2-50, NewDmg1 is Dmg1*1.2)),
+                        write('Nice try! Buddy!'),nl,nl)
         ),
+
         assertz(me(Name1,Hp1,NewDmg1,Type1,Skill1,Id1)),
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)),
         (
@@ -236,7 +289,7 @@ activateSkill(NameSkill) :-
                         write('Enemy - '),write(Name2),nl,
                         write('Health : '),write(NewHp2),nl,
                         write('Type : '),write(Type2),nl,nl,
-                        write('But, your tokemon damage is reduced!'),nl
+                        write('But, your tokemon damage is changed!'),nl
         ).
 
 /* activateSkill -> Mengekesekusi proses serangan specialSkill sesuai dengan skill tokemon me, */
@@ -251,13 +304,34 @@ activateSkill(NameSkill) :-
         retract(available(NameSkill)),
         tokemon(_,HpDB,_,_,_,Id1),
         (
-                (NameSkill==leechseed -> NewHp2 is Hp2-25, NewHp1 is Hp1+15);
-                (NameSkill==gigadrain -> NewHp2 is Hp2-40,NewHp1 is Hp1+8);
-                (NameSkill==sacredfire -> NewHp2 is Hp2-2.5*Dmg1,NewHp1 is Hp1+5);
-                (NameSkill==thorhammer -> NewHp2 is Hp2-110,NewHp1 is Hp1-30);
-                (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
-                (NameSkill==absorb -> NewHp2 is Hp2-Dmg1, NewHp1 is Hp1+Dmg1)
+                (increaseDamage(Type1,Type2) ->
+                        (((NameSkill==leechseed -> NewHp2 is Hp2-1.5*25, NewHp1 is Hp1+15);
+                        (NameSkill==gigadrain -> NewHp2 is Hp2-1.5*40,NewHp1 is Hp1+8);
+                        (NameSkill==sacredfire -> NewHp2 is Hp2-1.5*2.5*Dmg1,NewHp1 is Hp1+5);
+                        (NameSkill==thorhammer -> NewHp2 is Hp2-1.5*60,NewHp1 is Hp1+8);
+                        (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
+                        (NameSkill==absorb -> NewHp2 is Hp2-1.5*Dmg1, NewHp1 is Hp1+Dmg1)),
+                        write('Your skill is super effective to the enemy'),nl,nl));
+
+                (decreaseDamage(Type1,Type2) ->          
+                        (((NameSkill==leechseed -> NewHp2 is Hp2-0.5*25, NewHp1 is Hp1+15);
+                        (NameSkill==gigadrain -> NewHp2 is Hp2-0.5*40,NewHp1 is Hp1+8);
+                        (NameSkill==sacredfire -> NewHp2 is Hp2-0.5*2.5*Dmg1,NewHp1 is Hp1+5);
+                        (NameSkill==thorhammer -> NewHp2 is Hp2-0.5*60,NewHp1 is Hp1+8);
+                        (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
+                        (NameSkill==absorb -> NewHp2 is Hp2-0.5*Dmg1, NewHp1 is Hp1+Dmg1)),
+                        write('Your skill is slightly useless to the enemy'),nl,nl));
+                
+                /* Normal Damage */
+                        (((NameSkill==leechseed -> NewHp2 is Hp2-25, NewHp1 is Hp1+15);
+                        (NameSkill==gigadrain -> NewHp2 is Hp2-40,NewHp1 is Hp1+8);
+                        (NameSkill==sacredfire -> NewHp2 is Hp2-2.5*Dmg1,NewHp1 is Hp1+5);
+                        (NameSkill==thorhammer -> NewHp2 is Hp2-60,NewHp1 is Hp1+8);
+                        (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
+                        (NameSkill==absorb -> NewHp2 is Hp2-Dmg1, NewHp1 is Hp1+Dmg1)),
+                        write('Nice try! Buddy!'),nl,nl)
         ),
+
         assertz(me(Name1,NewHp1,Dmg1,Type1,Skill1,Id1)),
         assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)),
         (
