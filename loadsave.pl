@@ -24,7 +24,7 @@ load(Filename) :-
     open(Filename, read, File),
     repeat,
         read(File, SavedData),
-        asserta(SavedData),
+        assertz(SavedData),
     at_end_of_stream(File),
     close(File),
     retract(command(initload,0)),assertz(command(initload,1)))).
