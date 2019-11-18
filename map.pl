@@ -150,8 +150,10 @@ printMap(X,Y):-
 map :- 
     command(initstart,X),
     command(initfight,Y),
+    command(initenemydead,Z),
     ((X=:=0 -> write('You even have not started the gamet yet.'),nl);
     (X=:=1, Y=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
+    (X=:=1, Y=:=0, Z=:=1 -> write('You have to drop one of your Tokemon first.'),nl);
     (X=:=1, Y=:=0 -> printMap(0,0))).
 
 /* Movement */
@@ -159,9 +161,11 @@ map :-
 w :- 
     command(initstart,A),
     command(initfight,B),
+    command(initenemydead,C),
     ((A=:=0 -> write('You even have not started the game yet.'),nl);
     (A=:=1, B=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
-    (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
+    (A=:=1, B=:=0, C=:=1 -> write('You have to drop one of your Tokemon first.'),nl);
+    (A=:=1, B=:=0, C=:=0 -> retract(playerposition(X,Y)),
     NewX is X,
     NewY is Y-1,
     ((isGym(NewX,NewY) -> write('You are inside the gym.'), assertz(playerposition(NewX,NewY)));
@@ -175,8 +179,10 @@ w :-
 s :-
     command(initstart,A),
     command(initfight,B),
+    command(initenemydead,C),
     ((A=:=0 -> write('You even have not started the game yet.'),nl);
     (A=:=1, B=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
+    (A=:=1, B=:=0, C=:=1 -> write('You have to drop one of your Tokemon first.'),nl);
     (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X,
     NewY is Y+1,
@@ -191,8 +197,10 @@ s :-
 d :-
     command(initstart,A),
     command(initfight,B),
+    command(initenemydead,C),
     ((A=:=0 -> write('You even have not started the game yet.'),nl);
     (A=:=1, B=:=1 -> write('You are in the middle of fighting. You cannot choose this option!'),nl);
+    (A=:=1, B=:=0, C=:=1 -> write('You have to drop one of your Tokemon first.'),nl);
     (A=:=1, B=:=0 -> retract(playerposition(X,Y)),
     NewX is X+1,
     NewY is Y,
@@ -207,11 +215,13 @@ d :-
 a :-
     command(initstart,A),
     command(initfight,B),
+    command(initenemydead,C),
     (
         (A=:=0 -> 
             write('You even have not started the game yet.'),nl);
         (A=:=1, B=:=1 -> 
             write('You are in the middle of fighting. You cannot choose this option!'),nl);
+        (A=:=1, B=:=0, C=:=1 -> write('You have to drop one of your Tokemon first.'),nl);
         (A=:=1, B=:=0 -> 
             retract(playerposition(X,Y)),
             NewX is X-1,

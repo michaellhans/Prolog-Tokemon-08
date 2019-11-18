@@ -67,8 +67,8 @@ attack :-
                 write('Health : '),write(Hp2),nl,
                 write('Type : '),write(Type2),nl,nl,
                 /* Type effect */
-                ((increaseDamage(Type1,Type2) -> write('You attacked with 150% damage!'),nl,nl,NewHp2 is Hp2-2*Dmg1+Dmg1/2);
-                (decreaseDamage(Type1,Type2) -> write('You attacked with half damage!'),nl,nl,NewHp2 is Hp2-Dmg1/2);
+                ((increaseDamage(Type1,Type2) -> write('You attack with 150% damage!'),nl,nl,NewHp2 is Hp2-2*Dmg1+Dmg1/2);
+                (decreaseDamage(Type1,Type2) -> write('You attack with half damage!'),nl,nl,NewHp2 is Hp2-Dmg1/2);
                 (write('You attacked with normal damage!'),nl,nl,NewHp2 is Hp2-Dmg1)),
                 assertz(me(Name1,Hp1,Dmg1,Type1,Skill1,Id1)),
                 assertz(enemy(Name2,NewHp2,Dmg2,Type2,Skill2,Id2)),
@@ -113,11 +113,11 @@ defend :-
                         NewHp1 is Hp1-2*Dmg2+Dmg2/2);
 
                 (decreaseDamage(Type2,Type1) -> 
-                        write('Enemy attacked with half damage!'),nl,nl,
+                        write('Enemy attacks with half damage!'),nl,nl,
                         NewHp1 is Hp1-Dmg2/2);
 
                 /* Tidak keduanya, berarti kedua type hanya berefek normal */
-                        (write('Enemy attacked with normal damage!'),nl,nl,
+                        (write('Enemy attacks with normal damage!'),nl,nl,
                         NewHp1 is Hp1-Dmg2)
         ),
                 (
@@ -217,7 +217,7 @@ activateSkill(NameSkill) :-
                 NewHp2 =< 0 -> 
                         enemyIsDown;
                 /* NewHp2 > 0 */
-                        write('Enemy took heavy damage from your Tokemon!'),nl,
+                        write('Enemy takes heavy damage from your Tokemon!'),nl,
                         write('Enemy - '),write(Name2),nl,
                         write('Health : '),write(NewHp2),nl,
                         write('Type : '),write(Type2),nl,nl
@@ -277,7 +277,7 @@ activateSkill(NameSkill) :-
                         enemyIsDown;
                 
                 % NewHp2 > 0
-                        write('Enemy took heavy damage from your Tokemon!'),nl,
+                        write('Enemy takes heavy damage from your Tokemon!'),nl,
                         write('Enemy - '),write(Name2),nl,
                         write('Health : '),write(NewHp2),nl,
                         write('Type : '),write(Type2),nl,nl,
@@ -454,7 +454,7 @@ enemyIsDown :-
         write('Health : '),write(Dead),nl,
         write('Type : '),write(Type2),nl,nl,
         retract(command(initenemydead,D)),assertz(command(initenemydead,1)),
-        write('Do you want to pick this tokemon? It will replace your oldest tokemon you have!'),nl,
+        write('Do you want to pick this tokemon?'),nl,
 
         /* Menerima input dari pengguna berupa yes or no */
         read(Response),nl,
@@ -462,7 +462,7 @@ enemyIsDown :-
                 /* capture */
                 ((Response == yes; Response == y) -> capture);
                 /* not capture */
-                write('You chose not to capture the tokemon!'),nl,nl,
+                write('You choose not to capture the tokemon!'),nl,nl,
                 retract(enemy(Name2,Hp2,Dmg2,Type2,Skill2,Id2))
         ),
         (       

@@ -150,6 +150,8 @@ capture :-
                                 NewCount is Count+1,
                                 asserta(isfull(NewCount)),
                                 write(Name), write(' is captured'),nl,
+                                write('Tokemon is identified'),nl,
+                                tokepedia(Name),
                                 retract(command(initenemydead,1)),assertz(command(initenemydead,0)),
                                 addToTemp(Id)
                         );
