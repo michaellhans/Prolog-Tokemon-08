@@ -308,7 +308,7 @@ activateSkill(NameSkill) :-
                         (((NameSkill==leechseed -> NewHp2 is Hp2-1.5*25, NewHp1 is Hp1+15);
                         (NameSkill==gigadrain -> NewHp2 is Hp2-1.5*40,NewHp1 is Hp1+8);
                         (NameSkill==sacredfire -> NewHp2 is Hp2-1.5*2.5*Dmg1,NewHp1 is Hp1+5);
-                        (NameSkill==thorhammer -> NewHp2 is Hp2-1.5*110,NewHp1 is Hp1-30);
+                        (NameSkill==thorhammer -> NewHp2 is Hp2-1.5*60,NewHp1 is Hp1+8);
                         (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
                         (NameSkill==absorb -> NewHp2 is Hp2-1.5*Dmg1, NewHp1 is Hp1+Dmg1)),
                         write('Your skill is super effective to the enemy'),nl,nl));
@@ -317,7 +317,7 @@ activateSkill(NameSkill) :-
                         (((NameSkill==leechseed -> NewHp2 is Hp2-0.5*25, NewHp1 is Hp1+15);
                         (NameSkill==gigadrain -> NewHp2 is Hp2-0.5*40,NewHp1 is Hp1+8);
                         (NameSkill==sacredfire -> NewHp2 is Hp2-0.5*2.5*Dmg1,NewHp1 is Hp1+5);
-                        (NameSkill==thorhammer -> NewHp2 is Hp2-0.5*110,NewHp1 is Hp1-30);
+                        (NameSkill==thorhammer -> NewHp2 is Hp2-0.5*60,NewHp1 is Hp1+8);
                         (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
                         (NameSkill==absorb -> NewHp2 is Hp2-0.5*Dmg1, NewHp1 is Hp1+Dmg1)),
                         write('Your skill is slightly useless to the enemy'),nl,nl));
@@ -326,7 +326,7 @@ activateSkill(NameSkill) :-
                         (((NameSkill==leechseed -> NewHp2 is Hp2-25, NewHp1 is Hp1+15);
                         (NameSkill==gigadrain -> NewHp2 is Hp2-40,NewHp1 is Hp1+8);
                         (NameSkill==sacredfire -> NewHp2 is Hp2-2.5*Dmg1,NewHp1 is Hp1+5);
-                        (NameSkill==thorhammer -> NewHp2 is Hp2-110,NewHp1 is Hp1-30);
+                        (NameSkill==thorhammer -> NewHp2 is Hp2-60,NewHp1 is Hp1+8);
                         (NameSkill==roost -> NewHp2 is Hp2,NewHp1 is Hp1+20);
                         (NameSkill==absorb -> NewHp2 is Hp2-Dmg1, NewHp1 is Hp1+Dmg1)),
                         write('Nice try! Buddy!'),nl,nl)
